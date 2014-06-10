@@ -39,14 +39,14 @@ Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera
 /**
  * tests for collision, if collision occurs return the position else return 0 (null).
  */
-Vec3D CollisionTriangleTest(const Vec3Df & v1,const Vec3Df & v2,const Vec3Df & v3,const Vec3Df & rayDirection, const Vec3Df & rayOrigin){
+Vec3Df CollisionTriangleTest(const Vec3Df & v1,const Vec3Df & v2,const Vec3Df & v3,const Vec3Df & rayDirection, const Vec3Df & rayOrigin){
 
 	return 0;
 }
 /*
  * tests for collision, if collision occurs return the position else return 0 (null).
  */
-Vec3D CollisionCircleTest(const Vec3Df & v1,float radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin){
+Vec3Df CollisionCircleTest(const Vec3Df & v1,float radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin){
 
 	return 0;
 }
@@ -56,7 +56,7 @@ void yourDebugDraw()
 	//this function is called every frame
 
 	//as an example:
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
+/*	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glDisable(GL_LIGHTING);
 	glColor3f(0,1,1);
 	glBegin(GL_LINES);
@@ -68,7 +68,7 @@ void yourDebugDraw()
 	glVertex3fv(MyLightPositions[0].pointer());
 	glEnd();
 	glPopAttrib();
-
+*/
 }
 
 void yourKeyboardFunc(char t, int x, int y)
@@ -80,4 +80,5 @@ void yourKeyboardFunc(char t, int x, int y)
 	produceRay(x, y, testRayOrigin, testRayDestination);
 
 	std::cout<<t<<" pressed! The mouse was in location "<<x<<","<<y<<"!"<<std::endl;
+
 }
