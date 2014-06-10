@@ -16,7 +16,7 @@ void init()
 	//load the mesh file
 	//feel free to replace cube by a path to another model
 	//please realize that not all OBJ files will successfully load.
-	//Nonetheless, if they come from Blender, they should.    
+	//Nonetheless, if they come from Blender, they should.
     MyMesh.loadMesh("cube.obj", true);
     //MyMesh.loadMesh("dodgeColorTest.obj", true);
 	MyMesh.computeVertexNormals();
@@ -33,13 +33,29 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 	return Vec3Df(1,0,0);
 }
 
+Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera  ){
+	return Vec3Df(0,0,0);
+}
+/**
+ * tests for collision, if collision occurs return the position else return 0 (null).
+ */
+Vec3D CollisionTriangleTest(const Vec3Df & v1,const Vec3Df & v2,const Vec3Df & v3,const Vec3Df & rayDirection, const Vec3Df & rayOrigin){
 
+	return 0;
+}
+/*
+ * tests for collision, if collision occurs return the position else return 0 (null).
+ */
+Vec3D CollisionCircleTest(const Vec3Df & v1,float radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin){
+
+	return 0;
+}
 void yourDebugDraw()
 {
 	//draw open gl debug stuff
 	//this function is called every frame
 
-	//as an example: 
+	//as an example:
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glDisable(GL_LIGHTING);
 	glColor3f(0,1,1);
