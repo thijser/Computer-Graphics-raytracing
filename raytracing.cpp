@@ -30,9 +30,12 @@ void init()
 }
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest){
-	for (int i=0;i<100;i++){
-		performRayTracing(origin,dest,9);
+	int numberOfRays = 100;
+	Vec3Df colour= Vec3Df(0,0,0);
+	for (int i=0;i<numberOfRays;i++){
+		colour=colour+performRayTracing(origin,dest,9);
 	}
+	return colour/numberOfRays;
 }
 
 //return the color of your pixel.
