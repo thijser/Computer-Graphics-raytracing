@@ -133,7 +133,13 @@ float generateGaussianNoise(const float &variance)
 
 //Returns reflection vector for a given point on mesh from a certain starting point
 Vec3Df getReflectionVector(const Vec3Df & normal, const Vec3Df & cameraPos, const Vec3Df & vertexPos){
-	return normal;
+	Vec3Df view = cameraPos - vertexPos;
+	Vec3Df norm = normal;
+	view.normalize();	
+	norm.normalize();
+	
+	float innerDotProduct = Vec3Df::dotProduct(view, norm);
+	return norm * (2 * innerDotProduct) - view;
 }
 
 /**
