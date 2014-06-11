@@ -9,7 +9,7 @@
 //temporary variables
 Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
-
+Vec3Df NULLvec3Df =0;
 //use this function for any preprocessing of the mesh.
 void init()
 {
@@ -27,18 +27,33 @@ void init()
 	MyLightPositions.push_back(MyCameraPosition);
 }
 
+
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 {
-	for(Triangle t: MyMesh.triangles){
-		CollisionTriangleTest(t,dest,origin);
+	int triangleIndex=0;
+	Vec3Df closesthit=0;
+	int closestIndex=0;
+	for(int i=0;i< sizeof(MyMesh.triangles);i++){
+		triangleIndex++;
 
+		Vec3Df hitpos=CollisionTriangleTest(MyMesh.triangles[i],dest,origin);
+		if(true){
+			closesthit=closest(origin,closesthit,hitpos);
+			closestIndex=triangleIndex;
+		}
 	}
+
+
 	return Vec3Df(1,0,0);
 }
 
+Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2){
+
+}
 Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera  ){
-	return MyMesh.materials[0];
+
+	return Vec3Df(1,1,1);
 
 }
 /**
