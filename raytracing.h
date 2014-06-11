@@ -2,6 +2,8 @@
 #define RAYTRACING_Hjdslkjfadjfasljf
 #include <vector>
 #include "mesh.h"
+#include <ctime>
+#include <cstdlib>
 //Welcome to your assignment...
 //this is an important file, raytracing.cpp is what you need to fill out
 
@@ -29,7 +31,8 @@ Vec3Df CollisionTriangleTest(Triangle T,const Vec3Df & rayDirection, const Vec3D
 Vec3Df CollisionCircleTest(const Vec3Df & v1,const Vec3Df & radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin);
 //your main function to rewrite
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest);
-
+Vec3Df RandomVector();
+Vec3Df GaussianVector();
 
 //want keyboard interaction? Here it is...
 void yourKeyboardFunc(char t, int x, int y);

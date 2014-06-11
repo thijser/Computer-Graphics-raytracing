@@ -4,14 +4,17 @@
 #endif
 #include <GL/glut.h>
 #include "raytracing.h"
-
+#include <ctime>
+#include <cstdlib>
 
 //temporary variables
 Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
 //use this function for any preprocessing of the mesh.
+
 void init()
-{
+{//seed the random generator
+	srand ( time(0) );
 	//load the mesh file
 	//feel free to replace cube by a path to another model
 	//please realize that not all OBJ files will successfully load.
@@ -57,9 +60,25 @@ Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,
 	Vec3Df specular = mat.Ks();
 	float shininess = mat.Ns();
 	Vec3Df ambientres=ambient;
+
+	Vec3Df diffuseres= diffuse*performRayTracing(position,Vec3Df(0,0,0));
 	float transparancy=mat.Tr();
 
 	return ambient;
+
+}
+
+Vec3Df RandomVector(){
+	int r1 = rand()%100000-50000;
+	int r2 = rand()%100000-50000;
+	int r3 = rand()%100000-50000;
+	float f1=(((float)(r1))/50000);
+	float f2=(((float)(r1))/50000);
+	float f3=(((float)(r1))/50000);
+	return Vec3Df(f1,f2,f3);
+
+}
+Vec3Df GaussianVector(){
 
 }
 /**
