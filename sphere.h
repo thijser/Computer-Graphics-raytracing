@@ -1,4 +1,5 @@
 #include "Vec3D.h"
+#include "mesh.h"
 
 class Hit
 {
@@ -6,13 +7,13 @@ class Hit
 		int isHit;
 		Vec3Df hitPoint;
 		Vec3Df normal;
-		Vec3Df colour;
+		Material material;
 
-		Hit(int fisHit, Vec3Df fhitPoint, Vec3Df fnormal, Vec3Df fcolour){
+		Hit(int fisHit, Vec3Df fhitPoint, Vec3Df fnormal, Material fmaterial){
 			isHit = fisHit;
 			hitPoint = fhitPoint;
 			normal = fnormal;
-			colour = fcolour;
+			material = fmaterial;
 		}
 };
 
@@ -20,20 +21,23 @@ class Sphere
 {
 	Vec3Df sphereMidPoint;
 	float sphereRadius;
+	Material mat;
 
 	public:
 		Sphere(Vec3Df midPoint, float radius){
 			sphereMidPoint = midPoint;
 			sphereRadius = radius;
+
+			mat = Material();
+			mat.set_Kd(1,0,0);
+			mat.set_Ka(1,0,0);
+			mat.set_Ks(1,0,0);
 		}
 
 		Hit intersect(Vec3Df origin, Vec3Df dest){
 				Vec3Df o = origin - sphereMidPoint;
 				Vec3Df d = dest - sphereMidPoint;
 
-				// float A = pow(d[0],2)+pow(d[1],2)+pow(d[2],2);
-				// float B = 2*(d[0]*o[0] + d[1]*o[1] + d[2]*o[2]);
-				// float C = pow(o[0],2)+pow(o[1],2)+pow(o[1],2)-pow(sphereRadius,2);
 				float A = d[0]*d[0]+d[1]*d[1]+d[2]*d[2];
 				float B = 2*(d[0]*o[0] + d[1]*o[1] + d[2]*o[2]);
 				float C = o[0]*o[0]+o[1]*o[1]+o[2]*o[2]-sphereRadius*sphereRadius;
@@ -41,13 +45,13 @@ class Sphere
 				float discriminant = B*B-4*A*C;
 
 				if(discriminant < 0){
-					return Hit(0,Vec3Df(0,0,0), Vec3Df(0,0,0), Vec3Df(0,0,0));
+					return Hit(0,Vec3Df(0,0,0), Vec3Df(0,0,0), mat);
 				} if(discriminant == 0){
 					float t = (-1*B)/(2*A);
 					Vec3Df hitpoint = (o+(d*t));
 					Vec3Df normal = hitpoint;
 					normal.normalize();
-					return Hit(1, hitpoint+sphereMidPoint, normal, Vec3Df(1,0,0));
+					return Hit(1, hitpoint+sphereMidPoint, normal, mat);
 				} else{
 					float t;
 					float t1 = ((-1*B)-sqrt(discriminant))/(2*A);
@@ -67,7 +71,7 @@ class Sphere
 					Vec3Df normal = hitpoint;
 					normal.normalize();
 
-					return Hit(1, hitpoint+sphereMidPoint, normal, Vec3Df(1,0,0));
+					return Hit(1, hitpoint+sphereMidPoint, normal, mat);
 				}
 		}
 };
