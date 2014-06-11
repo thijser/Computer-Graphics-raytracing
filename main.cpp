@@ -24,7 +24,7 @@ class RGBValue
 	, b(bI)
 	{
 	};
-	
+
 	float operator[](int i) const
 	{
 		switch(i)
@@ -35,7 +35,7 @@ class RGBValue
 				return g;
 			case 2:
 				return b;
-			default: 
+			default:
 				return r;
 		}
 	}
@@ -49,7 +49,7 @@ class RGBValue
 				return g;
 			case 2:
 				return b;
-			default: 
+			default:
 				return r;
 		}
 	}
@@ -74,13 +74,13 @@ class Image
 		_image[3*(_width*j+i)]=rgb[0];
 		_image[3*(_width*j+i)+1]=rgb[1];
 		_image[3*(_width*j+i)+2]=rgb[2];
-		
+
 	}
 	std::vector<float> _image;
 	int _width;
 	int _height;
 
-	bool writeImage(const char * filename);	
+	bool writeImage(const char * filename);
 };
 
 bool Image::writeImage(const char * filename)
@@ -95,12 +95,12 @@ bool Image::writeImage(const char * filename)
 
 	fprintf(file, "P6\n%i %i\n255\n",_width, _height);
 
-	
+
 	std::vector<unsigned char> imageC(_image.size());
-	
+
 	for (unsigned int i=0; i<_image.size();++i)
 		imageC[i]=(unsigned char)(_image[i]*255.0f);
-	
+
 	int t = fwrite(&(imageC[0]), _width * _height * 3, 1, file);
 	if (t!=1)
 	{
@@ -125,8 +125,8 @@ Mesh MyMesh; //Main mesh
 
 
 
-// Utilisé pour essayer différents types de rendu
-// Utilisé via le paramètre "-t" en ligne de commande
+// Utilisï¿½ pour essayer diffï¿½rents types de rendu
+// Utilisï¿½ via le paramï¿½tre "-t" en ligne de commande
 enum { TRIANGLE=0, MODEL=1, };
 unsigned int type = MODEL;
 
@@ -160,7 +160,7 @@ void dessinerRepere(float length)
 }
 
 /**
- * Appel des différentes fonctions de dessin
+ * Appel des diffï¿½rentes fonctions de dessin
 */
 void dessiner( )
 {
@@ -185,10 +185,10 @@ void dessiner( )
 			//glEnd();
 		}
 	default:
-		dessinerRepere(1); // Par défaut
+		dessinerRepere(1); // Par dï¿½faut
 		break;
 	}
-	
+
 	yourDebugDraw();
 }
 
@@ -217,7 +217,7 @@ int main(int argc, char** argv)
     // position et taille de la fenetre
     glutInitWindowPosition(200, 100);
     glutInitWindowSize(WindowSize_X,WindowSize_Y);
-    glutCreateWindow(argv[0]);	
+    glutCreateWindow(argv[0]);
 
     // Initialisation du point de vue
     glMatrixMode(GL_MODELVIEW);
@@ -227,10 +227,10 @@ int main(int argc, char** argv)
     tbHelp();                      // affiche l'aide sur la traqueboule
 	MyCameraPosition=getCameraPosition();
     //
-    // Active la lumière
+    // Active la lumiï¿½re
     // Pour la partie
     // ECLAIRAGE
-         
+
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
     glEnable(GL_COLOR_MATERIAL);
@@ -239,11 +239,11 @@ int main(int argc, char** argv)
     glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
     //glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
     //glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,10);
-    
+
 	glEnable(GL_NORMALIZE);
     glClearColor (0.0, 0.0, 0.0, 0.0);
 
-	// Details sur le mode de tracé
+	// Details sur le mode de tracï¿½
     glEnable( GL_DEPTH_TEST );            // effectuer le test de profondeur
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
@@ -266,12 +266,12 @@ int main(int argc, char** argv)
 
     // lancement de la boucle principale
     glutMainLoop();
-        
-    return 0;  // instruction jamais exécutée
+
+    return 0;  // instruction jamais exï¿½cutï¿½e
 }
 
 /**
- * Fonctions de gestion opengl à ne pas toucher
+ * Fonctions de gestion opengl ï¿½ ne pas toucher
  */
 // Actions d'affichage
 // Ne pas changer
@@ -280,12 +280,12 @@ void display(void)
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
     // Effacer tout
     glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT); // la couleur et le z
-    
+
     glLoadIdentity();  // repere camera
 
     tbVisuTransform(); // origine et orientation de la scene
 
-    dessiner( );    
+    dessiner( );
 
     glutSwapBuffers();
 	glPopAttrib();
@@ -308,9 +308,9 @@ void produceRay(int x_I, int y_I, Vec3Df * origin, Vec3Df * dest)
 		int viewport[4];
 		double modelview[16];
 		double projection[16];
-		//point sur near plane 
+		//point sur near plane
 		//double positionN[3];
-		//point sur far plane 
+		//point sur far plane
 		//double positionF[3];
 		glGetDoublev(GL_MODELVIEW_MATRIX, modelview); //recuperer matrices
 		glGetDoublev(GL_PROJECTION_MATRIX, projection); //recuperer matrices
@@ -318,7 +318,7 @@ void produceRay(int x_I, int y_I, Vec3Df * origin, Vec3Df * dest)
 		int y_new = viewport[3] - y_I;
 
 		double x, y, z;
-		
+
 		gluUnProject(x_I, y_new, 0, modelview, projection, viewport, &x, &y, &z);
 		origin->p[0]=float(x);
 		origin->p[1]=float(y);
@@ -353,7 +353,7 @@ void keyboard(unsigned char key, int x, int y)
 		//commencez ici et lancez vos propres fonctions par rayon.
 
 		cout<<"Raytracing"<<endl;
-				
+
 		Image result(WindowSize_X,WindowSize_Y);
 		Vec3Df origin00, dest00;
 		Vec3Df origin01, dest01;
@@ -370,8 +370,8 @@ void keyboard(unsigned char key, int x, int y)
 		for (unsigned int y=0; y<WindowSize_Y;++y)
 			for (unsigned int x=0; x<WindowSize_X;++x)
 			{
-				//svp, decidez vous memes quels parametres vous allez passer à la fonction
-				//e.g., maillage, triangles, sphères etc.
+				//svp, decidez vous memes quels parametres vous allez passer ï¿½ la fonction
+				//e.g., maillage, triangles, sphï¿½res etc.
 				float xscale=1.0f-float(x)/(WindowSize_X-1);
 				float yscale=float(y)/(WindowSize_Y-1);
 
@@ -380,11 +380,11 @@ void keyboard(unsigned char key, int x, int y)
 				dest=yscale*(xscale*dest00+(1-xscale)*dest10)+
 					(1-yscale)*(xscale*dest01+(1-xscale)*dest11);
 
-		
+
 				Vec3Df rgb = performRayTracing(origin, dest);
 				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
 			}
-		
+
 
 		result.writeImage("result.ppm");
 		break;
