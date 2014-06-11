@@ -61,13 +61,17 @@ Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,
 	float shininess = mat.Ns();
 	Vec3Df ambientres=ambient;
 
-	Vec3Df diffuseres= diffuse*performRayTracing(position,Vec3Df(0,0,0));
+	Vec3Df diffuseres= diffuse*performRayTracing(position,RandomVector());
 	float transparancy=mat.Tr();
+	Vec3Df reflectiveRay = getReflectionVector(normal,camera);
+	Vec3Df speculairres = speculair*performRayTracing(position,);
 
-	return ambient;
+	return ambient+speculairres+ambientres;
 
 }
+Vec3Df getReflectionVector(Vec3Df normal,Vec3Df Camera){
 
+}
 Vec3Df RandomVector(){
 	int r1 = rand()%100000-50000;
 	int r2 = rand()%100000-50000;
@@ -78,7 +82,7 @@ Vec3Df RandomVector(){
 	return Vec3Df(f1,f2,f3);
 
 }
-Vec3Df GaussianVector(){
+Vec3Df GaussianVector(float deviation){
 
 }
 /**
