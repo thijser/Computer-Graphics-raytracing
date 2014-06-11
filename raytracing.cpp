@@ -29,9 +29,14 @@ void init()
 	MyLightPositions.push_back(MyCameraPosition);
 }
 
+Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest){
+	for (int i=0;i<100;i++){
+		performRayTracing(origin,dest,9);
+	}
+}
 
 //return the color of your pixel.
-Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
+Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,int number)
 {
 //	int triangleIndex=0;
 //	Vec3Df closesthit=0;
@@ -53,23 +58,34 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2){
 
 }
-Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera  ){
+Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera, int number){
 
 	Vec3Df diffuse = mat.Kd();
 	Vec3Df ambient = mat.Ka();
 	Vec3Df specular = mat.Ks();
 	float shininess = mat.Ns();
 	Vec3Df ambientres=ambient;
-
-	Vec3Df diffuseres= diffuse*performRayTracing(position,RandomVector());
+	float refraction = mat.Ni();
 	float transparancy=mat.Tr();
-	Vec3Df reflectiveRay = getReflectionVector(normal,camera);
-	Vec3Df speculairres = speculair*performRayTracing(position,);
 
-	return ambient+speculairres+ambientres;
+	Vec3Df diffuseres= diffuse*performRayTracing(position,RandomVector(),number-1);
+	Vec3Df reflectiveRay = getReflectionVector(normal,camera,position);
+	Vec3Df specRay = reflectiveRay+GaussianVector()/shininess;
+	Vec3Df speculairres = specular*performRayTracing(position,specRay,number-1);
+	Vec3Df res= ambientres+speculairres+ambientres;
+	if(transparancy==0){
+		return res;
+	}else{
+		return res;
+		//		return (1-transparancy)*res+transparancy*performRayTracing();
+	}
+
 
 }
-Vec3Df getReflectionVector(Vec3Df normal,Vec3Df Camera){
+Vec3Df getRefractiveRay(const Vec3Df & normal,const Vec3Df & Camera,const Vec3Df & position){
+
+}
+Vec3Df getReflectionVector(const Vec3Df & normal,const Vec3Df & Camera,const Vec3Df & position){
 
 }
 Vec3Df RandomVector(){
@@ -82,7 +98,7 @@ Vec3Df RandomVector(){
 	return Vec3Df(f1,f2,f3);
 
 }
-Vec3Df GaussianVector(float deviation){
+Vec3Df GaussianVector(){
 
 }
 /**
