@@ -9,28 +9,28 @@
 
 class Material
     {
-        
+
     public:
 
         Material() { cleanup(); };
 
-        Material(const Material & m) 
-        { 
+        Material(const Material & m)
+        {
             *this=m;
         };
- 
+
         Material& operator=(const Material& m)
-        { 
-            Kd_=m.Kd_;         
+        {
+            Kd_=m.Kd_;
             Kd_is_set_=m.Kd_is_set_; // diffuse
-            Ka_=m.Ka_;         
+            Ka_=m.Ka_;
             Ka_is_set_=m.Ka_is_set_; // ambient
-            Ks_=m.Ks_;         
+            Ks_=m.Ks_;
             Ks_is_set_=m.Ks_is_set_; // specular
-            
-            Ns_=m.Ns_;         
+
+            Ns_=m.Ns_;
             Ns_is_set_=m.Ns_is_set_; // specular
-            Ni_=m.Ni_;         
+            Ni_=m.Ni_;
             Ni_is_set_=m.Ni_is_set_; // specular
 
             Tr_=m.Tr_;
@@ -52,7 +52,7 @@ class Material
             name_="empty";
         }
 
-        bool is_valid(void) const 
+        bool is_valid(void) const
         { return Kd_is_set_ || Ka_is_set_ || Ks_is_set_ || Tr_is_set_; }
 
         bool has_Kd(void) { return Kd_is_set_; }
@@ -63,22 +63,22 @@ class Material
         bool has_illum(void) { return illum_is_set_; }
         bool has_Tr(void) { return Tr_is_set_; }
 
-        void set_Kd( float r, float g, float b ) 
+        void set_Kd( float r, float g, float b )
         { Kd_=Vec3Df(r,g,b); Kd_is_set_=true; }
 
-        void set_Ka( float r, float g, float b ) 
+        void set_Ka( float r, float g, float b )
         { Ka_=Vec3Df(r,g,b); Ka_is_set_=true; }
 
-        void set_Ks( float r, float g, float b ) 
+        void set_Ks( float r, float g, float b )
         { Ks_=Vec3Df(r,g,b); Ks_is_set_=true; }
 
-        void set_Ns( float r) 
+        void set_Ns( float r)
         { Ns_=r;    Ns_is_set_=true; }
 
-        void set_Ni( float r) 
+        void set_Ni( float r)
         { Ni_=r;    Ni_is_set_=true; }
 
-        void set_illum( int r) 
+        void set_illum( int r)
         { illum_=r;    illum_is_set_=true; }
 
         void set_Tr( float t )
@@ -90,14 +90,14 @@ class Material
         }
 
 		void set_name(const std::string & s )
-        { 
+        {
 			name_=s;
 		}
 
         const Vec3Df& Kd( void ) const { return Kd_; } //diffuse
         const Vec3Df& Ka( void ) const { return Ka_; } //ambiant
         const Vec3Df& Ks( void ) const { return Ks_; } //specular
-        float  Ni( void ) const { return Ni_; } 
+        float  Ni( void ) const { return Ni_; }
         float  Ns( void ) const { return Ns_; } //shininess
         int       illum(void)const { return illum_;}
         float  Tr( void ) const { return Tr_; }//can be hijacked, e.g., for transparency
@@ -110,14 +110,14 @@ class Material
         {
             return name_;
         }
-        
+
     private:
 
         Vec3Df Kd_;         bool Kd_is_set_; // diffuse
         Vec3Df Ka_;         bool Ka_is_set_; // ambient
         Vec3Df Ks_;         bool Ks_is_set_; // specular
-        float Ns_;                     bool Ns_is_set_; 
-        float Ni_;                     bool Ni_is_set_; 
+        float Ns_;                     bool Ns_is_set_;
+        float Ni_;                     bool Ni_is_set_;
         int illum_;                     bool illum_is_set_;//illumination model
         float Tr_;         bool Tr_is_set_; // transperency
         std::string        name_;
@@ -189,7 +189,7 @@ public:
 	//for convenience, Vec3Df is used, although only 2D tex coordinates are read corresponding to the x,y entry of Vec3Df.
 	std::vector<Vec3Df> texcoords;
 	//Triangles are the indices of the vertices involved in a triangle.
-	//a triplet corresponds to one triangle. 
+	//a triplet corresponds to one triangle.
 	//A Triangle contains the indeces of the three vertices that are neighboring
     std::vector<Triangle> triangles;
 	//These are the material properties
