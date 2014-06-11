@@ -4,14 +4,17 @@
 #endif
 #include <GL/glut.h>
 #include "raytracing.h"
-
+#include <ctime>
+#include <cstdlib>
 
 //temporary variables
 Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
 //use this function for any preprocessing of the mesh.
+
 void init()
-{
+{//seed the random generator
+	srand ( time(0) );
 	//load the mesh file
 	//feel free to replace cube by a path to another model
 	//please realize that not all OBJ files will successfully load.
@@ -26,9 +29,14 @@ void init()
 	MyLightPositions.push_back(MyCameraPosition);
 }
 
+Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest){
+	for (int i=0;i<100;i++){
+		performRayTracing(origin,dest,9);
+	}
+}
 
 //return the color of your pixel.
-Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
+Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,int number)
 {
 //	int triangleIndex=0;
 //	Vec3Df closesthit=0;
@@ -50,16 +58,47 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2){
 
 }
-Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera  ){
+Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera, int number){
 
 	Vec3Df diffuse = mat.Kd();
 	Vec3Df ambient = mat.Ka();
 	Vec3Df specular = mat.Ks();
 	float shininess = mat.Ns();
 	Vec3Df ambientres=ambient;
+	float refraction = mat.Ni();
 	float transparancy=mat.Tr();
 
-	return ambient;
+	Vec3Df diffuseres= diffuse*performRayTracing(position,RandomVector(),number-1);
+	Vec3Df reflectiveRay = getReflectionVector(normal,camera,position);
+	Vec3Df specRay = reflectiveRay+GaussianVector()/shininess;
+	Vec3Df speculairres = specular*performRayTracing(position,specRay,number-1);
+	Vec3Df res= ambientres+speculairres+ambientres;
+	if(transparancy==0){
+		return res;
+	}else{
+		return res;
+		//		return (1-transparancy)*res+transparancy*performRayTracing();
+	}
+
+
+}
+Vec3Df getRefractiveRay(const Vec3Df & normal,const Vec3Df & Camera,const Vec3Df & position){
+
+}
+Vec3Df getReflectionVector(const Vec3Df & normal,const Vec3Df & Camera,const Vec3Df & position){
+
+}
+Vec3Df RandomVector(){
+	int r1 = rand()%100000-50000;
+	int r2 = rand()%100000-50000;
+	int r3 = rand()%100000-50000;
+	float f1=(((float)(r1))/50000);
+	float f2=(((float)(r1))/50000);
+	float f3=(((float)(r1))/50000);
+	return Vec3Df(f1,f2,f3);
+
+}
+Vec3Df GaussianVector(){
 
 }
 /**
