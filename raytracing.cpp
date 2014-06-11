@@ -30,23 +30,28 @@ void init()
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 {
+	for(Triangle t: MyMesh.triangles){
+		CollisionTriangleTest(t,dest,origin);
+
+	}
 	return Vec3Df(1,0,0);
 }
 
 Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera  ){
-	return Vec3Df(0,0,0);
+	return MyMesh.materials[0];
+
 }
 /**
  * tests for collision, if collision occurs return the position else return 0 (null).
  */
-Vec3Df CollisionTriangleTest(const Vec3Df & v1,const Vec3Df & v2,const Vec3Df & v3,const Vec3Df & rayDirection, const Vec3Df & rayOrigin){
+Vec3Df CollisionTriangleTest(Triangle T,const Vec3Df & rayDirection, const Vec3Df & rayOrigin){
 
 	return 0;
 }
 /*
  * tests for collision, if collision occurs return the position else return 0 (null).
  */
-Vec3Df CollisionCircleTest(const Vec3Df & v1,float radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin){
+Vec3Df CollisionCircleTest(const Vec3Df & v1,const Vec3Df & radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin){
 
 	return 0;
 }
