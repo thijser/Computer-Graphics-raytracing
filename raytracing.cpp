@@ -56,7 +56,7 @@ void yourDebugDraw()
 	//this function is called every frame
 
 	//as an example:
-/*	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glDisable(GL_LIGHTING);
 	glColor3f(0,1,1);
 	glBegin(GL_LINES);
@@ -68,7 +68,7 @@ void yourDebugDraw()
 	glVertex3fv(MyLightPositions[0].pointer());
 	glEnd();
 	glPopAttrib();
-*/
+
 }
 
 void yourKeyboardFunc(char t, int x, int y)
