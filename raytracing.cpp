@@ -21,15 +21,15 @@ void init() { //seed the random generator
 
 	testMat1 = Material();
 	testMat1.set_Kd(0, 0, 0);
-	testMat1.set_Ka(0.4, 0, 0.8);
+	testMat1.set_Ka(0.1, 0, 0.5);
 	testMat1.set_Ks(0, 0, 0);
 	testMat1.set_Ns(11);
 
 	testMat2 = Material();
-	testMat2.set_Kd(0.1, 0, 1);
-	testMat2.set_Ka(0.1, 0.1, 0.1);
-	testMat2.set_Ks(0, 1, 1);
-	testMat2.set_Ns(9999);
+	testMat2.set_Kd(0.5, 0.5, 0.5);
+	testMat2.set_Ka(0.0, 0.5, 0.0);
+	testMat2.set_Ks(0.5, 0.5, 0.5);
+	testMat2.set_Ns(11);
 
 	//load the mesh file
 	//feel free to replace cube by a path to another model
@@ -47,7 +47,7 @@ void init() { //seed the random generator
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
-	int numberOfRays = 1;
+	int numberOfRays = 10;
 	int maxNumberOfBounces = 4;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
@@ -63,10 +63,10 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 	if (number < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Sphere s = Sphere(Vec3Df(1, 1, 1), 0.5, testMat1);
+	Sphere s = Sphere(Vec3Df(2, 1, 1), 2, testMat1);
 	Hit h = s.intersect(origin, dest);
 
-	Sphere s2 = Sphere(Vec3Df(0, 1, 1), 0.5, testMat2);
+	Sphere s2 = Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
 	Hit h2 = s2.intersect(origin, dest);
 
 	if (h.isHit == 0) {
@@ -98,7 +98,8 @@ Vec3Df diffusecolour(Material & mat, const Vec3Df & position,
 	if (0 > normal.dotProduct(normal, random)) {
 		random = random * -1;
 	}
-	return mat.Kd() * performRayTracing(position, random, number - 1);
+
+	return mat.Kd() * performRayTracing(position, random+position, number - 1);
 }
 
 Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
@@ -106,7 +107,9 @@ Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 	Vec3Df reflectiveRay = getReflectionVector(normal, view, position);
 	Vec3Df specRay = reflectiveRay + GaussianVector() / mat.Ns();
 	Vec3Df speculairres = mat.Ks()
-			* performRayTracing(position, specRay, number - 1);
+			* performRayTracing(position, specRay+position, number - 1);
+
+
 
 }
 Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
