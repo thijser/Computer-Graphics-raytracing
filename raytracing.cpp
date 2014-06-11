@@ -9,7 +9,6 @@
 //temporary variables
 Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
-Vec3Df NULLvec3Df =0;
 //use this function for any preprocessing of the mesh.
 void init()
 {
@@ -31,18 +30,18 @@ void init()
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 {
-	int triangleIndex=0;
-	Vec3Df closesthit=0;
-	int closestIndex=0;
-	for(int i=0;i< sizeof(MyMesh.triangles);i++){
-		triangleIndex++;
+//	int triangleIndex=0;
+//	Vec3Df closesthit=0;
+//	int closestIndex=0;
+//	for(int i=0;i< sizeof(MyMesh.triangles);i++){
+//		triangleIndex++;
 
-		Vec3Df hitpos=CollisionTriangleTest(MyMesh.triangles[i],dest,origin);
-		if(true){
-			closesthit=closest(origin,closesthit,hitpos);
-			closestIndex=triangleIndex;
-		}
-	}
+		//Vec3Df hitpos=CollisionTriangleTest(MyMesh.triangles[i],dest,origin);
+//		if(hitpos!=NULLvec3Df){
+		//	closesthit=closest(origin,closesthit,hitpos);
+		//	closestIndex=triangleIndex;
+//		}
+//	}
 
 
 	return Vec3Df(1,0,0);
@@ -51,9 +50,16 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest)
 Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2){
 
 }
-Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera  ){
+Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera  ){
 
-	return Vec3Df(1,1,1);
+	Vec3Df diffuse = mat.Kd();
+	Vec3Df ambient = mat.Ka();
+	Vec3Df specular = mat.Ks();
+	float shininess = mat.Ns();
+	Vec3Df ambientres=ambient;
+	float transparancy=mat.Tr();
+
+	return ambient;
 
 }
 /**
