@@ -13,11 +13,27 @@
 //temporary variables
 Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
+Material testMat1;
+Material testMat2;
 //use this function for any preprocessing of the mesh.
 
 void init()
 {//seed the random generator
 	srand ( time(0) );
+
+	testMat1 = Material();
+	testMat1.set_Kd(0,0,0);
+	testMat1.set_Ka(0.4,0,0.8);
+	testMat1.set_Ks(0,0,0);
+	testMat1.set_Ns(11);
+
+
+	testMat2 = Material();
+	testMat2.set_Kd(0,0,0);
+	testMat2.set_Ka(0.0,0.0,0.0);
+	testMat2.set_Ks(0,1,1);
+	testMat2.set_Ns(9999);
+
 	//load the mesh file
 	//feel free to replace cube by a path to another model
 	//please realize that not all OBJ files will successfully load.
@@ -33,39 +49,50 @@ void init()
 }
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest){
-	int numberOfRays = 100;
+	int numberOfRays = 20;
+	int maxNumberOfBounces=4;
 	Vec3Df colour= Vec3Df(0,0,0);
+
 	for (int i=0;i<numberOfRays;i++){
-		colour=colour+performRayTracing(origin,dest,9);
+		colour=colour+performRayTracing(origin,dest,maxNumberOfBounces);
 	}
 	return colour/numberOfRays;
 }
 
+
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,int number)
-{
-//	int triangleIndex=0;
-//	Vec3Df closesthit=0;
-//	int closestIndex=0;
-//	for(int i=0;i< sizeof(MyMesh.triangles);i++){
-//		triangleIndex++;
+{	if(number<0){
+	return Vec3Df(0,0,0);
+}
+	Sphere s= Sphere(Vec3Df(1,1,1),0.5,testMat1);
+	Hit h = s.intersect(origin,dest);
 
-		//Vec3Df hitpos=CollisionTriangleTest(MyMesh.triangles[i],dest,origin);
-//		if(hitpos!=NULLvec3Df){
-		//	closesthit=closest(origin,closesthit,hitpos);
-		//	closestIndex=triangleIndex;
-//		}
-//	}
+	Sphere s2= Sphere(Vec3Df(0,1,1),0.5,testMat2);
+	Hit h2 = s2.intersect(origin,dest);
 
+	if(h.isHit==0){
+		if(h2.isHit){
+			Vec3Df colour= findColour(h2,origin,number-1);
+				return colour;
+		}else{
+		return Vec3Df(0,0,0);
+		}
+	}else{
+		Vec3Df colour= findColour(h,origin,number-1);
+		return colour;
 
-	return Vec3Df(1,0,0);
+	}
+
 }
 
 Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2){
 
 }
-Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,Vec3Df & camera, int number){
-
+Vec3Df findColour (Hit h,const Vec3Df & camera, int number){
+	Material mat = h.material;
+	Vec3Df position = h.hitPoint;
+	Vec3Df normal = h.normal;
 	Vec3Df diffuse = mat.Kd();
 	Vec3Df ambient = mat.Ka();
 	Vec3Df specular = mat.Ks();
@@ -113,20 +140,20 @@ float generateGaussianNoise(const float &variance)
 {
 	static bool hasSpare = false;
 	static float rand1, rand2;
- 
+
 	if(hasSpare)
 	{
 		hasSpare = false;
 		return sqrt(variance * rand1) * sin(rand2);
 	}
- 
+
 	hasSpare = true;
- 
+
 	rand1 = rand() / ((float) RAND_MAX);
 	if(rand1 < 1e-100) rand1 = 1e-100;
 	rand1 = -2 * log(rand1);
 	rand2 = (rand() / ((float) RAND_MAX)) * TWO_PI;
- 
+
 	return sqrt(variance * rand1) * cos(rand2);
 }
 
@@ -135,9 +162,9 @@ float generateGaussianNoise(const float &variance)
 Vec3Df getReflectionVector(const Vec3Df & normal, const Vec3Df & cameraPos, const Vec3Df & vertexPos){
 	Vec3Df view = cameraPos - vertexPos;
 	Vec3Df norm = normal;
-	view.normalize();	
+	view.normalize();
 	norm.normalize();
-	
+
 	float innerDotProduct = Vec3Df::dotProduct(view, norm);
 	return norm * (2 * innerDotProduct) - view;
 }

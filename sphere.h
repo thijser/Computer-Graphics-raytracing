@@ -24,14 +24,11 @@ class Sphere
 	Material mat;
 
 	public:
-		Sphere(Vec3Df midPoint, float radius){
+		Sphere(Vec3Df midPoint, float radius,Material mate){
 			sphereMidPoint = midPoint;
 			sphereRadius = radius;
+			mat = mate;
 
-			mat = Material();
-			mat.set_Kd(1,0,0);
-			mat.set_Ka(1,0,0);
-			mat.set_Ks(1,0,0);
 		}
 
 		Hit intersect(Vec3Df origin, Vec3Df dest){
