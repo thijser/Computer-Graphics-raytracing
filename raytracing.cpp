@@ -4,7 +4,8 @@
 #endif
 #include <GL/glut.h>
 #include "raytracing.h"
-
+#include <cstdlib>
+#define TWO_PI 6.2831853071795864769252866
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -62,6 +63,52 @@ Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Material & mat,
 	return ambient;
 
 }
+
+//Generates random gaussian numbers
+//Based on http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+double generateGaussianNoise(const double &variance)
+{
+	static bool hasSpare = false;
+	static double rand1, rand2;
+ 
+	if(hasSpare)
+	{
+		hasSpare = false;
+		return sqrt(variance * rand1) * sin(rand2);
+	}
+ 
+	hasSpare = true;
+ 
+	rand1 = rand() / ((double) RAND_MAX);
+	if(rand1 < 1e-100) rand1 = 1e-100;
+	rand1 = -2 * log(rand1);
+	rand2 = (rand() / ((double) RAND_MAX)) * TWO_PI;
+ 
+	return sqrt(variance * rand1) * cos(rand2);
+}
+
+//Generate random Gaussian vector
+Vec3Df randGaussVector(){
+	return Vec3Df(generateGaussianNoise(1),generateGaussianNoise(1),generateGaussianNoise(1));
+}
+
+//Returns reflection vector for a given point on mesh from a certain starting point
+Vec3Df getReflectionVector(const Vec3Df & normal, const Vec3Df & cameraPos, const Vec3Df & vertexPos){
+	Vec3Df norm = normal;
+	Vec3Df view = cameraPos - vertexPos;
+	view.normalize();	
+	norm.normalize();
+	
+	//Vec3Df H = (rLight + view); 
+	//H.normalize();	
+	//float dotProduct = Vec3Df::dotProduct(norm, H);
+	//if (dotProduct < 0) {
+	//	dotProduct = 0;
+	//}
+	//return Ks[index] * pow(dotProduct,Shininess[index]);
+	return Vec3Df(1,0,0);
+}
+
 /**
  * tests for collision, if collision occurs return the position else return 0 (null).
  */
