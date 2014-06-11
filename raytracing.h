@@ -16,18 +16,20 @@ extern unsigned int RayTracingResolutionY;  // largeur fenetre
 
 //use this function for any preprocessing of the mesh.
 void init();
-
+//a function to debug --- you can draw in OpenGL here
+void yourDebugDraw();
 //you can use this function to transform a click to an origin and destination
 //the last two values will be changed. There is no need to define this function.
 //it is defined elsewhere
 void produceRay(int x_I, int y_I, Vec3Df & origin, Vec3Df & dest);
+Vec3Df findColour (const Vec3Df & position,const Vec3Df & normal,Vec3Df & camera  );
 
-
+Vec3Df closest(const Vec3Df & origin,const Vec3Df & v1,const Vec3Df & v2);
+Vec3Df CollisionTriangleTest(Triangle T,const Vec3Df & rayDirection, const Vec3Df & rayOrigin);
+Vec3Df CollisionCircleTest(const Vec3Df & v1,const Vec3Df & radius,Vec3Df & rayDirection, const Vec3Df & rayOrigin);
 //your main function to rewrite
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest);
 
-//a function to debug --- you can draw in OpenGL here
-void yourDebugDraw();
 
 //want keyboard interaction? Here it is...
 void yourKeyboardFunc(char t, int x, int y);
