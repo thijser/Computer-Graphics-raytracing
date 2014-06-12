@@ -21,16 +21,16 @@ std::vector<Vec3Df> LightsColours;
 
 void init() { //seed the random generator
 	srand(time(0));
-	LightsPositions.assign(1,Vec3Df(0,-1,-1));
-	LightsColours.assign(1,Vec3Df(1,1,1));
-	LightsPositions.assign(2,Vec3Df(-12,0,-1));
-	LightsColours.assign(2,Vec3Df(1,1,1));
-	LightsPositions.assign(3,Vec3Df(0,14,16));
-	LightsColours.assign(3,Vec3Df(1,1,1));
-	LightsPositions.assign(4,Vec3Df(0,100,1));
-	LightsColours.assign(4,Vec3Df(1,1,1));
-	LightsPositions.assign(5,Vec3Df(0,0,0));
-	LightsColours.assign(5,Vec3Df(1,1,1));
+	LightsPositions.assign(1, Vec3Df(0, -1, -1));
+	LightsColours.assign(1, Vec3Df(1, 1, 1));
+	LightsPositions.assign(2, Vec3Df(-12, 0, -1));
+	LightsColours.assign(2, Vec3Df(1, 1, 1));
+	LightsPositions.assign(3, Vec3Df(0, 14, 16));
+	LightsColours.assign(3, Vec3Df(1, 1, 1));
+	LightsPositions.assign(4, Vec3Df(0, 100, 1));
+	LightsColours.assign(4, Vec3Df(1, 1, 1));
+	LightsPositions.assign(5, Vec3Df(0, 0, 0));
+	LightsColours.assign(5, Vec3Df(1, 1, 1));
 
 	testMat1 = Material();
 	testMat1.set_Kd(0, 0, 0);
@@ -79,7 +79,7 @@ Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
 
 	Sphere s2 = Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
 	Hit h2 = s2.intersect(origin, dest);
-	if (h.isHit!=0)
+	if (h.isHit != 0)
 		return h;
 	else
 		return h2;
@@ -87,22 +87,23 @@ Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
-		int number) {
+	int number) {
 	if (number < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Hit hit = gethits(origin,dest);
+	Hit hit = gethits(origin, dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour(hit, origin, number - 1);
-			return colour;
-		} else {
-			return Vec3Df(0, 0, 0);
-		}
-
+		Vec3Df colour = findColour(hit, origin, number - 1);
+		return colour;
+	}
+	else {
+		return Vec3Df(0, 0, 0);
 	}
 
+}
+
 Vec3Df closest(const Vec3Df & origin, const Vec3Df & v1, const Vec3Df & v2) {
-	if(origin.distance(origin,v1)>origin.distance(origin,v2)){
+	if (origin.distance(origin, v1) > origin.distance(origin, v2)){
 		return v2;
 	}
 	return v1;
@@ -115,33 +116,34 @@ Vec3Df ambientcolour(Material mat) {
 
 
 Vec3Df diffusecolour(Material & mat, const Vec3Df & position,
-		const Vec3Df & normal, int number) {
+	const Vec3Df & normal, int number) {
 	Vec3Df random = RandomVector();
 	if (0 > normal.dotProduct(normal, random)) {
 		random = random * -1;
 	}
 
-	return mat.Kd() * performRayTracing(position, random+position, number - 1);
+	return mat.Kd() * performRayTracing(position, random + position, number - 1);
 }
 
 Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view){
-		Vec3Df colour=  Vec3Df(0,0,0);
-		for(int i =0;i<LightsPositions.size();i++){
+	const Vec3Df & view){
+	Vec3Df colour = Vec3Df(0, 0, 0);
+	for (int i = 0; i < LightsPositions.size(); i++){
 
-			Hit trace = gethits(position,LightsPositions[i]);
-			if(trace.isHit==0){
-				colour=colour+blingPhongSpeculair(mat,position,normal,view,LightsPositions[i],LightsColours[i]);
-			}else if((position.distance(position,LightsPositions[i])<=position.distance(position,trace.hitPoint))) {
-				colour=colour+blingPhongSpeculair(mat,position,normal,view,LightsPositions[i],LightsColours[i]);
-			}
+		Hit trace = gethits(position, LightsPositions[i]);
+		if (trace.isHit == 0){
+			colour = colour + blingPhongSpeculair(mat, position, normal, view, LightsPositions[i], LightsColours[i]);
 		}
+		else if ((position.distance(position, LightsPositions[i]) <= position.distance(position, trace.hitPoint))) {
+			colour = colour + blingPhongSpeculair(mat, position, normal, view, LightsPositions[i], LightsColours[i]);
+		}
+	}
 
-		return colour;
+	return colour;
 }
 
 Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view, const Vec3Df & Lightposition,const Vec3Df & LightColour){
+	const Vec3Df & view, const Vec3Df & Lightposition, const Vec3Df & LightColour){
 
 	Vec3Df relativeLightPos = (Lightposition - position);
 	relativeLightPos.normalize();
@@ -149,7 +151,7 @@ Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df &
 	relativeCameraPos.normalize();
 
 	Vec3Df halfway = (relativeLightPos + relativeCameraPos)
-			/ (relativeLightPos + relativeCameraPos).getLength();
+		/ (relativeLightPos + relativeCameraPos).getLength();
 	halfway.normalize();
 
 	float blingnphongyness = Vec3Df::dotProduct(normal, halfway);
@@ -158,17 +160,17 @@ Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df &
 	}
 	float shininess = mat.Ns();
 	float light = powf(blingnphongyness, shininess);
-	std::cout <<light * mat.Ks()*LightColour << std::endl;
+	std::cout << light * mat.Ks()*LightColour << std::endl;
 
 	return light * mat.Ks()*LightColour;
 }
 
 Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view, int number) {
+	const Vec3Df & view, int number) {
 	Vec3Df reflectiveRay = getReflectionVector(normal, view, position);
 	Vec3Df specRay = reflectiveRay + GaussianVector() / mat.Ns();
 	Vec3Df speculairres = mat.Ks()
-			* performRayTracing(position, specRay+position, number - 1);
+		* performRayTracing(position, specRay + position, number - 1);
 	return speculairres;
 }
 
@@ -177,7 +179,7 @@ Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
 	colour = colour + ambientcolour(h.material);
 	colour = colour + diffusecolour(h.material, h.hitPoint, h.normal, number);
 	colour = colour
-			+ lightbasedSpeculair(h.material, h.hitPoint, h.normal, camera);
+		+ lightbasedSpeculair(h.material, h.hitPoint, h.normal, camera);
 	return colour;
 }
 
@@ -188,53 +190,53 @@ Vec3Df getRefractiveRay(const Vec3Df & normal, const Vec3Df & Camera,
 }
 
 Vec3Df RandomVector() {
-int r1 = rand() % 100000 - 50000;
-int r2 = rand() % 100000 - 50000;
-int r3 = rand() % 100000 - 50000;
-float f1 = (((float) (r1)) / 50000);
-float f2 = (((float) (r1)) / 50000);
-float f3 = (((float) (r1)) / 50000);
-return Vec3Df(f1, f2, f3);
+	int r1 = rand() % 100000 - 50000;
+	int r2 = rand() % 100000 - 50000;
+	int r3 = rand() % 100000 - 50000;
+	float f1 = (((float)(r1)) / 50000);
+	float f2 = (((float)(r1)) / 50000);
+	float f3 = (((float)(r1)) / 50000);
+	return Vec3Df(f1, f2, f3);
 
 }
 //Generate random Gaussian vector
 Vec3Df GaussianVector() {
-return Vec3Df(generateGaussianNoise(1), generateGaussianNoise(1),
+	return Vec3Df(generateGaussianNoise(1), generateGaussianNoise(1),
 		generateGaussianNoise(1));
 }
 
 //Generates random gaussian numbers
 //Based on http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
 float generateGaussianNoise(const float &variance) {
-static bool hasSpare = false;
-static float rand1, rand2;
+	static bool hasSpare = false;
+	static float rand1, rand2;
 
-if (hasSpare) {
-	hasSpare = false;
-	return sqrt(variance * rand1) * sin(rand2);
-}
+	if (hasSpare) {
+		hasSpare = false;
+		return sqrt(variance * rand1) * sin(rand2);
+	}
 
-hasSpare = true;
+	hasSpare = true;
 
-rand1 = rand() / ((float) RAND_MAX);
-if (rand1 < 1e-100)
-	rand1 = 1e-100;
-rand1 = -2 * log(rand1);
-rand2 = (rand() / ((float) RAND_MAX)) * TWO_PI;
+	rand1 = rand() / ((float)RAND_MAX);
+	if (rand1 < 1e-100)
+		rand1 = 1e-100;
+	rand1 = -2 * log(rand1);
+	rand2 = (rand() / ((float)RAND_MAX)) * TWO_PI;
 
-return sqrt(variance * rand1) * cos(rand2);
+	return sqrt(variance * rand1) * cos(rand2);
 }
 
 //Returns reflection vector for a given point on mesh from a certain starting point
 Vec3Df getReflectionVector(const Vec3Df & normal, const Vec3Df & cameraPos,
 	const Vec3Df & vertexPos) {
-Vec3Df view = cameraPos - vertexPos;
-Vec3Df norm = normal;
-view.normalize();
-norm.normalize();
+	Vec3Df view = cameraPos - vertexPos;
+	Vec3Df norm = normal;
+	view.normalize();
+	norm.normalize();
 
-float innerDotProduct = Vec3Df::dotProduct(view, norm);
-return norm * (2 * innerDotProduct) - view;
+	float innerDotProduct = Vec3Df::dotProduct(view, norm);
+	return norm * (2 * innerDotProduct) - view;
 }
 
 /**
@@ -243,7 +245,7 @@ return norm * (2 * innerDotProduct) - view;
 Vec3Df CollisionTriangleTest(Triangle T, const Vec3Df & rayDirection,
 	const Vec3Df & rayOrigin) {
 
-return 0;
+	return 0;
 }
 /*
  * tests for collision, if collision occurs return the position else return 0 (null).
@@ -251,36 +253,36 @@ return 0;
 Vec3Df CollisionCircleTest(const Vec3Df & v1, const Vec3Df & radius,
 	Vec3Df & rayDirection, const Vec3Df & rayOrigin) {
 
-return 0;
+	return 0;
 }
 void yourDebugDraw() {
-//draw open gl debug stuff
-//this function is called every frame
+	//draw open gl debug stuff
+	//this function is called every frame
 
-//as an example:
-glPushAttrib(GL_ALL_ATTRIB_BITS);
-glDisable(GL_LIGHTING);
-glColor3f(0, 1, 1);
-glBegin(GL_LINES);
-glVertex3f(testRayOrigin[0], testRayOrigin[1], testRayOrigin[2]);
-glVertex3f(testRayDestination[0], testRayDestination[1], testRayDestination[2]);
-glEnd();
-glPointSize(10);
-glBegin(GL_POINTS);
-glVertex3fv(MyLightPositions[0].pointer());
-glEnd();
-glPopAttrib();
+	//as an example:
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glDisable(GL_LIGHTING);
+	glColor3f(0, 1, 1);
+	glBegin(GL_LINES);
+	glVertex3f(testRayOrigin[0], testRayOrigin[1], testRayOrigin[2]);
+	glVertex3f(testRayDestination[0], testRayDestination[1], testRayDestination[2]);
+	glEnd();
+	glPointSize(10);
+	glBegin(GL_POINTS);
+	glVertex3fv(MyLightPositions[0].pointer());
+	glEnd();
+	glPopAttrib();
 
 }
 
 void yourKeyboardFunc(char t, int x, int y) {
-// do what you want with the keyboard input t.
-// x, y are the screen position
+	// do what you want with the keyboard input t.
+	// x, y are the screen position
 
-//here I use it to get the coordinates of a ray, which I then draw in the debug function.
-produceRay(x, y, testRayOrigin, testRayDestination);
+	//here I use it to get the coordinates of a ray, which I then draw in the debug function.
+	produceRay(x, y, testRayOrigin, testRayDestination);
 
-std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
+	std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
 		<< std::endl;
 
 }
