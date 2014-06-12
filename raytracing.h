@@ -25,6 +25,8 @@ void yourDebugDraw();
 //the last two values will be changed. There is no need to define this function.
 //it is defined elsewhere
 void produceRay(int x_I, int y_I, Vec3Df & origin, Vec3Df & dest);
+Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
+		const Vec3Df & view, const Vec3Df & Lightposition,const Vec3Df & LightColour);
 Vec3Df findColour (Hit h,const Vec3Df & camera, int number);
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,int number);
 float generateGaussianNoise(const float & variance);

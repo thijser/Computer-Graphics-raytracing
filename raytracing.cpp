@@ -14,22 +14,36 @@ Vec3Df testRayOrigin;
 Vec3Df testRayDestination;
 Material testMat1;
 Material testMat2;
+std::vector<Vec3Df> LightsPositions;
+std::vector<Vec3Df> LightsColours;
+
 //use this function for any preprocessing of the mesh.
 
 void init() { //seed the random generator
 	srand(time(0));
+	LightsPositions.assign(1,Vec3Df(0,-1,-1));
+	LightsColours.assign(1,Vec3Df(1,1,1));
+	LightsPositions.assign(2,Vec3Df(-12,0,-1));
+	LightsColours.assign(2,Vec3Df(1,1,1));
+	LightsPositions.assign(3,Vec3Df(0,14,16));
+	LightsColours.assign(3,Vec3Df(1,1,1));
+	LightsPositions.assign(4,Vec3Df(0,100,1));
+	LightsColours.assign(4,Vec3Df(1,1,1));
+	LightsPositions.assign(5,Vec3Df(0,0,0));
+	LightsColours.assign(5,Vec3Df(1,1,1));
 
 	testMat1 = Material();
 	testMat1.set_Kd(0, 0, 0);
-	testMat1.set_Ka(0.1, 0, 0.5);
-	testMat1.set_Ks(0, 0, 0);
-	testMat1.set_Ns(11);
+	testMat1.set_Ka(0, 0, 0);
+	testMat1.set_Ks(0.2, 0.5, 0.1);
+	testMat1.set_Ns(1);
 
 	testMat2 = Material();
-	testMat2.set_Kd(0.5, 0.5, 0.5);
-	testMat2.set_Ka(0.0, 0.5, 0.0);
-	testMat2.set_Ks(0.5, 0.5, 0.5);
-	testMat2.set_Ns(11);
+	testMat2.set_Kd(0, 0, 0);
+	testMat2.set_Ka(0.0, 0, 0.0);
+	testMat2.set_Ks(1, 1, 1);
+	testMat2.set_Ns(1);
+
 
 	//load the mesh file
 	//feel free to replace cube by a path to another model
@@ -47,7 +61,7 @@ void init() { //seed the random generator
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
-	int numberOfRays = 10;
+	int numberOfRays = 1;
 	int maxNumberOfBounces = 4;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
@@ -56,6 +70,20 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 	}
 	return colour / numberOfRays;
 }
+/*
+ * placeholder datastructure holding 2 spheres
+ */
+Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
+	Sphere s = Sphere(Vec3Df(2, 1, 1), 2, testMat1);
+	Hit h = s.intersect(origin, dest);
+
+	Sphere s2 = Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
+	Hit h2 = s2.intersect(origin, dest);
+	if (h.isHit!=0)
+		return h;
+	else
+		return h2;
+}
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
@@ -63,34 +91,28 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 	if (number < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Sphere s = Sphere(Vec3Df(2, 1, 1), 2, testMat1);
-	Hit h = s.intersect(origin, dest);
-
-	Sphere s2 = Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
-	Hit h2 = s2.intersect(origin, dest);
-
-	if (h.isHit == 0) {
-		if (h2.isHit) {
-			Vec3Df colour = findColour(h2, origin, number - 1);
+	Hit hit = gethits(origin,dest);
+	if (hit.isHit != 0) {
+			Vec3Df colour = findColour(hit, origin, number - 1);
 			return colour;
 		} else {
 			return Vec3Df(0, 0, 0);
 		}
-	} else {
-		Vec3Df colour = findColour(h, origin, number - 1);
-		return colour;
 
 	}
 
-}
-
 Vec3Df closest(const Vec3Df & origin, const Vec3Df & v1, const Vec3Df & v2) {
-
+	if(origin.distance(origin,v1)>origin.distance(origin,v2)){
+		return v2;
+	}
+	return v1;
 }
 
 Vec3Df ambientcolour(Material mat) {
 	return mat.Ka();
 }
+
+
 
 Vec3Df diffusecolour(Material & mat, const Vec3Df & position,
 		const Vec3Df & normal, int number) {
@@ -100,6 +122,45 @@ Vec3Df diffusecolour(Material & mat, const Vec3Df & position,
 	}
 
 	return mat.Kd() * performRayTracing(position, random+position, number - 1);
+}
+
+Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
+		const Vec3Df & view){
+		Vec3Df colour=  Vec3Df(0,0,0);
+		for(int i =0;i<LightsPositions.size();i++){
+
+			Hit trace = gethits(position,LightsPositions[i]);
+			if(trace.isHit==0){
+				colour=colour+blingPhongSpeculair(mat,position,normal,view,LightsPositions[i],LightsColours[i]);
+			}else if((position.distance(position,LightsPositions[i])<=position.distance(position,trace.hitPoint))) {
+				colour=colour+blingPhongSpeculair(mat,position,normal,view,LightsPositions[i],LightsColours[i]);
+			}
+		}
+
+		return colour;
+}
+
+Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
+		const Vec3Df & view, const Vec3Df & Lightposition,const Vec3Df & LightColour){
+
+	Vec3Df relativeLightPos = (Lightposition - position);
+	relativeLightPos.normalize();
+	Vec3Df relativeCameraPos = (view - position);
+	relativeCameraPos.normalize();
+
+	Vec3Df halfway = (relativeLightPos + relativeCameraPos)
+			/ (relativeLightPos + relativeCameraPos).getLength();
+	halfway.normalize();
+
+	float blingnphongyness = Vec3Df::dotProduct(normal, halfway);
+	if (blingnphongyness < 0) {
+		blingnphongyness = 0;
+	}
+	float shininess = mat.Ns();
+	float light = powf(blingnphongyness, shininess);
+	std::cout <<light * mat.Ks()*LightColour << std::endl;
+
+	return light * mat.Ks()*LightColour;
 }
 
 Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
@@ -117,7 +178,7 @@ Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
 	colour = colour + ambientcolour(h.material);
 	colour = colour + diffusecolour(h.material, h.hitPoint, h.normal, number);
 	colour = colour
-			+ speculair(h.material, h.hitPoint, h.normal, camera, number);
+			+ lightbasedSpeculair(h.material, h.hitPoint, h.normal, camera);
 	return colour;
 }
 
