@@ -169,10 +169,9 @@ Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 	Vec3Df specRay = reflectiveRay + GaussianVector() / mat.Ns();
 	Vec3Df speculairres = mat.Ks()
 			* performRayTracing(position, specRay+position, number - 1);
-
-
-
+	return speculairres;
 }
+
 Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
 	Vec3Df colour = Vec3Df(0, 0, 0);
 	colour = colour + ambientcolour(h.material);
