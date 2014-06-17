@@ -1,34 +1,20 @@
-#include "Vec3D.h"
-#include "mesh.h"
+#include "intersectable.h"
 
-class Hit
-{
-	public:
-		int isHit;
-		Vec3Df hitPoint;
-		Vec3Df normal;
-		Material material;
-
-		Hit(int fisHit, Vec3Df fhitPoint, Vec3Df fnormal, Material fmaterial){
-			isHit = fisHit;
-			hitPoint = fhitPoint;
-			normal = fnormal;
-			material = fmaterial;
-		}
-};
-
-class Sphere
+class Sphere: public Intersectable
 {
 	Vec3Df sphereMidPoint;
 	float sphereRadius;
 	Material mat;
 
 	public:
-		Sphere(Vec3Df midPoint, float radius,Material mate){
+		Sphere(Vec3Df midPoint, float radius){
 			sphereMidPoint = midPoint;
 			sphereRadius = radius;
-			mat = mate;
 
+			mat = Material();
+			mat.set_Kd(1,0,0);
+			mat.set_Ka(1,0,0);
+			mat.set_Ks(1,0,0);
 		}
 
 		Hit intersect(Vec3Df origin, Vec3Df dest){
