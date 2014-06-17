@@ -26,12 +26,15 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
+        Vec3Df dir = dest-origin; 
+        dir.normalize();
+        Vec3Df rorigin = origin+dir*0.1; 
 	if (maxNumberOfBounces < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Hit hit = gethits(origin,dest);
+	Hit hit = gethits(rorigin,dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour(hit, origin, maxNumberOfBounces - 1);
+			Vec3Df colour = findColour(hit, rorigin, maxNumberOfBounces - 1);
 			return colour;
 		} else {
 			return Vec3Df(0, 0, 0);
@@ -45,12 +48,12 @@ Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
 	Intersectable * s = new Sphere(Vec3Df(0, 0, 0), 2, testMat1);
 	Hit h = s->intersect(origin, dest);
 
-	//Intersectable * s2 = new Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
-	//Hit h2 = s2->intersect(origin, dest);
-	//if (h.isHit!=0)
+	Intersectable * s2 = new Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
+	Hit h2 = s2->intersect(origin, dest);
+	if (h.isHit!=0)
 		return h;
-	//else
-	//	return h2;
+	else
+		return h2;
  	
 	//Let op: Langzaam!
 //	Triangle t;

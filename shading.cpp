@@ -78,7 +78,7 @@ Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
 	colour = colour
 			+ lightbasedSpeculair(h.material, h.hitPoint, h.normal, camera);
 	h.hitPoint.normalize();
-	return h.hitPoint;
+	return colour;
 }
 
 
