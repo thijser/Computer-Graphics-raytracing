@@ -6,6 +6,7 @@
 #include "raytracing.h"
 #include <ctime>
 #include <cstdlib>
+#include "sphere.h"
 
 #define TWO_PI 6.2831853071795864769252866
 
@@ -70,36 +71,37 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 	}
 	return colour / numberOfRays;
 }
-/*
- * placeholder datastructure holding 2 spheres
- */
-Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
-	Sphere s = Sphere(Vec3Df(2, 1, 1), 2, testMat1);
-	Hit h = s.intersect(origin, dest);
-
-	Sphere s2 = Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
-	Hit h2 = s2.intersect(origin, dest);
-	if (h.isHit!=0)
-		return h;
-	else
-		return h2;
-}
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
-		int number) {
-	if (number < 0) {
+		int maxNumberOfBounces) {
+	if (maxNumberOfBounces < 0) {
 		return Vec3Df(0, 0, 0);
 	}
 	Hit hit = gethits(origin,dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour(hit, origin, number - 1);
+			Vec3Df colour = findColour(hit, origin, maxNumberOfBounces - 1);
 			return colour;
 		} else {
 			return Vec3Df(0, 0, 0);
 		}
 
-	}
+}
+
+/*
+ * placeholder datastructure holding 2 spheres
+ */
+Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
+	Intersectable * s = new Sphere(Vec3Df(2, 1, 1), 2, testMat1);
+	Hit h = s->intersect(origin, dest);
+
+	Intersectable * s2 = new Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
+	Hit h2 = s2->intersect(origin, dest);
+	if (h.isHit!=0)
+		return h;
+	else
+		return h2;
+}
 
 Vec3Df closest(const Vec3Df & origin, const Vec3Df & v1, const Vec3Df & v2) {
 	if(origin.distance(origin,v1)>origin.distance(origin,v2)){
@@ -158,7 +160,6 @@ Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df &
 	}
 	float shininess = mat.Ns();
 	float light = powf(blingnphongyness, shininess);
-	std::cout <<light * mat.Ks()*LightColour << std::endl;
 
 	return light * mat.Ks()*LightColour;
 }

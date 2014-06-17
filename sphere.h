@@ -1,3 +1,6 @@
+#ifndef SPHERE_H
+#define SPHERE_H
+
 #include "intersectable.h"
 
 class Sphere: public Intersectable
@@ -7,14 +10,10 @@ class Sphere: public Intersectable
 	Material mat;
 
 	public:
-		Sphere(Vec3Df midPoint, float radius){
+		Sphere(Vec3Df midPoint, float radius, Material material){
 			sphereMidPoint = midPoint;
 			sphereRadius = radius;
-
-			mat = Material();
-			mat.set_Kd(1,0,0);
-			mat.set_Ka(1,0,0);
-			mat.set_Ks(1,0,0);
+			mat = material;
 		}
 
 		Hit intersect(Vec3Df origin, Vec3Df dest){
@@ -58,3 +57,5 @@ class Sphere: public Intersectable
 				}
 		}
 };
+
+#endif

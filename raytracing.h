@@ -38,6 +38,7 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest);
 Vec3Df RandomVector();
 Vec3Df GaussianVector();
 Vec3Df getReflectionVector(const Vec3Df & normal, const Vec3Df & cameraPos, const Vec3Df & vertexPos);
+Hit gethits(const Vec3Df & origin, const Vec3Df & dest);
 //want keyboard interaction? Here it is...
 void yourKeyboardFunc(char t, int x, int y);
 
