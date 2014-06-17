@@ -1,14 +1,14 @@
 #include "complexObject.h"
 
 ComplexObject::ComplexObject(Triangle coT, Material mat, Mesh comyMesh){
-	T = coT;
-	material = mat;
-	myMesh = comyMesh;
-	nullVector = Vec3Df(0,0,0);
+  T = coT;
+  material = mat;
+  myMesh = comyMesh;
+  nullVector = Vec3Df(0,0,0);
 }
 
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest){
-	// Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
+  // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
   Vertex v0 = myMesh.vertices[T.v[0]];
   Vertex v1 = myMesh.vertices[T.v[1]];
   Vertex v2 = myMesh.vertices[T.v[2]];
@@ -23,17 +23,21 @@ Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest){
 
   // Use this as a threshold to avoid division overflow
   float small = 0.00000001;
-  if (fabs(b) < small) {    // ray is parallel to triangle plane
-	  if (a == 0)               // ray lies in triangle plane
-	    return Hit(0, nullVector, nullVector, material);
-	  else
-	    return Hit(0, nullVector, nullVector, material);  // ray is parallel and disjoint from plane
+  if (fabs(b) < small) {
+    // ray is parallel to triangle plane
+    if (a == 0)
+      // ray lies in triangle plane
+      return Hit(0, nullVector, nullVector, material);
+    else
+      // ray is parallel and disjoint from plane
+      return Hit(0, nullVector, nullVector, material);
   }
 
   // Get intersection point of ray with triangle plane
   float r = a / b;
-  if (r < 0.0)                  // ray goes away from triangle
-    return Hit(0, nullVector, nullVector, material);                  // Then there is no intersect
+  if (r < 0.0)  // ray goes away from triangle
+    // Then there is no intersect
+    return Hit(0, nullVector, nullVector, material);
 
   // intersect point of ray and plane
   Vec3Df I = origin + (r * dest);
@@ -57,8 +61,8 @@ Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest){
   if (t < 0.0 || (s + t) > 1.0)  // I is outside T
      return Hit(0, nullVector, nullVector, material);
 
-  Vec3Df normal = I;
-  normal.normalize();
+  // Take all the vertex normals, and create the triangle normal from them
+  Vec3Df normal = (v1.n + v2.n + v3.n).normalize();
 
   return Hit(1, I, normal, material);                      // I is in T
 }
