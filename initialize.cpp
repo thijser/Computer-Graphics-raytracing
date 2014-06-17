@@ -37,19 +37,19 @@ void init() { //seed the random generator
 	testMat1.set_Kd(0, 0, 0);
 	testMat1.set_Ka(1, 1, 0);
 	testMat1.set_Ks(0.2, 0.5, 0.1);
-	testMat1.set_Ns(1);
+	testMat1.set_Ns(5);
 	
 	testMat2 = Material();
 	testMat2.set_Kd(0, 1, 0);
 	testMat2.set_Ka(0.0, 0, 0.0);
 	testMat2.set_Ks(1, 0, 1);
-	testMat2.set_Ns(1);
+	testMat2.set_Ns(5);
 	
 	testMat3 = Material();
 	testMat3.set_Kd(1, 0, 0);
 	testMat3.set_Ka(1, 0, 0);
 	testMat3.set_Ks(1, 1, 1);
-	testMat3.set_Ns(1);
+	testMat3.set_Ns(5);
 
 	//load the mesh file
 	//feel free to replace cube by a path to another model

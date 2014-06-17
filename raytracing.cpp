@@ -13,7 +13,7 @@
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
-	int numberOfRays = 1;
+	int numberOfRays = 2;
 	int maxNumberOfBounces = 4;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
