@@ -85,7 +85,6 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		} else {
 			return Vec3Df(0, 0, 0);
 		}
-
 }
 
 /*
@@ -109,12 +108,6 @@ Vec3Df closest(const Vec3Df & origin, const Vec3Df & v1, const Vec3Df & v2) {
 	}
 	return v1;
 }
-
-Vec3Df ambientcolour(Material mat) {
-	return mat.Ka();
-}
-
-
 
 Vec3Df diffusecolour(Material & mat, const Vec3Df & position,
 		const Vec3Df & normal, int number) {
@@ -175,8 +168,7 @@ Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 
 }
 Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
-	Vec3Df colour = Vec3Df(0, 0, 0);
-	colour = colour + ambientcolour(h.material);
+	Vec3Df colour = h.material.Ka;
 	colour = colour + diffusecolour(h.material, h.hitPoint, h.normal, number);
 	colour = colour
 			+ lightbasedSpeculair(h.material, h.hitPoint, h.normal, camera);
@@ -239,22 +231,6 @@ float innerDotProduct = Vec3Df::dotProduct(view, norm);
 return norm * (2 * innerDotProduct) - view;
 }
 
-/**
- * tests for collision, if collision occurs return the position else return 0 (null).
- */
-Vec3Df CollisionTriangleTest(Triangle T, const Vec3Df & rayDirection,
-	const Vec3Df & rayOrigin) {
-
-return 0;
-}
-/*
- * tests for collision, if collision occurs return the position else return 0 (null).
- */
-Vec3Df CollisionCircleTest(const Vec3Df & v1, const Vec3Df & radius,
-	Vec3Df & rayDirection, const Vec3Df & rayOrigin) {
-
-return 0;
-}
 void yourDebugDraw() {
 //draw open gl debug stuff
 //this function is called every frame
