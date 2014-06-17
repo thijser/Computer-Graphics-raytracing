@@ -8,6 +8,7 @@ class ComplexObject: public Intersectable
 	Triangle T;
 	Material material;
 	Mesh myMesh;
+  Vec3Df nullVector;
 
 	public:
 		ComplexObject(Triangle coT, Material material, Mesh comyMesh);
