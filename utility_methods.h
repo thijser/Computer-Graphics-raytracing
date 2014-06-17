@@ -7,8 +7,7 @@
 #include "mesh.h"
 #include "hit.h"
 
-Vec3Df getRefractiveRay(const Vec3Df & normal, const Vec3Df & Camera, const Vec3Df & position) ;
-
+//Return Vector with random entries
 Vec3Df RandomVector();
 
 //Generate random Gaussian vector

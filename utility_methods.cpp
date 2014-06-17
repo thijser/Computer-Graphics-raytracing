@@ -10,12 +10,7 @@
 
 #define TWO_PI 6.2831853071795864769252866
 
-//Returns refractive ray for a certain position from camera position
-//Needs more attention :)
-Vec3Df getRefractiveRay(const Vec3Df & normal, const Vec3Df & Camera, const Vec3Df & position) {
-	return normal;
-}
-
+//Returns vector with random entries
 Vec3Df RandomVector() {
 	int r1 = rand() % 100000 - 50000;
 	int r2 = rand() % 100000 - 50000;
@@ -24,7 +19,6 @@ Vec3Df RandomVector() {
 	float f2 = (((float) (r1)) / 50000);
 	float f3 = (((float) (r1)) / 50000);
 	return Vec3Df(f1, f2, f3);
-
 }
 
 //Generate random Gaussian vector
