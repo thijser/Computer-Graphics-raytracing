@@ -4,7 +4,6 @@
 #include "mesh.h"
 #include <ctime>
 #include <cstdlib>
-#include "sphere.h"
 
 extern Vec3Df testRayOrigin;
 extern Vec3Df testRayDestination;

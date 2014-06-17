@@ -6,10 +6,6 @@
 #include "raytracing.h"
 #include <ctime>
 #include <cstdlib>
-#include "sphere.h"
-#include "complexObject.h"
-#include "shading.h"
-#include "utility_methods.h"
 #include "initialize.h"
 
 
