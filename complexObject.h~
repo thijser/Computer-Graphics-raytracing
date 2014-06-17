@@ -1,0 +1,19 @@
+#ifndef COMPLEXOBJECT_H
+#define COMPLEXOBJECT_H
+
+#include "intersectable.h"
+
+class ComplexObject: public Intersectable
+{
+	Triangle T;
+	Vec3Df rayDirection;
+	Vec3Df rayOrigin;
+	Material material;
+	Mesh myMesh;
+
+	public:
+		ComplexObject(Triangle coT,const Vec3Df & corayDirection, const Vec3Df & corayOrigin, Material material, Mesh comyMesh);
+		Hit intersect(Vec3Df origin, Vec3Df dest);
+};
+
+#endif
