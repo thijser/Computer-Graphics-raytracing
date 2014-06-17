@@ -107,8 +107,7 @@ Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
 //		return h;
 //	else
 //		return h2;
- 	
-	//Let op: Langzaam!
+
 	Triangle t;
 	ComplexObject co = ComplexObject(t, testMat3, MyMesh);
 
