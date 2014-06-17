@@ -56,19 +56,19 @@ Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
 		return h2;
  	
 	//Let op: Langzaam!
-//	Triangle t;
-//	ComplexObject co = ComplexObject(t, testMat3, MyMesh);
-//
-//	for(int i = 0; i < MyMesh.triangles.size(); i++) {
-//		// std::cout<<"Now on iteration: "<<i<<std::endl;
-//	  t = MyMesh.triangles[i];
-//	  co = ComplexObject(t, testMat3, MyMesh);
-//
-//	  if(co.intersect(origin, dest).isHit != 0){
-//		return co.intersect(origin, dest);
-//	  }
-//	}
-//	return co.intersect(origin, dest);
+	Triangle t;
+	ComplexObject co = ComplexObject(t, testMat3, MyMesh);
+
+	for(int i = 0; i < MyMesh.triangles.size(); i++) {
+		// std::cout<<"Now on iteration: "<<i<<std::endl;
+	  t = MyMesh.triangles[i];
+	  co = ComplexObject(t, testMat3, MyMesh);
+
+	  if(co.intersect(origin, dest).isHit != 0){
+		return co.intersect(origin, dest);
+	  }
+	}
+	return co.intersect(origin, dest);
 	
 }
 
