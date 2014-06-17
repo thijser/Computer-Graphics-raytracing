@@ -76,7 +76,7 @@ Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
 	Vec3Df colour = h.material.Ka();
 	colour = colour + diffuseColour(h.material, h.hitPoint, h.normal, number);
 	colour = colour
-			+Speculair(h.material, h.hitPoint, h.normal, camera,number);
+			+speculair(h.material, h.hitPoint, h.normal, camera,number);
 	h.hitPoint.normalize();
 	return colour;
 }
