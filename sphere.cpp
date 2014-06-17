@@ -1,4 +1,5 @@
 #include "sphere.h"
+#define HIT_TOLERANCE 0.00001
 
 Sphere::Sphere(Vec3Df midPoint, float radius, Material mat){
 	sphereMidPoint = midPoint;
@@ -29,9 +30,9 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		float t1 = ((-1*B)-sqrt(discriminant))/(2*A);
 		float t2 = ((-1*B)+sqrt(discriminant))/(2*A);
 
-		if(t1 < 0){
+		if(t1 < HIT_TOLERANCE){
 			t = t2;
-		} else if(t2 < 0){
+		} else if(t2 < HIT_TOLERANCE){
 			t = t1;
 		} else if(t1 < t2){
 			t = t1;
