@@ -1,7 +1,11 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <GL/glut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h> // This is located in the “GLUT” directory on MacOSX
+#endif
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
