@@ -68,16 +68,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="complexObject.cpp" />
+    <ClCompile Include="initialize.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="raytracing.cpp" />
+    <ClCompile Include="raytracingManager.cpp" />
+    <ClCompile Include="shading.cpp" />
+    <ClCompile Include="sphere.cpp" />
     <ClCompile Include="utility_methods.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="image.h" />
     <ClInclude Include="intersectable.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="raytracing.h" />
+    <ClInclude Include="raytracingManager.h" />
+    <ClInclude Include="rgbValue.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="traqueboule.h" />
     <ClInclude Include="Vec3D.h" />
