@@ -7,7 +7,8 @@ ComplexObject::ComplexObject(Triangle coT, Material mat, Mesh comyMesh){
 }
 
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest){
-// Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html	  
+// Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
+	  
 	  //std::cout<<T.v[0]<<" "<<T.v[1]<<" "<<T.v[2]<<std::endl;
 	  Vertex v0 = myMesh.vertices[T.v[0]];
 	  Vertex v1 = myMesh.vertices[T.v[1]];

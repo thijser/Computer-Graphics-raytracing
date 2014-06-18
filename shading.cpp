@@ -57,7 +57,7 @@ Vec3Df diffuseColour(Material & mat, const Vec3Df & position,
 }
 
 //Method lightbasedSpeculair returns colour at position includes blinn phong
-Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
+/*Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 		const Vec3Df & view){
 		Vec3Df colour=  Vec3Df(0,0,0);
 		for(int i =0;i<LightsPositions.size();i++){
@@ -72,6 +72,7 @@ Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df &
 
 		return colour;
 }
+*/
 
 //Method find colour returns color for a given hit.
 Vec3Df findColour(Hit h, const Vec3Df & camera, int number) {
