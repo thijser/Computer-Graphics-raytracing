@@ -10,7 +10,18 @@
 #include "complexObject.h"
 #include "shading.h"
 #include "initialize.h"
-
+Vec3Df colourclamp(const Vec3Df & colour){
+    Vec3Df clamped = colour;
+    for(int i=0;i<3;i++){
+        if(clamped[i]>1){
+            clamped[i]=1;
+        }
+        if(clamped[i]<0){
+            clamped[i]=0;
+        }
+    }
+    return colour;
+}
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
 	
@@ -20,7 +31,7 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 	//for (int i = 0; i < numberOfRays; i++) {
 		colour = colour + performRayTracing(origin, dest, maxNumberOfBounces);
 	//}
-	return colour; // numberOfRays;
+	return colourclamp(colour); // numberOfRays;
 }
 
 //return the color of your pixel.

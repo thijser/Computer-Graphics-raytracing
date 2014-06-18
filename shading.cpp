@@ -7,7 +7,9 @@
 #include "utility_methods.h"
 #include "shading.h"
 #include "raytracing.h"
-
+/**
+ * ensures that a colour does not go above 1 or bellow 0. 
+ */
 
 //Method blingPhongSpeculair returns the blinn phong shading at a specific point.
 Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
@@ -132,6 +134,5 @@ Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
          totalfact=totalfact+diff+specf;
          
         }
-        
         return totalColour/totalfact+ambient;
        }
