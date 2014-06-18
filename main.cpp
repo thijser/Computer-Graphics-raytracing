@@ -1,5 +1,6 @@
 #ifdef WIN32
 #include <windows.h>
+#include <process.h>
 #endif
 #include <GL/glut.h>
 #include <stdlib.h>
@@ -384,6 +385,7 @@ void keyboard(unsigned char key, int x, int y)
 
 				Vec3Df rgb = performRayTracing(origin, dest);
 				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
+				_beginthread(traceThread, 0, x, y, WindowSize_X, WindowSize_Y);
 			}
 
 
@@ -397,3 +399,6 @@ void keyboard(unsigned char key, int x, int y)
 	yourKeyboardFunc(key,x,y);
 }
 
+void traceThread(void * x, void * y, void * origin, void * dest) {
+	cout << "Thread!" << endl;
+}
