@@ -39,14 +39,14 @@ void init() { //seed the random generator
 	LightsColours.assign(5,Vec3Df(1,1,1));
 
 	testMat1 = Material();
-	testMat1.set_Kd(0, 0, 0);
-	testMat1.set_Ka(1, 1, 0);
-	testMat1.set_Ks(0.2, 0.5, 0.1);
+	testMat1.set_Kd(0, 0.5, 0);
+	testMat1.set_Ka(0.5, 0.5, 0);
+	testMat1.set_Ks(0, 0, 0.8);
 	testMat1.set_Ns(5);
 
 	testMat2 = Material();
 	testMat2.set_Kd(0, 1, 0);
-	testMat2.set_Ka(0.0, 0, 0.0);
+	testMat2.set_Ka(0, 0.5, 0.5);
 	testMat2.set_Ks(1, 0, 1);
 	testMat2.set_Ns(5);
 

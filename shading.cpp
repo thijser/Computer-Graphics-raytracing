@@ -54,7 +54,7 @@ Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
         double totalfact=1;
         Vec3Df totalColour=Vec3Df(0,0,0);
         for(int i=0;i<rays;i++){
-			Vec3Df random = RandomVector();
+			Vec3Df random = GaussianVector();
 		if (0 > h.normal.dotProduct(h.normal, random)) {
 			random = random * -1;
 		}
@@ -68,5 +68,5 @@ Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
 		totalfact = totalfact+diff+specf;
 		 
         }
-        return totalColour/totalfact+ambient;
+	return totalColour/totalfact+ambient;
 }

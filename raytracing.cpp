@@ -29,7 +29,7 @@ Vec3Df colourclamp(const Vec3Df & colour){
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
 
-	int maxNumberOfBounces = 0;//4;
+	int maxNumberOfBounces = 1;//4;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
 	//for (int i = 0; i < numberOfRays; i++) {
@@ -41,19 +41,19 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
-    int numberOfRays = 2;
+    int numberOfRays = 30;
         Vec3Df dir = dest-origin;
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1;
 	if (maxNumberOfBounces < 0) {
-		return Vec3Df(0, 0, 0);
+		return Vec3Df(0,0,0);
 	}
 	Hit hit = scene.intersect(origin, dest);
 	if (hit.isHit != 0) {
 			Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
 			return colour;
 		} else {
-			return Vec3Df(0, 0, 0);
+			return Vec3Df(0,0,0);
 		}
 }
 
