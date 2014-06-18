@@ -1,4 +1,4 @@
-#include <complexObject.h>
+#include "complexObject.h"
 
 ComplexObject::ComplexObject(Material mat, Mesh comyMesh) {
   material = mat;

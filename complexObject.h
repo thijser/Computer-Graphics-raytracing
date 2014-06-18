@@ -1,7 +1,7 @@
 #ifndef COMPLEXOBJECT_H
 #define COMPLEXOBJECT_H
 
-#include <intersectable.h>
+#include "intersectable.h"
 
 class ComplexObject: public Intersectable {
   Material material;
