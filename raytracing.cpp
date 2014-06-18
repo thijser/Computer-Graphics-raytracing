@@ -13,19 +13,20 @@
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
-	int numberOfRays = 2;
+	
 	int maxNumberOfBounces = 4;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
-	for (int i = 0; i < numberOfRays; i++) {
+	//for (int i = 0; i < numberOfRays; i++) {
 		colour = colour + performRayTracing(origin, dest, maxNumberOfBounces);
-	}
-	return colour / numberOfRays;
+	//}
+	return colour; // numberOfRays;
 }
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
+    int numberOfRays = 2;
         Vec3Df dir = dest-origin; 
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1; 
@@ -34,7 +35,7 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 	}
 	Hit hit = gethits(rorigin,dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour(hit, rorigin, maxNumberOfBounces - 1);
+			Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
 			return colour;
 		} else {
 			return Vec3Df(0, 0, 0);

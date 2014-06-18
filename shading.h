@@ -17,7 +17,7 @@ Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 //Method diffuseColour returns diffuse colour at a position
 Vec3Df diffuseColour(Material & mat, const Vec3Df & position,
 		const Vec3Df & normal, int number);
-
+Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays); 
 //Method lightbasedSpeculair returns colour at position includes blinn phong
 Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
 		const Vec3Df & view);
