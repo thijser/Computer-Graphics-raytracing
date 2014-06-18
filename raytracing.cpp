@@ -42,7 +42,7 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
-    	int numberOfRays = 10;
+    	int numberOfRays = 1;
         Vec3Df dir = dest-origin;
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1;
