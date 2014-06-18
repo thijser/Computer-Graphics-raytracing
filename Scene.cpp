@@ -13,7 +13,7 @@ Hit Scene::intersect(Vec3Df origin, Vec3Df dest){
 		Hit obj_h = Objects[i]->intersect(origin, dest);
 		float current_length = 0;
 
-		if(obj_h.isHit)
+		if(obj_h.isHit){
 			if(!h.isHit){
 				h = obj_h;
 				Vec3Df length_vector = h.hitPoint-origin;
@@ -28,6 +28,7 @@ Hit Scene::intersect(Vec3Df origin, Vec3Df dest){
 				current_length = length;
 				h = obj_h;
 			}
+		}
 	}
 
 	return h;

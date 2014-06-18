@@ -26,7 +26,7 @@ Vec3Df RandomVector() {
 }
 
 //Generate random Gaussian vector
-	Vec3Df GaussianVector() {
+Vec3Df GaussianVector() {
 	return Vec3Df(generateGaussianNoise(1), generateGaussianNoise(1), generateGaussianNoise(1));
 }
 

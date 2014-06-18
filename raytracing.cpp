@@ -14,6 +14,8 @@
 #include "complexObject.h"
 #include "shading.h"
 #include "initialize.h"
+
+//Contain colours within the range of 0-1
 Vec3Df colourclamp(const Vec3Df & colour){
     Vec3Df clamped = colour;
     for(int i=0;i<3;i++){
@@ -26,35 +28,34 @@ Vec3Df colourclamp(const Vec3Df & colour){
     }
     return clamped;
 }
+
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
-
-	int maxNumberOfBounces = 1;//4;
+	int maxNumberOfBounces = 1;
 	Vec3Df colour = Vec3Df(0, 0, 0);
 
-	//for (int i = 0; i < numberOfRays; i++) {
-		colour = colour + performRayTracing(origin, dest, maxNumberOfBounces);
-	//}
-	return colourclamp(colour); // numberOfRays;
+	colour += performRayTracing(origin, dest, maxNumberOfBounces);
+
+	return colourclamp(colour);
 }
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
-    int numberOfRays = 30;
+    	int numberOfRays = 10;
         Vec3Df dir = dest-origin;
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1;
 	if (maxNumberOfBounces < 0) {
 		return Vec3Df(0,0,0);
 	}
-	Hit hit = scene.intersect(origin, dest);
+	Hit hit = scene.intersect(rorigin, dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
-			return colour;
-		} else {
-			return Vec3Df(0,0,0);
-		}
+		Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
+		return colour;
+	} else {
+		return Vec3Df(0,0,0);
+	}
 }
 
 void yourDebugDraw() {

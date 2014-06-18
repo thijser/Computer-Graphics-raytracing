@@ -66,7 +66,6 @@ Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
 		totalColour = totalColour+(diff*h.material.Kd()*colour)+(colour*specf*h.material.Ks());
 		
 		totalfact = totalfact+diff+specf;
-		 
         }
 	return totalColour/totalfact+ambient;
 }
