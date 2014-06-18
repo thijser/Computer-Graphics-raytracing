@@ -44,7 +44,7 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 	if (maxNumberOfBounces < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Hit hit = gethits(rorigin,dest);
+	Hit hit = scene.intersect(origin, dest);
 	if (hit.isHit != 0) {
 			Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
 			return colour;
@@ -56,33 +56,33 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 /*
  * placeholder datastructure holding 2 spheres
  */
-Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
-	Intersectable * s = new Sphere(Vec3Df(0, 0, 0), 2, testMat1);
-	Hit h = s->intersect(origin, dest);
+// Hit gethits(const Vec3Df & origin, const Vec3Df & dest){
+// 	Intersectable * s = new Sphere(Vec3Df(0, 0, 0), 2, testMat1);
+// 	Hit h = s->intersect(origin, dest);
 
-	Intersectable * s2 = new Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
-	Hit h2 = s2->intersect(origin, dest);
-	if (h.isHit!=0)
-		return h;
-	else
-		return h2;
+// 	Intersectable * s2 = new Sphere(Vec3Df(-2, 0, 0), 2, testMat2);
+// 	Hit h2 = s2->intersect(origin, dest);
+// 	if (h.isHit!=0)
+// 		return h;
+// 	else
+// 		return h2;
  	
-	//Let op: Langzaam!
-	Triangle t;
-	ComplexObject co = ComplexObject(t, testMat3, MyMesh);
+// 	//Let op: Langzaam!
+// 	Triangle t;
+// 	ComplexObject co = ComplexObject(t, testMat3, MyMesh);
 
-	for(int i = 0; i < MyMesh.triangles.size(); i++) {
-		// std::cout<<"Now on iteration: "<<i<<std::endl;
-	  t = MyMesh.triangles[i];
-	  co = ComplexObject(t, testMat3, MyMesh);
+// 	for(int i = 0; i < MyMesh.triangles.size(); i++) {
+// 		// std::cout<<"Now on iteration: "<<i<<std::endl;
+// 	  t = MyMesh.triangles[i];
+// 	  co = ComplexObject(t, testMat3, MyMesh);
 
-	  if(co.intersect(origin, dest).isHit != 0){
-		return co.intersect(origin, dest);
-	  }
-	}
-	return co.intersect(origin, dest);
+// 	  if(co.intersect(origin, dest).isHit != 0){
+// 		return co.intersect(origin, dest);
+// 	  }
+// 	}
+// 	return co.intersect(origin, dest);
 	
-}
+// }
 
 void yourDebugDraw() {
 //draw open gl debug stuff
