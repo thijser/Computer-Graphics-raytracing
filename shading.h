@@ -11,7 +11,7 @@ float blinnPhongSpecularfac(const Vec3Df & vertexPos, Vec3Df & normal,
 		const Vec3Df & lightPos, const Vec3Df & cameraPos,float shininess);
 
 //Method diffuseColour returns diffuse colour FACTOR at a position
-Vfloat diffusefac(const Vec3Df & vertexPos, Vec3Df & normal,
+float diffusefac(const Vec3Df & vertexPos, Vec3Df & normal,
 		const Vec3Df & lightPos);
 
 //Main function being called. Returns a colour at position using all other methods (Ambient, Speculair and Diffuse)
