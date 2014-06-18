@@ -76,13 +76,13 @@ Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
       hit = Hit(1, I, n, material);
     } else {
       // If so, we check whether this one is closer to the origin
-      int previousDistance = (hit.hitPoint - origin).getLength();
-      int currentDistance  = (I - origin).getLength();
+      float previousDistance = (hit.hitPoint - origin).getLength();
+      float currentDistance  = (I - origin).getLength();
+
       // Now check if it's closer
       if (currentDistance < previousDistance) {
         // If it is then we save the current hit
         hit = Hit(1, I, n, material);
-        std::cout << "newhit" << std::endl;
       } else {
         // If not we discard this hit and continue looking for one which is
         continue;
