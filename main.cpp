@@ -13,6 +13,7 @@
 #include "raytracing.h"
 #include "mesh.h"
 #include "traqueboule.h"
+#include "initialize.h"
 
 Vec3Df MyCameraPosition;
 
