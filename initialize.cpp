@@ -71,10 +71,9 @@ void init() { //seed the random generator
 
 	//Create scene
 	std::vector<Intersectable*> objs;
-	//objs.push_back(new ComplexObject(testMat1,MyMesh));
-
-        objs.push_back(new Sphere(Vec3Df(1, 0, -3), 2, testMat1));
-         objs.push_back(new Sphere(Vec3Df(1, 3, -3), 2, testMat2));
+	objs.push_back(new ComplexObject(testMat1,MyMesh));
+  // objs.push_back(new Sphere(Vec3Df(1, 0, -3), 2, testMat1));
+  // objs.push_back(new Sphere(Vec3Df(1, 3, -3), 2, testMat2));
 	scene = Scene(objs);
 }
 
