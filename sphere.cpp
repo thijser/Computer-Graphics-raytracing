@@ -10,8 +10,13 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 	Vec3Df o = origin - sphereMidPoint;
 	Vec3Df d = dest - sphereMidPoint;
 
+	//dotproduct(d,d)
 	float A = d[0]*d[0]+d[1]*d[1]+d[2]*d[2];
-	float B = 2*(d[0]*o[0] + d[1]*o[1] + d[2]*o[2]);
+
+	//dotproduct(d,o) * 2
+	float B = 2* (d[0]*o[0] + d[1]*o[1] + d[2]*o[2]);
+
+	//dotproduct(o,o) - radius*radius	
 	float C = o[0]*o[0]+o[1]*o[1]+o[2]*o[2]-sphereRadius*sphereRadius;
 
 	float discriminant = B*B-4*A*C;
@@ -38,8 +43,9 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		} else {
 			t = t2;
 		}
-
+		
 		Vec3Df hitpoint = (o+(d*t));
+		//Klopt deze normal?
 		Vec3Df normal = hitpoint;
 		normal.normalize();
 
