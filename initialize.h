@@ -4,6 +4,10 @@
 #include "mesh.h"
 #include <ctime>
 #include <cstdlib>
+#include "Scene.h"
+
+
+extern Scene scene;
 
 extern Vec3Df testRayOrigin;
 extern Vec3Df testRayDestination;

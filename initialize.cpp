@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "initialize.h"
+#include "Scene.h"
 
 
 //temporary variables
@@ -17,6 +18,7 @@ Material testMat2;
 Material testMat3;
 std::vector<Vec3Df> LightsPositions;
 std::vector<Vec3Df> LightsColours;
+Scene scene;
 
 //use this function for any preprocessing of the mesh.
 
@@ -63,6 +65,11 @@ void init() { //seed the random generator
 	//at least ONE light source has to be in the scene!!!
 	//here, we set it to the current location of the camera
 	MyLightPositions.push_back(MyCameraPosition);
+
+	//Create scene
+	std::vector<Intersectable*> objs;
+	objs.push_back(new Sphere(Vec3Df(0, 0, 0), 1, testMat1));
+	scene = Scene(objs);
 }
 
 
