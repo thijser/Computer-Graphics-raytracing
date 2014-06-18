@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <stdio.h>
 #ifdef WIN32
 #include <windows.h>
@@ -11,6 +12,7 @@
  * ensures that a colour does not go above 1 or bellow 0. 
  */
 
+//Method diffuseColour returns diffuse colour FACTOR at a position
 float diffusefac(const Vec3Df & vertexPos, Vec3Df & normal,
 		const Vec3Df & lightPos) {
 	Vec3Df nvertexPos = vertexPos;
@@ -26,6 +28,8 @@ float diffusefac(const Vec3Df & vertexPos, Vec3Df & normal,
 	}
 	return shade;
 }
+
+//Method blingPhongSpeculair returns the blinn phong shading FACTOR at a specific point.
 float blinnPhongSpecularfac(const Vec3Df & vertexPos, Vec3Df & normal,
 		const Vec3Df & lightPos, const Vec3Df & cameraPos,float shininess) {
 	Vec3Df relativeLightPos = (lightPos - vertexPos);
@@ -44,6 +48,8 @@ float blinnPhongSpecularfac(const Vec3Df & vertexPos, Vec3Df & normal,
 	return light;
 }
 
+//Main function being called. Returns a colour at position using all other methods (Ambient, Speculair and Diffuse)
+//Takes speculair and diffuse factor and combines them with Ks and Kd
 Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
     	Vec3Df ambient = h.material.Ka();
         double totalfact=1;
