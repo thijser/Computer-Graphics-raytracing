@@ -50,11 +50,11 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 	}
 	Hit hit = scene.intersect(origin, dest);
 	if (hit.isHit != 0) {
-			Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
-			return colour;
-		} else {
-			return Vec3Df(0, 0, 0);
-		}
+		Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
+		return colour;
+	} else {
+		return Vec3Df(0, 0, 0);
+	}
 }
 
 void yourDebugDraw() {

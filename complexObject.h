@@ -5,12 +5,20 @@
 
 class ComplexObject: public Intersectable {
   Material material;
-  Mesh myMesh;
+  Mesh mesh;
   Vec3Df nullVector;
+  Hit noHit;
+
+  // Bounding box
+  float xMin, yMin, zMin, xMax, yMax, zMax;
 
   public:
-    ComplexObject(Material material, Mesh comyMesh);
+    ComplexObject(Mesh mesh, Material material);
     Hit intersect(Vec3Df origin, Vec3Df dest);
+    Hit intersectBoundingBox();
+
+  private:
+    void initBoundingBox();
 };
 
 #endif

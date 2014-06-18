@@ -1,23 +1,63 @@
 #include <complexObject.h>
+#include <hit.h>
+#include <limits>
 
-ComplexObject::ComplexObject(Material mat, Mesh comyMesh) {
+ComplexObject::ComplexObject(Mesh mesh, Material mat) {
   material = mat;
-  myMesh = comyMesh;
+  mesh = mesh;
   nullVector = Vec3Df(0, 0, 0);
+  noHit = Hit(0, nullVector, nullVector, material);
+  initBoundingBox();
+}
+
+
+void ComplexObject::initBoundingBox() {
+  // Where we keep track of the following bounds
+  float xMin, yMin, zMin =  std::numeric_limits<float>::max();
+  float xMax, yMax, zMax = -std::numeric_limits<float>::max();
+
+  for (int triangle = 0; triangle < mesh.triangles.size(); triangle++) {
+    Triangle T = mesh.triangles[triangle];
+    for (int vertex = 0; vertex < 3; vertex++) {
+      Vertex V = mesh.vertices[T.v[vertex]];
+      Vec3Df vertexPosition = V.p;
+
+      // X axis
+      if (vertexPosition[0] < xMin) xMin = vertexPosition[0];
+      if (vertexPosition[0] > xMax) xMax = vertexPosition[0];
+      // Y axis
+      if (vertexPosition[1] < yMin) yMin = vertexPosition[1];
+      if (vertexPosition[1] > yMax) yMax = vertexPosition[1];
+      // Z axis
+      if (vertexPosition[2] < zMin) zMin = vertexPosition[2];
+      if (vertexPosition[2] > zMax) zMax = vertexPosition[2];
+    }
+  }
+  this->xMin = xMin;
+  this->xMax = xMax;
+  this->yMin = yMin;
+  this->yMax = yMax;
+  this->zMin = zMin;
+  this->zMax = zMax;
+}
+
+Hit ComplexObject::intersectBoundingBox() {
+  // Code
+  return noHit;
 }
 
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
-  Hit noHit = Hit(0, nullVector, nullVector, material);
   // hit is is where we keep track of hits with backfaces
   // For the moment we use noHit as a symbol
   Hit hit = noHit;
 
-  for (int i = 0; i < myMesh.triangles.size(); i++) {
-    Triangle T = myMesh.triangles[i];
+  for (int i = 0; i < mesh.triangles.size(); i++) {
+    Triangle T = mesh.triangles[i];
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
-    Vertex v0 = myMesh.vertices[T.v[0]];
-    Vertex v1 = myMesh.vertices[T.v[1]];
-    Vertex v2 = myMesh.vertices[T.v[2]];
+    Vertex v0 = mesh.vertices[T.v[0]];
+    Vertex v1 = mesh.vertices[T.v[1]];
+    Vertex v2 = mesh.vertices[T.v[2]];
+
     // Edge vectors
     Vec3Df u = v1.p-v0.p;
     Vec3Df v = v2.p-v0.p;
