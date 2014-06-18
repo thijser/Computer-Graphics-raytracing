@@ -24,7 +24,7 @@ Vec3Df colourclamp(const Vec3Df & colour){
             clamped[i]=0;
         }
     }
-    return colour;
+    return clamped;
 }
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
 
