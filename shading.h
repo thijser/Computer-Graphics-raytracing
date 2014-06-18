@@ -6,23 +6,16 @@
 #include "hit.h"
 #include "utility_methods.h"
 
-//Method blingPhongSpeculair returns the blinn phong shading at a specific point.
-Vec3Df blingPhongSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view, const Vec3Df & Lightposition,const Vec3Df & LightColour);
+//Method blingPhongSpeculair returns the blinn phong shading FACTOR at a specific point.
+float blinnPhongSpecularfac(const Vec3Df & vertexPos, Vec3Df & normal,
+		const Vec3Df & lightPos, const Vec3Df & cameraPos,float shininess);
 
-//Method speculair returns speculair (including shade and slight reflection of surroundings)
-Vec3Df speculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view, int number);
+//Method diffuseColour returns diffuse colour FACTOR at a position
+Vfloat diffusefac(const Vec3Df & vertexPos, Vec3Df & normal,
+		const Vec3Df & lightPos);
 
-//Method diffuseColour returns diffuse colour at a position
-Vec3Df diffuseColour(Material & mat, const Vec3Df & position,
-		const Vec3Df & normal, int number);
+//Main function being called. Returns a colour at position using all other methods (Ambient, Speculair and Diffuse)
 Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays); 
-//Method lightbasedSpeculair returns colour at position includes blinn phong
-Vec3Df lightbasedSpeculair(Material mat, const Vec3Df & position, const Vec3Df & normal,
-		const Vec3Df & view);
 
-//Main function being called. Returns a colour at position using all other methods
-Vec3Df findColour(Hit h, const Vec3Df & camera, int number);
 
 #endif
