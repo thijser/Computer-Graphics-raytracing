@@ -11,10 +11,12 @@ class Hit
 		Vec3Df hitPoint;
 		Vec3Df normal;
 		Material material;
-
-		Hit(){
-			Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), Material());
-		}
+    inline Hit(void) {
+      isHit = 0;
+      hitPoint = Vec3Df(0,0,0);
+      normal = hitPoint;
+      material = Material();
+    }
 
 		Hit(int fisHit, Vec3Df fhitPoint, Vec3Df fnormal, Material fmaterial){
 			isHit = fisHit;

@@ -1,23 +1,86 @@
-#include <complexObject.h>
+// System headers
+#include <limits>
+#include <algorithm>
+// Our own headers
+#include "./complexObject.h"
+#include "./hit.h"
 
-ComplexObject::ComplexObject(Material mat, Mesh comyMesh) {
+ComplexObject::ComplexObject(Mesh mesh, Material mat) {
   material = mat;
-  myMesh = comyMesh;
+  this->mesh = mesh;
   nullVector = Vec3Df(0, 0, 0);
+  noHit = Hit(0, nullVector, nullVector, material);
+  initBoundingBox();
+}
+
+
+void ComplexObject::initBoundingBox() {
+  // Where we keep track of the following bounds
+  float xMin, yMin, zMin =  std::numeric_limits<float>::max();
+  float xMax, yMax, zMax = -std::numeric_limits<float>::max();
+
+  for (int triangle = 0; triangle < mesh.triangles.size(); triangle++) {
+    Triangle T = mesh.triangles[triangle];
+    for (int vertex = 0; vertex < 3; vertex++) {
+      Vertex V = mesh.vertices[T.v[vertex]];
+      Vec3Df vertexPosition = V.p;
+
+      // X axis
+      xMin = std::min(xMin, vertexPosition[0]);
+      xMax = std::max(xMax, vertexPosition[0]);
+      // Y axis
+      yMin = std::min(yMin, vertexPosition[1]);
+      yMax = std::max(yMax, vertexPosition[1]);
+      // Z axis
+      zMin = std::min(zMin, vertexPosition[2]);
+      zMax = std::max(zMax, vertexPosition[2]);
+    }
+  }
+  bounds[0] = Vec3Df(xMin, yMin, zMin);
+  bounds[1] = Vec3Df(xMax, yMax, zMax);
+}
+
+Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
+  // Our implementation is based on the ray-box intersection algorithm
+  // as proposed here: http://people.csail.mit.edu/amy/papers/box-jgt.pdf
+
+  // This section should be stored in a ray datastructure where it's cached
+  Vec3Df direction = dest - origin;
+  Vec3Df inverseDirection = Vec3Df(1/direction[0], 1/direction[1], 1/direction[3]);
+  int sign[3];
+  sign[0] = (inverseDirection[0] < 0);
+  sign[1] = (inverseDirection[1] < 0);
+  sign[2] = (inverseDirection[2] < 0);
+
+  // Intersection algorithm
+  float xMin, yMin, zMin, xMax, yMax, zMax;
+  xMin = (bounds[  sign[0]  ][0] - origin[0]) * inverseDirection[0];
+  xMax = (bounds[ 1-sign[0] ][0] - origin[0]) * inverseDirection[0];
+  yMin = (bounds[  sign[1]  ][1] - origin[1]) * inverseDirection[1];
+  yMax = (bounds[ 1-sign[1] ][1] - origin[1]) * inverseDirection[1];
+  yMin = (bounds[  sign[2]  ][2] - origin[2]) * inverseDirection[2];
+  yMax = (bounds[ 1-sign[2] ][2] - origin[2]) * inverseDirection[2];
+  if ( (xMin > yMax) || (yMin > xMax) ) return noHit;
+  if (yMin > xMin) xMin = yMin;
+  if (yMax < xMax) xMax = yMax;
+  if ( (xMin > zMax) || (zMin > xMax) ) return noHit;
+  if (zMin > xMin) xMin = zMin;
+  if (zMax < xMax) xMax = zMax;
+  return Hit(1, Vec3Df(xMin, yMin, zMin), nullVector, material);
 }
 
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
-  Hit noHit = Hit(0, nullVector, nullVector, material);
   // hit is is where we keep track of hits with backfaces
   // For the moment we use noHit as a symbol
   Hit hit = noHit;
 
-  for (int i = 0; i < myMesh.triangles.size(); i++) {
-    Triangle T = myMesh.triangles[i];
+  for (int i = 0; i < mesh.triangles.size(); i++) {
+    Triangle T = mesh.triangles[i];
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
-    Vertex v0 = myMesh.vertices[T.v[0]];
-    Vertex v1 = myMesh.vertices[T.v[1]];
-    Vertex v2 = myMesh.vertices[T.v[2]];
+    Vertex v0 = mesh.vertices[T.v[0]];
+    Vertex v1 = mesh.vertices[T.v[1]];
+    Vertex v2 = mesh.vertices[T.v[2]];
+
     // Edge vectors
     Vec3Df u = v1.p-v0.p;
     Vec3Df v = v2.p-v0.p;
