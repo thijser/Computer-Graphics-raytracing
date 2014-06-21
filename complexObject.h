@@ -15,6 +15,7 @@ class ComplexObject: public Intersectable {
   public:
     ComplexObject(Mesh mesh, Material material);
     Hit intersect(Vec3Df origin, Vec3Df dest);
+    Hit intersectMesh(Vec3Df origin, Vec3Df dest);
     Hit intersectBoundingBox(Vec3Df origin, Vec3Df dest);
 
   private:
