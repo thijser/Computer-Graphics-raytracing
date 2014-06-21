@@ -9,13 +9,13 @@ class ComplexObject: public Intersectable {
   Vec3Df nullVector;
   Hit noHit;
 
-  // Bounding box
-  float xMin, yMin, zMin, xMax, yMax, zMax;
+  // Bounding box (first vector is minimum values, second maximum)
+  Vec3Df bounds[2];
 
   public:
     ComplexObject(Mesh mesh, Material material);
     Hit intersect(Vec3Df origin, Vec3Df dest);
-    Hit intersectBoundingBox();
+    Hit intersectBoundingBox(Vec3Df origin, Vec3Df dest);
 
   private:
     void initBoundingBox();

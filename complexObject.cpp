@@ -1,6 +1,9 @@
-#include <complexObject.h>
-#include <hit.h>
+// System headers
 #include <limits>
+#include <algorithm>
+// Our own headers
+#include "./complexObject.h"
+#include "./hit.h"
 
 ComplexObject::ComplexObject(Mesh mesh, Material mat) {
   material = mat;
@@ -23,27 +26,47 @@ void ComplexObject::initBoundingBox() {
       Vec3Df vertexPosition = V.p;
 
       // X axis
-      if (vertexPosition[0] < xMin) xMin = vertexPosition[0];
-      if (vertexPosition[0] > xMax) xMax = vertexPosition[0];
+      xMin = std::min(xMin, vertexPosition[0]);
+      xMax = std::max(xMax, vertexPosition[0]);
       // Y axis
-      if (vertexPosition[1] < yMin) yMin = vertexPosition[1];
-      if (vertexPosition[1] > yMax) yMax = vertexPosition[1];
+      yMin = std::min(yMin, vertexPosition[1]);
+      yMax = std::max(yMax, vertexPosition[1]);
       // Z axis
-      if (vertexPosition[2] < zMin) zMin = vertexPosition[2];
-      if (vertexPosition[2] > zMax) zMax = vertexPosition[2];
+      zMin = std::min(zMin, vertexPosition[2]);
+      zMax = std::max(zMax, vertexPosition[2]);
     }
   }
-  this->xMin = xMin;
-  this->xMax = xMax;
-  this->yMin = yMin;
-  this->yMax = yMax;
-  this->zMin = zMin;
-  this->zMax = zMax;
+  bounds[0] = Vec3Df(xMin, yMin, zMin);
+  bounds[1] = Vec3Df(xMax, yMax, zMax);
 }
 
-Hit ComplexObject::intersectBoundingBox() {
-  // Code
-  return noHit;
+Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
+  // Our implementation is based on the ray-box intersection algorithm
+  // as proposed here: http://people.csail.mit.edu/amy/papers/box-jgt.pdf
+
+  // This section should be stored in a ray datastructure where it's cached
+  Vec3Df direction = dest - origin;
+  Vec3Df inverseDirection = Vec3Df(1/direction[0], 1/direction[1], 1/direction[3]);
+  int sign[3];
+  sign[0] = (inverseDirection[0] < 0);
+  sign[1] = (inverseDirection[1] < 0);
+  sign[2] = (inverseDirection[2] < 0);
+
+  // Intersection algorithm
+  float xMin, yMin, zMin, xMax, yMax, zMax;
+  xMin = (bounds[  sign[0]  ][0] - origin[0]) * inverseDirection[0];
+  xMax = (bounds[ 1-sign[0] ][0] - origin[0]) * inverseDirection[0];
+  yMin = (bounds[  sign[1]  ][1] - origin[1]) * inverseDirection[1];
+  yMax = (bounds[ 1-sign[1] ][1] - origin[1]) * inverseDirection[1];
+  yMin = (bounds[  sign[2]  ][2] - origin[2]) * inverseDirection[2];
+  yMax = (bounds[ 1-sign[2] ][2] - origin[2]) * inverseDirection[2];
+  if ( (xMin > yMax) || (yMin > xMax) ) return noHit;
+  if (yMin > xMin) xMin = yMin;
+  if (yMax < xMax) xMax = yMax;
+  if ( (xMin > zMax) || (zMin > xMax) ) return noHit;
+  if (zMin > xMin) xMin = zMin;
+  if (zMax < xMax) xMax = zMax;
+  return Hit(1, Vec3Df(xMin, yMin, zMin), nullVector, material);
 }
 
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
