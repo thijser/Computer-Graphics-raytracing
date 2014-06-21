@@ -2,13 +2,17 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <GL/glut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h> // This is located in the “GLUT” directory on MacOSX
+#endif
 #include <cstdlib>
 #include "utility_methods.h"
 #include "shading.h"
 #include "raytracing.h"
 /**
- * ensures that a colour does not go above 1 or bellow 0. 
+ * ensures that a colour does not go above 1 or bellow 0.
  */
 
 //Method diffuseColour returns diffuse colour FACTOR at a position
@@ -60,11 +64,11 @@ Vec3Df findColour2(Hit h, const Vec3Df & camera, int number,int rays){
 		}
 		double diff = diffusefac(h.hitPoint,h.normal,random+h.hitPoint);
 		double specf = blinnPhongSpecularfac(h.hitPoint,h.normal,random+h.hitPoint,camera,h.material.Ns());
-		
-		Vec3Df colour = performRayTracing(h.hitPoint, random+h.hitPoint, number - 1);   
-		
+
+		Vec3Df colour = performRayTracing(h.hitPoint, random+h.hitPoint, number - 1);
+
 		totalColour += (diff*h.material.Kd()*colour) + (colour*specf*h.material.Ks());
-		
+
 		totalfact += diff + specf;
         }
 	return totalColour / totalfact + ambient;
