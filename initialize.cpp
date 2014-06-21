@@ -22,7 +22,7 @@ Material testMat2;
 Material testMat3;
 std::vector<Vec3Df> LightsPositions;
 std::vector<Vec3Df> LightsColours;
-std::vector<Light> Lights; 
+std::vector<Light> Lights;
 Scene scene;
 
 //use this function for any preprocessing of the mesh.
@@ -74,8 +74,7 @@ void init() { //seed the random generator
 
 	//Create scene
 	std::vector<Intersectable*> objs;
-	// objs.push_back(new ComplexObject(testMat1,MyMesh));
-
+	objs.push_back(new ComplexObject(MyMesh, testMat1));
 	LightsPositions.push_back(Vec3Df(0,2,1));
 	Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,0) ));
 	Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,0,1) ));
