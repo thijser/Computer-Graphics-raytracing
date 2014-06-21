@@ -30,6 +30,7 @@ Vec3Df GaussianVector() {
 	return Vec3Df(generateGaussianNoise(1), generateGaussianNoise(1), generateGaussianNoise(1));
 }
 
+
 //Generates random gaussian numbers
 //Based on http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
 float generateGaussianNoise(const float &variance) {

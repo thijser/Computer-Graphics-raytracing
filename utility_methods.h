@@ -6,7 +6,6 @@
 #include "Vec3D.h"
 #include "mesh.h"
 #include "hit.h"
-
 //Return Vector with random entries
 Vec3Df RandomVector();
 

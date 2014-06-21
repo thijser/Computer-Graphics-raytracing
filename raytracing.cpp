@@ -29,9 +29,20 @@ Vec3Df colourclamp(const Vec3Df & colour){
     }
     return clamped;
 }
+Vec3Df colourNorm(const Vec3Df & colour){
+        Vec3Df ret = colour;
+    for(int i=0;i<3;i++){
+            ret[i]=1-pow(0.3,colour[i]);
+        }
+}
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
-  return backward_shading_routine(scene, origin, dest);
+  // int colournorm=1;
+  Vec3Df colour= backward_shading_routine(scene, origin, dest);
+  //if(colournorm){
+     // return colourNorm(colour);
+  // }
+  return colour;
 }
 
 //return the color of your pixel.

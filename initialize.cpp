@@ -48,7 +48,7 @@ void init() { //seed the random generator
 
 	testMat2 = Material();
 	testMat2.set_Kd(1, 1, 1);
-	testMat2.set_Ka(0.005,0.005,0.005);
+	testMat2.set_Ka(0.1,0.1,0.1);
 	testMat2.set_Ks(1, 1, 1);
 	testMat2.set_Ns(100);
 	testMat2.set_Tr(1);
@@ -76,8 +76,8 @@ void init() { //seed the random generator
 	std::vector<Intersectable*> objs;
 	objs.push_back(new ComplexObject(MyMesh, testMat1));
 	LightsPositions.push_back(Vec3Df(0,2,1));
-	Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,0) ));
-	Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,0,1) ));
+	Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,0),20 ));
+	Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,0,1),20 ));
 	objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
 	objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
 	//objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));

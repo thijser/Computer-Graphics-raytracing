@@ -11,8 +11,9 @@ class Light{
 	Vec3Df normal;
 	float radius;
 	Material material;
+        int light_num;
         Vec3Df colour; 
-		Light(Vec3Df midPoint, float radius, Vec3Df normal,Vec3Df col);		
+		Light(Vec3Df midPoint, float radius, Vec3Df normal,Vec3Df col,int numberoflights);		
 		Hit intersect(Vec3Df origin, Vec3Df dest);
 		std::vector<Vec3Df> getPointLights();
 };
