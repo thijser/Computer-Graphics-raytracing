@@ -368,7 +368,14 @@ void keyboard(unsigned char key, int x, int y)
 		//C'est nouveau!!!
 		//commencez ici et lancez vos propres fonctions par rayon.
 
-		cout<<"Raytracing"<<endl;
+		cout<<"Starting raytracing ..."<<endl;
+    int pixelsTotal = WindowSize_Y * WindowSize_X;
+    cout << " 0%";
+    for (unsigned int i = 0; i < 100; ++i) cout << " ";
+    cout << "100%" << endl;
+    cout << "  |";
+    for (unsigned int i = 0; i < 100; ++i) cout << " ";
+    cout << "|" << endl;
 
 		Image result(WindowSize_X,WindowSize_Y);
 		Vec3Df origin00, dest00;
@@ -383,6 +390,9 @@ void keyboard(unsigned char key, int x, int y)
 		produceRay(WindowSize_X-1,0, &origin10, &dest10);
 		produceRay(WindowSize_X-1,WindowSize_Y-1, &origin11, &dest11);
 
+    float fraction, previousFraction;
+    previousFraction = 0;
+    cout << "   ";
 		for (unsigned int y=0; y<WindowSize_Y;++y)
 			for (unsigned int x=0; x<WindowSize_X;++x)
 			{
@@ -399,8 +409,20 @@ void keyboard(unsigned char key, int x, int y)
 
 				Vec3Df rgb = performRayTracing(origin, dest);
 				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
-			}
 
+        int pixelsRendered = (y * WindowSize_X) + x;
+        if (pixelsRendered > 0)
+          fraction = static_cast<float>(pixelsRendered) / static_cast<float>(pixelsTotal);
+        else
+          fraction = 0;
+        float fDelta = fraction - previousFraction;
+        if (fDelta > 0.01) {
+          cout << "#";
+          cout.flush();
+          previousFraction = fraction + (0.01 - fDelta);  // Fraction plus residual
+        }
+			}
+      cout << "#" << endl;
 
 		result.writeImage("result.ppm");
 		break;
