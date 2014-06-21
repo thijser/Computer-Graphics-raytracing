@@ -1,13 +1,14 @@
 #include "Light.h"
 
 
-Light::Light(Vec3Df midpoint, float Radius, Vec3Df Normal){
+Light::Light(Vec3Df midpoint, float Radius, Vec3Df Normal, Vec3Df col){
 	midPoint = midpoint;
 	normal = Normal;
 	normal.normalize();
 	radius = Radius;
 	material = Material();
-	material.set_Ka(0.5,0.5,0.5);
+	material.set_Ka(col[0],col[1],col[2]);
+        colour = col;
 }
 
 Hit Light::intersect(Vec3Df origin, Vec3Df dest){

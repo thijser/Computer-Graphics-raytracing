@@ -55,7 +55,7 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
 				    Ray shadow_ray = Ray(h.hitPoint, LightPosition, ray.colour, SHADOW_RAY, h);
 
-				    colour += shoot_ray(shadow_ray, scene, bounce_limit);
+				    colour += Lights[i].colour*shoot_ray(shadow_ray, scene, bounce_limit);
 				    colour_additions += 1;
 				}
 			}
@@ -64,7 +64,7 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		}
 		else if(h.isHit == 2){
 		//hits light source
-			return white;
+			return h.material.Ka();
 		} 
 		else {
 			return black;

@@ -77,8 +77,8 @@ void init() { //seed the random generator
 	// objs.push_back(new ComplexObject(testMat1,MyMesh));
 
 	LightsPositions.push_back(Vec3Df(0,2,1));
-	Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0) ));
-	Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0) ));
+	Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,0) ));
+	Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,0,1) ));
 	objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
 	objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
 	//objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
