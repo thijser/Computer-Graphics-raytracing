@@ -422,7 +422,7 @@ void keyboard(unsigned char key, int x, int y)
           previousFraction = fraction + (0.01 - fDelta);  // Fraction plus residual
         }
 			}
-      cout << endl;
+      cout << "#" << endl;
 
 		result.writeImage("result.ppm");
 		break;
