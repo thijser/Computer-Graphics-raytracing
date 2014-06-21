@@ -7,7 +7,7 @@
 
 ComplexObject::ComplexObject(Mesh mesh, Material mat) {
   material = mat;
-  mesh = mesh;
+  this->mesh = mesh;
   nullVector = Vec3Df(0, 0, 0);
   noHit = Hit(0, nullVector, nullVector, material);
   initBoundingBox();
