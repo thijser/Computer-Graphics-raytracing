@@ -4,7 +4,7 @@
 enum RayType{
 	SHADOW_RAY,
 	PRIMARY_RAY,
-	REFLECTION_RAY
+	SECONDARY_RAY
 };
 
 class Ray{
@@ -16,7 +16,6 @@ class Ray{
 		RayType type;
 		Hit previous_hit;
 
-		Ray(Vec3Df origin, Vec3Df dest, Vec3Df colour, RayType type);
 		Ray(Vec3Df origin, Vec3Df dest, Vec3Df colour, RayType type, Hit previous_hit);
-		Ray reflectionVector(Hit h);
+		Ray reflectionRay(Hit h);
 };
