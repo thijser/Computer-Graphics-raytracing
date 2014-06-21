@@ -37,11 +37,11 @@ Vec3Df colourNorm(const Vec3Df & colour){
 }
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
-   int colournorm=1;
+  // int colournorm=1;
   Vec3Df colour= backward_shading_routine(scene, origin, dest);
-  if(colournorm){
-      return colourNorm(colour);
-  }
+  //if(colournorm){
+     // return colourNorm(colour);
+  // }
   return colour;
 }
 

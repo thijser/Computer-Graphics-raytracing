@@ -48,7 +48,7 @@ void init() { //seed the random generator
 
 	testMat2 = Material();
 	testMat2.set_Kd(1, 1, 1);
-	testMat2.set_Ka(0.005,0.005,0.005);
+	testMat2.set_Ka(0.1,0.1,0.1);
 	testMat2.set_Ks(1, 1, 1);
 	testMat2.set_Ns(100);
 	testMat2.set_Tr(1);

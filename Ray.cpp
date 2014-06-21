@@ -10,7 +10,7 @@ Ray::Ray(Vec3Df _origin, Vec3Df _dest, Vec3Df _colour, RayType _type, Hit _previ
 
 Ray Ray::reflectionRay(Hit h){
 	Vec3Df relative_origin = origin-h.hitPoint;
-	Vec3Df reflection_vector = relative_origin - (2*(Vec3Df::dotProduct(relative_origin, h.normal))*h.normal);
+	Vec3Df reflection_vector = (2*(Vec3Df::dotProduct(relative_origin, h.normal))*h.normal) - relative_origin;
 	reflection_vector += h.hitPoint;
 
 	return Ray(h.hitPoint, reflection_vector, colour, SECONDARY_RAY, h);

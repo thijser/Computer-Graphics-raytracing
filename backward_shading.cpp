@@ -38,11 +38,14 @@ Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df norma
 
 Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
-	if(ray.type == PRIMARY_RAY){
+	if(ray.type == PRIMARY_RAY || ray.type == SECONDARY_RAY){
 		Hit h = scene.intersect(ray.origin, ray.dest);
 		std::vector<Light> Lights = scene.getLights();
 
 		if(h.isHit == 1){
+			if(h.material.Tr() == 1){
+			 	return h.material.Ka()+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
+			}
 			//shoot shadow rays towards lights
 			Vec3Df colour = h.material.Ka();
 
@@ -52,6 +55,8 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 	    		std::vector<Vec3Df> pointLights = Lights[i].getPointLights();
 	    		for(int j = 0; j < pointLights.size(); j++){
 				    Vec3Df LightPosition = pointLights[j];
+
+				    //std::cout << LightPosition[0] << " " << LightPosition[1] << " " << LightPosition[2] << "\n";
 
 				    Ray shadow_ray = Ray(h.hitPoint, LightPosition, ray.colour, SHADOW_RAY, h);
 
@@ -85,6 +90,12 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 }
 
 Vec3Df backward_shading_routine(Scene scene, Vec3Df origin, Vec3Df dest){
+
+	// Hit h = Hit(1, Vec3Df(0,0,0), Vec3Df(0,1,0), Material());
+	// Ray d = Ray(Vec3Df(-1,1,0), Vec3Df(0,0,0), Vec3Df(1,1,1), PRIMARY_RAY, Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), Material()));
+	// Ray x = d.reflectionRay(h);
+	// std::cout << x.dest[0] << " " << x.dest[1] << " " << x.dest[2] << "\n";
+
 	Vec3Df colour = black;
 
 	Vec3Df super_sampled_dest = dest;

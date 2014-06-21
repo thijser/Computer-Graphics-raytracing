@@ -3,9 +3,7 @@
 #include <cstdlib>
 
 float rando(){
-    int r1 = rand() % 100000 - 50000;
-    float f1 = (((float) (r1)) / 50000);
-    return f1;
+    return float(rand())/RAND_MAX;
 }
 Light::Light(Vec3Df midpoint, float Radius, Vec3Df Normal, Vec3Df col,int numerofpoints){
 	midPoint = midpoint;
@@ -55,7 +53,7 @@ std::vector<Vec3Df> Light::getPointLights(){
 	//pointLights.push_back(midPoint);
 
 	for(float i =0; i <= light_num; i++){
-        	pointLights.push_back(rand()*vec1+rand()*vec2+midPoint);	
+        	pointLights.push_back(rando()*vec1+rando()*vec2+midPoint);	
 	}
 
 	return pointLights;
