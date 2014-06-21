@@ -1,14 +1,21 @@
 #include "Light.h"
+#include <ctime>
+#include <cstdlib>
 
-
-Light::Light(Vec3Df midpoint, float Radius, Vec3Df Normal, Vec3Df col){
+float rando(){
+    int r1 = rand() % 100000 - 50000;
+    float f1 = (((float) (r1)) / 50000);
+    return f1;
+}
+Light::Light(Vec3Df midpoint, float Radius, Vec3Df Normal, Vec3Df col,int numerofpoints){
 	midPoint = midpoint;
 	normal = Normal;
 	normal.normalize();
 	radius = Radius;
 	material = Material();
 	material.set_Ka(col[0],col[1],col[2]);
-        colour = col;
+        colour = col/numerofpoints;
+        light_num=numerofpoints;
 }
 
 Hit Light::intersect(Vec3Df origin, Vec3Df dest){
@@ -32,7 +39,6 @@ Hit Light::intersect(Vec3Df origin, Vec3Df dest){
 }
 
 std::vector<Vec3Df> Light::getPointLights(){
-	int light_num = 1;
 
 	std::vector<Vec3Df> pointLights;
 
@@ -45,10 +51,8 @@ std::vector<Vec3Df> Light::getPointLights(){
 
 	//pointLights.push_back(midPoint);
 
-	for(float i = (1/light_num); i <= 1; i+=(1/light_num)){
-		for(float j = (1/light_num); j <= 1; j+=(1/light_num)){
-	 		pointLights.push_back(midPoint);
-	 	}	
+	for(float i =0; i <= light_num; i++){
+        	pointLights.push_back(rand()*vec1+rand()*vec2+midPoint);	
 	}
 
 	return pointLights;
