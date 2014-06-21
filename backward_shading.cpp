@@ -43,11 +43,18 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		std::vector<Light> Lights = scene.getLights();
 
 		if(h.isHit == 1){
-			if(h.material.Tr() == 1){
-			 	return h.material.Ka()+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
+                    float invref = 1; //inverse reflection 
+                    Vec3Df colour =  h.material.Ka();
+			if(h.material.Tr() >0){
+                                invref=1;//-h.material.Tr(); 
+			 	colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
+                                if(h.material.Tr()==0){
+                                    return colour;
+                                }
 			}
+                
 			//shoot shadow rays towards lights
-			Vec3Df colour = h.material.Ka();
+			
 
 			int colour_additions = 0;
 
@@ -60,7 +67,7 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
 				    Ray shadow_ray = Ray(h.hitPoint, LightPosition, ray.colour, SHADOW_RAY, h);
 
-				    colour += Lights[i].colour*shoot_ray(shadow_ray, scene, bounce_limit);
+				    colour += invref*Lights[i].colour*shoot_ray(shadow_ray, scene, bounce_limit);
 				    colour_additions += 1;
 				}
 			}
