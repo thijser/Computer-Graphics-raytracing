@@ -5,6 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "Scene.h"
+#include "Light.h"
 
 
 extern Scene scene;
@@ -16,6 +17,7 @@ extern Material testMat2;
 extern Material testMat3;
 extern std::vector<Vec3Df> LightsPositions;
 extern std::vector<Vec3Df> LightsColours;
+extern std::vector<Light> Lights; 
 
 extern Mesh MyMesh; //Main mesh
 extern std::vector<Vec3Df> MyLightPositions;

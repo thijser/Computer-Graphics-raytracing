@@ -13,6 +13,7 @@
 #include "sphere.h"
 #include "complexObject.h"
 #include "shading.h"
+#include "backward_shading.h"
 #include "initialize.h"
 
 //Contain colours within the range of 0-1
@@ -30,13 +31,7 @@ Vec3Df colourclamp(const Vec3Df & colour){
 }
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
-
-	int maxNumberOfBounces = 1;
-	Vec3Df colour = Vec3Df(0, 0, 0);
-
-	colour += performRayTracing(origin, dest, maxNumberOfBounces);
-
-	return colourclamp(colour);
+  return backward_shading_routine(scene, origin, dest);
 }
 
 //return the color of your pixel.
@@ -61,7 +56,6 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 void yourDebugDraw() {
   //draw open gl debug stuff
   //this function is called every frame
-
   //as an example:
   glPushAttrib(GL_ALL_ATTRIB_BITS);
   glDisable(GL_LIGHTING);
@@ -75,7 +69,6 @@ void yourDebugDraw() {
   glVertex3fv(MyLightPositions[0].pointer());
   glEnd();
   glPopAttrib();
-
 }
 
 void yourKeyboardFunc(char t, int x, int y) {
@@ -84,6 +77,10 @@ void yourKeyboardFunc(char t, int x, int y) {
 
   //here I use it to get the coordinates of a ray, which I then draw in the debug function.
   produceRay(x, y, testRayOrigin, testRayDestination);
+
+  if(t == 'e'){
+    vecprint(performRayTracing(testRayOrigin, testRayDestination));
+  }
 
   std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
