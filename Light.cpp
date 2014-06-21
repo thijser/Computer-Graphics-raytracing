@@ -29,6 +29,9 @@ Hit Light::intersect(Vec3Df origin, Vec3Df dest){
 	}
 
 	float d = numerator/denominator;
+	if(d < 0){
+		return Hit(0, Vec3Df(0,0,0),Vec3Df(0,0,0), material);
+	}
 	Vec3Df hitpoint = origin+d*dest;
 
 	if((hitpoint-midPoint).getLength() <= radius){
