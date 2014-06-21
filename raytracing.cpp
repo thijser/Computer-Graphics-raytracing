@@ -78,10 +78,6 @@ void yourKeyboardFunc(char t, int x, int y) {
   //here I use it to get the coordinates of a ray, which I then draw in the debug function.
   produceRay(x, y, testRayOrigin, testRayDestination);
 
-  if(t == 'e'){
-    vecprint(performRayTracing(testRayOrigin, testRayDestination));
-  }
-
   std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
 
