@@ -13,7 +13,10 @@
 #include "sphere.h"
 #include "complexObject.h"
 #include "shading.h"
+#include "backward_shading.h"
 #include "initialize.h"
+
+//Contain colours within the range of 0-1
 Vec3Df colourclamp(const Vec3Df & colour){
     Vec3Df clamped = colour;
     for(int i=0;i<3;i++){
@@ -24,31 +27,24 @@ Vec3Df colourclamp(const Vec3Df & colour){
             clamped[i]=0;
         }
     }
-    return colour;
+    return clamped;
 }
+
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
-
-
-	int maxNumberOfBounces = 0;//4;
-	Vec3Df colour = Vec3Df(0, 0, 0);
-
-	//for (int i = 0; i < numberOfRays; i++) {
-		colour = colour + performRayTracing(origin, dest, maxNumberOfBounces);
-	//}
-	return colourclamp(colour); // numberOfRays;
+  return backward_shading_routine(scene, origin, dest);
 }
 
 //return the color of your pixel.
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 		int maxNumberOfBounces) {
-    int numberOfRays = 2;
+    	int numberOfRays = 1;
         Vec3Df dir = dest-origin;
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1;
 	if (maxNumberOfBounces < 0) {
 		return Vec3Df(0, 0, 0);
 	}
-	Hit hit = scene.intersect(origin, dest);
+	Hit hit = scene.intersect(rorigin, dest);
 	if (hit.isHit != 0) {
 		Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
 		return colour;
@@ -60,7 +56,6 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
 void yourDebugDraw() {
   //draw open gl debug stuff
   //this function is called every frame
-
   //as an example:
   glPushAttrib(GL_ALL_ATTRIB_BITS);
   glDisable(GL_LIGHTING);
@@ -74,7 +69,6 @@ void yourDebugDraw() {
   glVertex3fv(MyLightPositions[0].pointer());
   glEnd();
   glPopAttrib();
-
 }
 
 void yourKeyboardFunc(char t, int x, int y) {

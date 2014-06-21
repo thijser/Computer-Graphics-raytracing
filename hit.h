@@ -18,6 +18,10 @@ class Hit
       material = Material();
     }
 
+		Hit(){
+			Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), Material());
+		}
+
 		Hit(int fisHit, Vec3Df fhitPoint, Vec3Df fnormal, Material fmaterial){
 			isHit = fisHit;
 			hitPoint = fhitPoint;
