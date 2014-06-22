@@ -1,6 +1,7 @@
 #ifndef HIT_H
 #define HIT_H
 
+#include <string>
 #include "Vec3D.h"
 #include "mesh.h"
 
@@ -24,6 +25,18 @@ class Hit
 			normal = fnormal;
 			material = fmaterial;
 		}
+
+    inline std::string toString() {
+        std::string hit;
+        if (isHit)
+          hit = "HIT";
+        else
+          hit = "no-hit";
+
+        hit = "Hit(" + hit + ", hitPoint:" + hitPoint.toString();
+        hit += ", normal: " + normal.toString();
+        hit += ", material:" + material.name() + ")";
+    }
 };
 
 #endif

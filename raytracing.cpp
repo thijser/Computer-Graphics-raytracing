@@ -82,14 +82,27 @@ void yourDebugDraw() {
   glPopAttrib();
 }
 
-void yourKeyboardFunc(char t, int x, int y) {
-  // do what you want with the keyboard input t.
+void yourKeyboardFunc(char key, int x, int y) {
+  // do what you want with the keyboard input key.
   // x, y are the screen position
 
-  //here I use it to get the coordinates of a ray, which I then draw in the debug function.
-  produceRay(x, y, testRayOrigin, testRayDestination);
+  switch (key)
+    case 'd': {
+      // Debug ray:
 
-  std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
+      // here I use it to get the coordinates of a ray, which I then draw in
+      // the debug function.
+      produceRay(x, y, testRayOrigin, testRayDestination);
+
+      Vec3Df testRay = performRayTracing(testRayOrigin, testRayDestination);
+      Hit hit = scene.intersect(testRayOrigin, testRayDestination);
+      if (hit.isHit)
+        std::cout << "Colour: " << testRay.toString() << std::endl;
+        std::cout << "Hit: " << hit.toString() << std::endl;
+      else
+        std::cout << "Void"
+    }
+  std::cout << key << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
 
 }
