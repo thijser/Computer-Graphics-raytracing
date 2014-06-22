@@ -69,7 +69,7 @@ Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
   return Hit(1, Vec3Df(xMin, yMin, zMin), nullVector, material);
 }
 
-Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
+Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
   // hit is is where we keep track of hits with backfaces
   // For the moment we use noHit as a symbol
   Hit hit = noHit;
@@ -104,7 +104,7 @@ Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
 
     // Get intersection point of ray with triangle plane
     float r = a / b;
-    if (r < 0.0)  // ray goes away from triangle
+    if (r < small)  // ray goes away from triangle
       // Then there is no intersect
       continue;
 
@@ -152,6 +152,14 @@ Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
       }
     }
   }
+  return hit;
+}
+Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
+  Hit hit;
+  // hit = this->intersectBoundingBox(origin, dest);
+  // if (!hit.isHit)
+  //   return noHit;
+  hit = this->intersectMesh(origin, dest);
   return hit;
 }
 
