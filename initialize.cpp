@@ -13,6 +13,7 @@
 #include "initialize.h"
 #include "Scene.h"
 #include "complexObject.h"
+#include "TexturedSphere.h"
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -20,6 +21,7 @@ Vec3Df testRayDestination;
 Material testMat1;
 Material testMat2;
 Material testMat3;
+Material testMat4;
 std::vector<Vec3Df> LightsPositions;
 std::vector<Vec3Df> LightsColours;
 std::vector<Light> Lights;
@@ -43,6 +45,12 @@ void init() { //seed the random generator
   // LightsPositions.assign(5,Vec3Df(0,0,0));
   // LightsColours.assign(5,Vec3Df(1,1,1));
 
+  PPM image = PPM("map.ppm");
+
+  //cout << image.getWidth() << " " << image.getHeight() << "\n" << image.image.size() << " " << image.image[0].size() << "\n";
+  //cout << image.getWidth() << "\n";
+  //cout << image.getHeight() << "\n";
+
   testMat1 = Material();
   testMat1.set_Kd(1, 0, 0);
   testMat1.set_Ka(0.005, 0.005, 0.005);
@@ -62,6 +70,12 @@ void init() { //seed the random generator
   testMat3.set_Ks(1, 1, 1);
   testMat3.set_Ns(100);
 
+  testMat4 = Material();
+  testMat4.set_Kd(0,0,0);
+  testMat4.set_Ka(0,0,0);
+  testMat4.set_Ks(1,1,1);
+  testMat4.set_Ns(100);
+
   //load the mesh file
   //feel free to replace cube by a path to another model
   //please realize that not all OBJ files will successfully load.
@@ -70,6 +84,8 @@ void init() { //seed the random generator
   //MyMesh.loadMesh("dodgeColorTest.obj", true);
   MyMesh.computeVertexNormals();
 
+
+
   //one first move: initialize the first light source
   //at least ONE light source has to be in the scene!!!
   //here, we set it to the current location of the camera
@@ -77,12 +93,13 @@ void init() { //seed the random generator
 
   //Create scene
   std::vector<Intersectable*> objs;
-  objs.push_back(new ComplexObject(MyMesh, testMat1));
+  //objs.push_back(new ComplexObject(MyMesh, testMat2));
   LightsPositions.push_back(Vec3Df(0,2,1));
-  Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,0),20 ));
-  Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,0,1),20 ));
-  objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
-  objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
+  Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
+  Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
+  //objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
+  objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
+ //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   //objs.push_back(new Sphere(Vec3Df(4, 0, 1), 4, testMat3));
   //objs.push_back(new Sphere(Vec3Df(0, 0, 1.5), 0.1, testMat3));

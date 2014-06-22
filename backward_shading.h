@@ -11,5 +11,6 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit);
 Vec3Df diffuse(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df normal, Material material);
 Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df normal, Material material);
 Vec3Df backward_shading_routine(Scene scene, Vec3Df origin, Vec3Df dest);
+Vec3Df Texture3D(Vec3Df point);
 
 #endif

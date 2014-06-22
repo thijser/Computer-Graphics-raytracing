@@ -16,6 +16,7 @@ Vec3Df diffuse(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df normal, Material materia
 	}
 
 	return material.Kd()*cosine_angle;
+	//return Texture3D(hitpoint)*cosine_angle;
 }
 
 Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df normal, Material material){
@@ -34,6 +35,66 @@ Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df norma
 	return material.Ks()*cosine_angle;
 }
 
+Vec3Df Texture3D(Vec3Df point){
+	float length = point.getLength();
+	float fragments = 1.0/80;
+	int step = 1;
+
+	Vec3Df colour = Vec3Df(1,1,0);
+	while(length > fragments){
+		length -= fragments;
+		switch(step){
+			case 0:
+				colour = Vec3Df(1,1,0);
+				step += 1;
+				break;
+			case 1:
+				colour = Vec3Df(0,1,0);
+				step += 1;
+				break;
+			case 2:
+				colour = Vec3Df(0,1,1);
+				step += 1;
+				break;
+			case 3:
+				colour = Vec3Df(0,0,1);
+				step += 1;
+				break;
+			case 4:
+				colour = Vec3Df(1,0,1);
+				step += 1;
+				break;
+			case 5:
+				colour = Vec3Df(1,0,0);
+				step = 0;
+				break;
+		}
+	}
+
+	switch(step){
+			case 0:			
+				colour = Vec3Df(1,(1.0/fragments)*length,0);
+				break;
+			case 1:			
+				colour = Vec3Df(1-(1.0/fragments)*length,1,0);
+				break;
+			case 2:
+				colour = Vec3Df(0,1,(1.0/fragments)*length);
+				break;
+			case 3:
+				colour = Vec3Df(0,1-(1.0/fragments)*length, 1);
+				break;
+			case 4:
+				colour = Vec3Df((1.0/fragments)*length,0,1);
+				break;
+			case 5:				
+				colour = Vec3Df(1,0,1-(1.0/fragments)*length);
+				break;
+		}
+
+	return colour;
+}
+
 Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
 	if(ray.type == PRIMARY_RAY || ray.type == SECONDARY_RAY){
@@ -41,14 +102,14 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		std::vector<Light> Lights = scene.getLights();
 
 		if(h.isHit == 1){
-                    float invref = 1; //inverse reflection
-                    Vec3Df colour =  h.material.Ka();
-			if(h.material.Tr() >0){
-                                invref=1;//-h.material.Tr();
+            float invref = 1; //inverse reflection 
+            Vec3Df colour =  h.material.Ka();
+			if(h.material.Tr() > 0.001){
+                invref=1;//-h.material.Tr(); 
 			 	colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
-                                if(h.material.Tr()==0){
-                                    return colour;
-                                }
+                if(h.material.Tr()==0){
+                    return colour;
+                }
 			}
 
 			//shoot shadow rays towards lights
@@ -84,12 +145,12 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		Hit h = scene.intersect(ray.origin, ray.dest);
 		if(h.isHit == 1){
 			return ray.previous_hit.material.Ka();
-		} else {
-			Vec3Df Colour = ray.previous_hit.material.Ka();
-			Colour += diffuse(ray.previous_hit.hitPoint, ray.dest, ray.previous_hit.normal, ray.previous_hit.material)/3;
-			Colour += specular(ray.previous_hit.hitPoint, ray.dest, MyCameraPosition, ray.previous_hit.normal, ray.previous_hit.material)/3;
+		} else {	
+			Vec3Df Colour = ray.previous_hit.material.Ka();			
+			Colour += diffuse(ray.previous_hit.hitPoint, ray.dest, ray.previous_hit.normal, ray.previous_hit.material);
+			Colour += specular(ray.previous_hit.hitPoint, ray.dest, MyCameraPosition, ray.previous_hit.normal, ray.previous_hit.material);
 
-			return Colour;
+			return Colour/3;
 		}
 	}
 }

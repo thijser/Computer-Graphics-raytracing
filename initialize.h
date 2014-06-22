@@ -7,7 +7,7 @@
 #include "Config.h"
 #include "Scene.h"
 #include "Light.h"
-
+#include "ppm.h"
 
 extern Config config;
 extern Scene scene;
