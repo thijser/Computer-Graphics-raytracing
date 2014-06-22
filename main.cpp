@@ -351,85 +351,82 @@ void produceRay(int x_I, int y_I, Vec3Df & origin, Vec3Df & dest)
 }
 
 // prise en compte du clavier
-void keyboard(unsigned char key, int x, int y)
-{
-    printf("key %d pressed at %d,%d\n",key,x,y);
-    fflush(stdout);
-    switch (key)
-    {
-	case 'L':
-		MyLightPositions.push_back(getCameraPosition());
-		break;
-	case 'l':
-		MyLightPositions[MyLightPositions.size()-1]=getCameraPosition();
-		break;
-	case 'r':
-	{
-		//C'est nouveau!!!
-		//commencez ici et lancez vos propres fonctions par rayon.
+void keyboard(unsigned char key, int x, int y) {
+  printf("key %d pressed at %d,%d\n",key,x,y);
+  fflush(stdout);
+  switch (key) {
+  	case 'L':
+  		MyLightPositions.push_back(getCameraPosition());
+  		break;
+  	case 'l':
+  		MyLightPositions[MyLightPositions.size()-1]=getCameraPosition();
+  		break;
+  	case 'r': {
+  		//C'est nouveau!!!
+  		//commencez ici et lancez vos propres fonctions par rayon.
 
-		cout<<"Starting raytracing ..."<<endl;
-    int pixelsTotal = WindowSize_Y * WindowSize_X;
-    cout << " 0%";
-    for (unsigned int i = 0; i < 100; ++i) cout << " ";
-    cout << "100%" << endl;
-    cout << "  |";
-    for (unsigned int i = 0; i < 100; ++i) cout << " ";
-    cout << "|" << endl;
+  		cout<<"Starting raytracing ..."<<endl;
+      int pixelsTotal = WindowSize_Y * WindowSize_X;
+      cout << " 0%";
+      for (unsigned int i = 0; i < 100; ++i) cout << " ";
+      cout << "100%" << endl;
+      cout << "  |";
+      for (unsigned int i = 0; i < 100; ++i) cout << " ";
+      cout << "|" << endl;
 
-		Image result(WindowSize_X,WindowSize_Y);
-		Vec3Df origin00, dest00;
-		Vec3Df origin01, dest01;
-		Vec3Df origin10, dest10;
-		Vec3Df origin11, dest11;
-		Vec3Df origin, dest;
+  		Image result(WindowSize_X,WindowSize_Y);
+  		Vec3Df origin00, dest00;
+  		Vec3Df origin01, dest01;
+  		Vec3Df origin10, dest10;
+  		Vec3Df origin11, dest11;
+  		Vec3Df origin, dest;
 
 
-		produceRay(0,0, &origin00, &dest00);
-		produceRay(0,WindowSize_Y-1, &origin01, &dest01);
-		produceRay(WindowSize_X-1,0, &origin10, &dest10);
-		produceRay(WindowSize_X-1,WindowSize_Y-1, &origin11, &dest11);
+  		produceRay(0,0, &origin00, &dest00);
+  		produceRay(0,WindowSize_Y-1, &origin01, &dest01);
+  		produceRay(WindowSize_X-1,0, &origin10, &dest10);
+  		produceRay(WindowSize_X-1,WindowSize_Y-1, &origin11, &dest11);
 
-    float fraction, previousFraction;
-    previousFraction = 0;
-    cout << "   ";
-		for (unsigned int y=0; y<WindowSize_Y;++y)
-			for (unsigned int x=0; x<WindowSize_X;++x)
-			{
-				//svp, decidez vous memes quels parametres vous allez passer à la fonction
-				//e.g., maillage, triangles, sphères etc.
-				float xscale=1.0f-float(x)/(WindowSize_X-1);
-				float yscale=1.0f-float(y)/(WindowSize_Y-1);
+      float fraction, previousFraction;
+      previousFraction = 0;
+      cout << "   ";
+  		for (unsigned int y=0; y<WindowSize_Y;++y)
+  			for (unsigned int x=0; x<WindowSize_X;++x)
+  			{
+  				//svp, decidez vous memes quels parametres vous allez passer à la fonction
+  				//e.g., maillage, triangles, sphères etc.
+  				float xscale=1.0f-float(x)/(WindowSize_X-1);
+  				float yscale=1.0f-float(y)/(WindowSize_Y-1);
 
-				origin=yscale*(xscale*origin00+(1-xscale)*origin10)+
-					(1-yscale)*(xscale*origin01+(1-xscale)*origin11);
-				dest=yscale*(xscale*dest00+(1-xscale)*dest10)+
-					(1-yscale)*(xscale*dest01+(1-xscale)*dest11);
+  				origin=yscale*(xscale*origin00+(1-xscale)*origin10)+
+  					(1-yscale)*(xscale*origin01+(1-xscale)*origin11);
+  				dest=yscale*(xscale*dest00+(1-xscale)*dest10)+
+  					(1-yscale)*(xscale*dest01+(1-xscale)*dest11);
 
 
-				Vec3Df rgb = performRayTracing(origin, dest);
-				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
+  				Vec3Df rgb = performRayTracing(origin, dest);
+  				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
 
-        int pixelsRendered = (y * WindowSize_X) + x;
-        if (pixelsRendered > 0)
-          fraction = static_cast<float>(pixelsRendered) / static_cast<float>(pixelsTotal);
-        else
-          fraction = 0;
-        float fDelta = fraction - previousFraction;
-        if (fDelta > 0.01) {
-          cout << "#";
-          cout.flush();
-          previousFraction = fraction + (0.01 - fDelta);  // Fraction plus residual
-        }
-			}
-      cout << "#" << endl;
+          int pixelsRendered = (y * WindowSize_X) + x;
+          if (pixelsRendered > 0)
+            fraction = static_cast<float>(pixelsRendered) / static_cast<float>(pixelsTotal);
+          else
+            fraction = 0;
+          float fDelta = fraction - previousFraction;
+          if (fDelta > 0.01) {
+            cout << "#";
+            cout.flush();
+            previousFraction = fraction + (0.01 - fDelta);  // Fraction plus residual
+          }
+  			}
+        cout << "#" << endl;
 
-		result.writeImage("result.ppm");
-		break;
-	}
-	case 27:     // touche ESC
-        exit(0);
-    }
+  		result.writeImage("result.ppm");
+  		break;
+  	}
+  	case 27:     // touche ESC
+      exit(0);
+  }
 
 	yourKeyboardFunc(key,x,y);
 }

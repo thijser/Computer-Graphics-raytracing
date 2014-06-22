@@ -1,7 +1,8 @@
 #pragma once
-//3D vectorial computations 
+//3D vectorial computations
 #include <cmath>
 #include <iostream>
+#include <string>
 
 template<typename T> class Vec3D;
 
@@ -251,6 +252,11 @@ public:
                       n[0]*q[0] + n[1]*q[1] + n[2]*q[2]);
     }
 
+    inline std::string toString() {
+        char str[30];
+        sprintf(str, "[ %.4g, %.4g, %.4g ]", p[0], p[1], p[2]);
+        return str;
+    }
 
 	T * pointer()
 	{
@@ -262,7 +268,7 @@ public:
 		return p;
 	}
 
-		
+
 	T p[3];
 };
 
