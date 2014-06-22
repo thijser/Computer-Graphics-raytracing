@@ -95,12 +95,12 @@ void yourKeyboardFunc(char key, int x, int y) {
       produceRay(x, y,                   testRayOrigin, testRayDestination);
       Vec3Df testRay = performRayTracing(testRayOrigin, testRayDestination);
       Hit hit =          scene.intersect(testRayOrigin, testRayDestination);
-      if (hit.isHit) {
-        //std::cout << "Colour: " << testRay.toString() << std::endl;
-        //std::cout << "Hit: " << hit.toString() << std::endl;
-      } else {
-        std::cout << "Void" << std::endl;
-      }
+      std::cout << "Colour: " << testRay.toString() << std::endl;
+      // if (hit.isHit) {
+      //   std::cout << "Hit: " << hit.toString() << std::endl;
+      // } else {
+      //   std::cout << "Void" << std::endl;
+      // }
     }
   std::cout << key << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
