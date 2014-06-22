@@ -46,7 +46,7 @@ Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
 
   // This section should be stored in a ray datastructure where it's cached
   Vec3Df direction = dest - origin;
-  Vec3Df inverseDirection = Vec3Df(1/direction[0], 1/direction[1], 1/direction[3]);
+  Vec3Df inverseDirection = Vec3Df(1/direction[0], 1/direction[1], 1/direction[2]);
   int sign[3];
   sign[0] = (inverseDirection[0] < 0);
   sign[1] = (inverseDirection[1] < 0);
@@ -58,8 +58,8 @@ Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
   xMax = (bounds[ 1-sign[0] ][0] - origin[0]) * inverseDirection[0];
   yMin = (bounds[  sign[1]  ][1] - origin[1]) * inverseDirection[1];
   yMax = (bounds[ 1-sign[1] ][1] - origin[1]) * inverseDirection[1];
-  yMin = (bounds[  sign[2]  ][2] - origin[2]) * inverseDirection[2];
-  yMax = (bounds[ 1-sign[2] ][2] - origin[2]) * inverseDirection[2];
+  zMin = (bounds[  sign[2]  ][2] - origin[2]) * inverseDirection[2];
+  zMax = (bounds[ 1-sign[2] ][2] - origin[2]) * inverseDirection[2];
   if ( (xMin > yMax) || (yMin > xMax) ) return noHit;
   if (yMin > xMin) xMin = yMin;
   if (yMax < xMax) xMax = yMax;
@@ -156,9 +156,9 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
 }
 Hit ComplexObject::intersect(Vec3Df origin, Vec3Df dest) {
   Hit hit;
-  // hit = this->intersectBoundingBox(origin, dest);
-  // if (!hit.isHit)
-  //   return noHit;
+  hit = this->intersectBoundingBox(origin, dest);
+  if (!hit.isHit)
+    return noHit;
   hit = this->intersectMesh(origin, dest);
   return hit;
 }

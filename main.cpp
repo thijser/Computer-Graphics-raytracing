@@ -4,14 +4,16 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
-#include <GL/glut.h> // This is located in the “GLUT” directory on MacOSX
+#include <GL/glut.h>  // This is located in the “GLUT” directory on MacOSX
 #endif
+#include <time.h>
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
-#include "raytracing.h"
-#include "mesh.h"
-#include "traqueboule.h"
+#include "./raytracing.h"
+#include "./config.h"
+#include "./mesh.h"
+#include "./traqueboule.h"
 
 Vec3Df MyCameraPosition;
 
@@ -146,14 +148,6 @@ Mesh MyMesh; //Main mesh
 enum { TRIANGLE=0, MODEL=1, };
 unsigned int type = MODEL;
 
-unsigned int WindowSize_X = 800;  // largeur fenetre
-unsigned int WindowSize_Y = 800;  // hauteur fenetre
-
-unsigned int RayTracingResolutionX = 800;  // largeur fenetre
-unsigned int RayTracingResolutionY = 800;  // largeur fenetre
-
-
-
 void dessinerRepere(float length)
 {
 	glDisable(GL_LIGHTING);
@@ -231,7 +225,7 @@ int main(int argc, char** argv)
 
     // position et taille de la fenetre
     glutInitWindowPosition(200, 100);
-    glutInitWindowSize(WindowSize_X,WindowSize_Y);
+    glutInitWindowSize(config.viewportSize_X, config.viewportSize_Y);
     glutCreateWindow(argv[0]);
 
     // Initialisation du point de vue
@@ -364,17 +358,28 @@ void keyboard(unsigned char key, int x, int y) {
   	case 'r': {
   		//C'est nouveau!!!
   		//commencez ici et lancez vos propres fonctions par rayon.
+      cout << config.toString() << endl;
+  		cout << "Starting raytracing ..." << endl;
 
-  		cout<<"Starting raytracing ..."<<endl;
-      int pixelsTotal = WindowSize_Y * WindowSize_X;
-      cout << " 0%";
-      for (unsigned int i = 0; i < 100; ++i) cout << " ";
-      cout << "100%" << endl;
-      cout << "  |";
-      for (unsigned int i = 0; i < 100; ++i) cout << " ";
-      cout << "|" << endl;
-
-  		Image result(WindowSize_X,WindowSize_Y);
+      int pixelsTotal, pixelsRendered;
+      float fraction, previousFraction;
+      bool timing = true;
+      clock_t t1, t2;
+      if (timing) {
+        t1 = clock();
+      }
+      bool progressBar = true;
+      int barLength = 100;
+      if (progressBar) {
+        pixelsTotal = config.renderSize_X * config.renderSize_Y;
+        cout << " 0%";
+        for (unsigned int i = 0; i < barLength; ++i) cout << " ";
+        cout << "100%" << endl;
+        cout << "  |";
+        for (unsigned int i = 0; i < barLength; ++i) cout << " ";
+        cout << "|" << endl;
+      }
+  		Image result(config.renderSize_X,config.renderSize_Y);
   		Vec3Df origin00, dest00;
   		Vec3Df origin01, dest01;
   		Vec3Df origin10, dest10;
@@ -383,20 +388,21 @@ void keyboard(unsigned char key, int x, int y) {
 
 
   		produceRay(0,0, &origin00, &dest00);
-  		produceRay(0,WindowSize_Y-1, &origin01, &dest01);
-  		produceRay(WindowSize_X-1,0, &origin10, &dest10);
-  		produceRay(WindowSize_X-1,WindowSize_Y-1, &origin11, &dest11);
+  		produceRay(0,config.viewportSize_Y-1, &origin01, &dest01);
+  		produceRay(config.viewportSize_X-1,0, &origin10, &dest10);
+  		produceRay(config.viewportSize_X-1,config.viewportSize_Y-1, &origin11, &dest11);
 
-      float fraction, previousFraction;
-      previousFraction = 0;
-      cout << "   ";
-  		for (unsigned int y=0; y<WindowSize_Y;++y)
-  			for (unsigned int x=0; x<WindowSize_X;++x)
+      if (progressBar) {
+        previousFraction = 0;
+        cout << "   ";
+      }
+  		for (unsigned int y=0; y<config.renderSize_X;++y)
+  			for (unsigned int x=0; x<config.renderSize_Y;++x)
   			{
   				//svp, decidez vous memes quels parametres vous allez passer à la fonction
   				//e.g., maillage, triangles, sphères etc.
-  				float xscale=1.0f-float(x)/(WindowSize_X-1);
-  				float yscale=1.0f-float(y)/(WindowSize_Y-1);
+  				float xscale=1.0f-float(x)/(config.renderSize_X-1);
+  				float yscale=1.0f-float(y)/(config.renderSize_Y-1);
 
   				origin=yscale*(xscale*origin00+(1-xscale)*origin10)+
   					(1-yscale)*(xscale*origin01+(1-xscale)*origin11);
@@ -407,20 +413,31 @@ void keyboard(unsigned char key, int x, int y) {
   				Vec3Df rgb = performRayTracing(origin, dest);
   				result.setPixel(x,y, RGBValue(rgb[0], rgb[1], rgb[2]));
 
-          int pixelsRendered = (y * WindowSize_X) + x;
+        // Update progress bar in console output
+        if (progressBar) {
+          pixelsRendered = (y * config.renderSize_X) + x;
           if (pixelsRendered > 0)
             fraction = static_cast<float>(pixelsRendered) / static_cast<float>(pixelsTotal);
           else
             fraction = 0;
           float fDelta = fraction - previousFraction;
-          if (fDelta > 0.01) {
+          if (fDelta > 1.0f/barLength) {
             cout << "#";
             cout.flush();
-            previousFraction = fraction + (0.01 - fDelta);  // Fraction plus residual
+            // Fraction plus residual
+            previousFraction = fraction + (1.0f/barLength - fDelta);
           }
   			}
+      }
+      if (progressBar)
         cout << "#" << endl;
-
+      if (timing) {
+        t2 = clock();
+        float diffSeconds = ((static_cast<float>(t2) - static_cast<float>(t1)) / 1000000.0F);
+        cout << endl;
+        std::cout << "   Render time: " << diffSeconds << " seconds" << std::endl;
+        cout << endl;
+      }
   		result.writeImage("result.ppm");
   		break;
   	}
