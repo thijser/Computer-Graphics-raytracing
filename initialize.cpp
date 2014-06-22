@@ -24,11 +24,14 @@ std::vector<Vec3Df> LightsPositions;
 std::vector<Vec3Df> LightsColours;
 std::vector<Light> Lights;
 Scene scene;
+Config config;
 
 //use this function for any preprocessing of the mesh.
 
 void init() { //seed the random generator
   srand(time(0));
+
+  Config config = Config("Standard", 800, 800, 3, 4);
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));

@@ -3,8 +3,6 @@
 #include "Light.h"
 
 float max_random_shift = 0.0025;
-int amount_of_rays = 3;
-int max_bounce = 4;
 Vec3Df black = Vec3Df(0,0,0);
 Vec3Df white = Vec3Df(1,1,1);
 
@@ -12,7 +10,7 @@ Vec3Df diffuse(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df normal, Material materia
 	Vec3Df light_vector = lightPos-hitpoint;
 	light_vector.normalize();
 	float cosine_angle = Vec3Df::dotProduct(normal, light_vector);
-	
+
 	if(cosine_angle < 0){
 		return black;
 	}
@@ -28,7 +26,7 @@ Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df norma
 	Vec3Df H = light_vector+camera_vector;
 	H.normalize();
 	float cosine_angle = std::pow(Vec3Df::dotProduct(normal, H),material.Ns());
-	
+
 	if(cosine_angle < 0){
 		return black;
 	}
@@ -43,18 +41,18 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		std::vector<Light> Lights = scene.getLights();
 
 		if(h.isHit == 1){
-                    float invref = 1; //inverse reflection 
+                    float invref = 1; //inverse reflection
                     Vec3Df colour =  h.material.Ka();
 			if(h.material.Tr() >0){
-                                invref=1;//-h.material.Tr(); 
+                                invref=1;//-h.material.Tr();
 			 	colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
                                 if(h.material.Tr()==0){
                                     return colour;
                                 }
 			}
-                
+
 			//shoot shadow rays towards lights
-			
+
 
 			int colour_additions = 0;
 
@@ -77,7 +75,7 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		else if(h.isHit == 2){
 		//hits light source
 			return h.material.Ka();
-		} 
+		}
 		else {
 			return black;
 		}
@@ -86,8 +84,8 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		Hit h = scene.intersect(ray.origin, ray.dest);
 		if(h.isHit == 1){
 			return ray.previous_hit.material.Ka();
-		} else {	
-			Vec3Df Colour = ray.previous_hit.material.Ka();			
+		} else {
+			Vec3Df Colour = ray.previous_hit.material.Ka();
 			Colour += diffuse(ray.previous_hit.hitPoint, ray.dest, ray.previous_hit.normal, ray.previous_hit.material)/3;
 			Colour += specular(ray.previous_hit.hitPoint, ray.dest, MyCameraPosition, ray.previous_hit.normal, ray.previous_hit.material)/3;
 
@@ -117,18 +115,18 @@ Vec3Df backward_shading_routine(Scene scene, Vec3Df origin, Vec3Df dest){
 	super_sampled_dest -= vec1;
 	super_sampled_dest -= vec2;
 
-	for(int i = 0; i < amount_of_rays; i++){
-		for(int j = 0; j < amount_of_rays; j++){
+	for(int i = 0; i < config.raysPerPixelD; i++){
+		for(int j = 0; j < config.raysPerPixelD; j++){
 			Vec3Df t_super_sampled_dest = super_sampled_dest;
 			t_super_sampled_dest += i*vec1 + j*vec2;
 			t_super_sampled_dest *= dest.getLength();
-		 	colour += shoot_ray(Ray(origin, t_super_sampled_dest, white, PRIMARY_RAY, Hit()), scene, max_bounce);
+		 	colour += shoot_ray(Ray(origin, t_super_sampled_dest, white, PRIMARY_RAY, Hit()), scene, config.maxBounces);
 		 }
 	}
 
-	colour /= amount_of_rays*amount_of_rays;
+	colour /= config.raysPerPixelD*config.raysPerPixelD;
 
-	//colour = shoot_ray(Ray(origin, dest, white, PRIMARY_RAY, Hit()), scene, max_bounce);
+	//colour = shoot_ray(Ray(origin, dest, white, PRIMARY_RAY, Hit()), scene, config.maxBounces);
 
 	return colour;
 }

@@ -4,10 +4,12 @@
 #include "mesh.h"
 #include <ctime>
 #include <cstdlib>
+#include "Config.h"
 #include "Scene.h"
 #include "Light.h"
 
 
+extern Config config;
 extern Scene scene;
 
 extern Vec3Df testRayOrigin;
@@ -17,7 +19,7 @@ extern Material testMat2;
 extern Material testMat3;
 extern std::vector<Vec3Df> LightsPositions;
 extern std::vector<Vec3Df> LightsColours;
-extern std::vector<Light> Lights; 
+extern std::vector<Light> Lights;
 
 extern Mesh MyMesh; //Main mesh
 extern std::vector<Vec3Df> MyLightPositions;
