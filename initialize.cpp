@@ -33,7 +33,10 @@ Config config;
 void init() { //seed the random generator
   srand(time(0));
 
-  Config config = Config("Standard", 800, 800, 3, 4);
+  Config configHigh =     Config("1080 HD", 1080, 1920, 1080, 1920, 4, 4);
+  Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4);
+  Config configLow =      Config("Low",      200,  200,  800,  800,  1, 1);
+  config = configLow;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));
@@ -93,7 +96,7 @@ void init() { //seed the random generator
 
   //Create scene
   std::vector<Intersectable*> objs;
-  //objs.push_back(new ComplexObject(MyMesh, testMat2));
+  objs.push_back(new ComplexObject(MyMesh, testMat2));
   LightsPositions.push_back(Vec3Df(0,2,1));
   Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
   Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));

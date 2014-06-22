@@ -9,6 +9,8 @@ class Config {
     char * description;
     int renderSize_X;
     int renderSize_Y;
+    int viewportSize_X;
+    int viewportSize_Y;
     int raysPerPixelD;
     int maxBounces;
 
@@ -16,14 +18,18 @@ class Config {
       description =         "Standard";
       renderSize_X =        800;
       renderSize_Y =        800;
+      viewportSize_X =      800;
+      viewportSize_Y =      800;
       raysPerPixelD =       3;
       maxBounces =          4;
     }
 
-    Config(char * fDescription, int x, int y, int fRaysPerPixelD, int fMaxBounces){
+    Config(char * fDescription, int outputX, int outputY, int viewportX, int viewportY, int fRaysPerPixelD, int fMaxBounces){
       description = fDescription;
-      renderSize_X = x;
-      renderSize_Y = y;
+      renderSize_X = outputX;
+      renderSize_Y = outputY;
+      viewportSize_X = viewportX;
+      viewportSize_Y = viewportY;
       raysPerPixelD = fRaysPerPixelD;
       maxBounces = fMaxBounces;
     }
