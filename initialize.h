@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include "Scene.h"
 #include "Light.h"
+#include "ppm.h"
 
 
 extern Scene scene;

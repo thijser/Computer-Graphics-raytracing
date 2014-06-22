@@ -18,4 +18,5 @@ class Ray{
 
 		Ray(Vec3Df origin, Vec3Df dest, Vec3Df colour, RayType type, Hit previous_hit);
 		Ray reflectionRay(Hit h);
+		Ray refractionRay(Hit h, float medium1, float medium2);
 };
