@@ -11,7 +11,7 @@
 #include <math.h>
 #include <assert.h>
 #include "./raytracing.h"
-#include "./config.h"
+#include "./Config.h"
 #include "./mesh.h"
 #include "./traqueboule.h"
 
