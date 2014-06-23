@@ -87,7 +87,7 @@ void init() { //seed the random generator
   //Nonetheless, if they come from Blender, they should.
   MyMesh.loadMesh("cube.obj", true);
   MyMesh.computeVertexNormals();
-  MyMesh = translateMesh(MyMesh, Vec3Df(0,-3,-2));
+  MyMesh = translateMesh(MyMesh, Vec3Df(0,0,-3));
 
 	
 
@@ -113,7 +113,7 @@ void init() { //seed the random generator
   
   Oven.loadMesh("oven.obj", true);
   Oven.computeVertexNormals();
-  objs.push_back(new ComplexObject(Oven, testMat1));//Oven.materials.back()));
+  objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
 
    scene = Scene(objs, Lights);
@@ -122,6 +122,15 @@ void init() { //seed the random generator
 }
 
 Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
+	for (unsigned int i=0;i<mesh.vertices.size();++i){
+		mesh.vertices[i].p += translate;
+		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
+	}
+	return mesh;
+	//computeVertexNormals();
+}
+
+Mesh rotateMesh(Mesh mesh, const Vec3Df & translate) {
 	for (unsigned int i=0;i<mesh.vertices.size();++i){
 		mesh.vertices[i].p += translate;
 		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
