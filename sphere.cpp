@@ -43,20 +43,16 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		float t1 = ((-1*B)-sqrt(discriminant))/(2*A);
 		float t2 = ((-1*B)+sqrt(discriminant))/(2*A);
 		
-		if(t1 < 0 && t2 < 0){			
+		if(t1 < MIN_T && t2 < MIN_T){			
 			return Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), material);
-		} else if(t1 < 0){
+		} else if(t1 < MIN_T){
 			t = t2;
-		} else if(t2 < 0){
+		} else if(t2 < MIN_T){
 			t = t1;
 		} else if(t1 < t2){
 			t = t1;
 		} else {
 			t = t2;
-		}
-
-		if(std::abs(t) < MIN_T){
-			return Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), material);
 		}
 
 		Vec3Df hitpoint = (o+(d*t));
