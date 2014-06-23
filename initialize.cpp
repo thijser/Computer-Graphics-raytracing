@@ -85,9 +85,10 @@ void init() { //seed the random generator
   //please realize that not all OBJ files will successfully load.
   //Nonetheless, if they come from Blender, they should.
   MyMesh.loadMesh("cube.obj", true);
-  //MyMesh.loadMesh("dodgeColorTest.obj", true);
   MyMesh.computeVertexNormals();
 
+
+	
 
 
   //one first move: initialize the first light source
@@ -97,7 +98,7 @@ void init() { //seed the random generator
 
   //Create scene
   std::vector<Intersectable*> objs;
-  objs.push_back(new ComplexObject(MyMesh, testMat2));
+  objs.push_back(new ComplexObject(MyMesh));
   LightsPositions.push_back(Vec3Df(0,2,1));
   Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
   Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));

@@ -5,11 +5,11 @@
 #include "./complexObject.h"
 #include "./hit.h"
 
-ComplexObject::ComplexObject(Mesh mesh, Material mat) {
-  material = mat;
+ComplexObject::ComplexObject(Mesh mesh) {
   this->mesh = mesh;
+  Material defaultMaterial = mesh.materials.front();
   nullVector = Vec3Df(0, 0, 0);
-  noHit = Hit(0, nullVector, nullVector, material);
+  noHit = Hit(0, nullVector, nullVector, defaultMaterial);
   initBoundingBox();
 }
 
@@ -66,7 +66,7 @@ Hit ComplexObject::intersectBoundingBox(Vec3Df origin, Vec3Df dest) {
   if ( (xMin > zMax) || (zMin > xMax) ) return noHit;
   if (zMin > xMin) xMin = zMin;
   if (zMax < xMax) xMax = zMax;
-  return Hit(1, Vec3Df(xMin, yMin, zMin), nullVector, material);
+  return Hit(1, Vec3Df(xMin, yMin, zMin), nullVector, defaultMaterial);
 }
 
 Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
@@ -76,6 +76,10 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
 
   for (int i = 0; i < mesh.triangles.size(); i++) {
     Triangle T = mesh.triangles[i];
+
+    //now return the actual material which is defined in the mesh
+    Material actualMat = mesh.materials[mesh.triangleMaterials[i]];
+
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
     Vertex v0 = mesh.vertices[T.v[0]];
     Vertex v1 = mesh.vertices[T.v[1]];
@@ -136,7 +140,7 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
     // We check if we already found a hit before
     if (hit.isHit == 0) {
       // In that case we can just assign the current hit as the first one
-      hit = Hit(1, I, n, material);
+      hit = Hit(1, I, n, actualMat);
     } else {
       // If so, we check whether this one is closer to the origin
       float previousDistance = (hit.hitPoint - origin).getLength();
@@ -145,7 +149,7 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
       // Now check if it's closer
       if (currentDistance < previousDistance) {
         // If it is then we save the current hit
-        hit = Hit(1, I, n, material);
+        hit = Hit(1, I, n, actualMat);
       } else {
         // If not we discard this hit and continue looking for one which is
         continue;
