@@ -6,7 +6,7 @@ float max_random_shift = 0.0025;
 Vec3Df black = Vec3Df(0,0,0);
 Vec3Df white = Vec3Df(1,1,1);
 float air = 1;
-float glass = 1;
+float glass = 1.5;
 
 Vec3Df diffuse(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df normal, Material material){
 	Vec3Df light_vector = lightPos-hitpoint;
@@ -154,15 +154,15 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 	} else if(ray.type == SHADOW_RAY){
 		Hit h = scene.intersect(ray.origin, ray.dest);
 		if(h.isHit == 1){
-			// if(h.material.Tr() > 3){
-			// 	if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-			// 		Ray refrac = ray.refractionRay(h, air, glass);
-			// 		refrac.setLight(ray.dest);
-			// 		return shoot_ray(refrac, scene, bounce_limit-1);
-			// 	} else {					
-			// 		return shoot_ray(Ray(h.hitPoint, ray.light, ray.colour, SHADOW_RAY, h), scene, bounce_limit);
-			// 	}
-			// } 
+			if(h.material.Tr() > 3){
+				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
+					Ray refrac = ray.refractionRay(h, air, glass);
+					refrac.setLight(ray.dest);
+					return shoot_ray(refrac, scene, bounce_limit-1);
+				} else {					
+					return shoot_ray(Ray(h.hitPoint, ray.light, ray.colour, SHADOW_RAY, h), scene, bounce_limit);
+				}
+			} 
 			return ray.previous_hit.material.Ka();
 		} else {	
 			Vec3Df Colour = ray.previous_hit.material.Ka();			
