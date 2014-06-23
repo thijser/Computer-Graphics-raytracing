@@ -182,7 +182,7 @@ void dessiner( )
 		break;
 	case MODEL:
 		{
-			MyMesh.draw();
+			//MyMesh.draw();
                         Oven.draw();
                         
 			//glBegin(GL_TRIANGLES);
