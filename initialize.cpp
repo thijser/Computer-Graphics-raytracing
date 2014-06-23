@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "complexObject.h"
 #include "TexturedSphere.h"
+#include "mesh.h" 
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -88,6 +89,7 @@ void init() { //seed the random generator
   //MyMesh.loadMesh("dodgeColorTest.obj", true);
  // MyMesh.computeVertexNormals();
 
+	
 
 
   //one first move: initialize the first light source
@@ -101,8 +103,8 @@ void init() { //seed the random generator
   Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
   Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
   //objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
-  objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
- //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
+  //objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
+  //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   //objs.push_back(new Sphere(Vec3Df(4, 0, 1), 4, testMat3));
   //objs.push_back(new Sphere(Vec3Df(0, 0, 1.5), 0.1, testMat3));
@@ -110,12 +112,30 @@ void init() { //seed the random generator
   
   Oven.loadMesh("everything.obj", true);
   Oven.computeVertexNormals();
-  objs.push_back(new ComplexObject(Oven, testMat1));//Oven.materials.back()));
+  objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
 
    scene = Scene(objs, Lights);
    
    
+}
+
+Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
+	for (unsigned int i=0;i<mesh.vertices.size();++i){
+		mesh.vertices[i].p += translate;
+		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
+	}
+	return mesh;
+	//computeVertexNormals();
+}
+
+Mesh rotateMesh(Mesh mesh, const Vec3Df & translate) {
+	for (unsigned int i=0;i<mesh.vertices.size();++i){
+		mesh.vertices[i].p += translate;
+		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
+	}
+	return mesh;
+	//computeVertexNormals();
 }
 
 

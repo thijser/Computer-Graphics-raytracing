@@ -33,5 +33,7 @@ extern unsigned int RayTracingResolutionY;  // largeur fenetre
 
 //use this function for any preprocessing of the mesh.
 void init();
+Mesh translateMesh(Mesh mesh, const Vec3Df & translate);
+
 
 #endif

@@ -4,8 +4,8 @@
 #include "intersectable.h"
 
 class ComplexObject: public Intersectable {
-  Material material;
   Mesh mesh;
+  Material defaultMaterial;
   Vec3Df nullVector;
   Hit noHit;
 
@@ -13,7 +13,7 @@ class ComplexObject: public Intersectable {
   Vec3Df bounds[2];
 
   public:
-    ComplexObject(Mesh mesh, Material material);
+    ComplexObject(Mesh mesh);
     Hit intersect(Vec3Df origin, Vec3Df dest);
     Hit intersectMesh(Vec3Df origin, Vec3Df dest);
     Hit intersectBoundingBox(Vec3Df origin, Vec3Df dest);
