@@ -7,6 +7,7 @@ Ray::Ray(Vec3Df _origin, Vec3Df _dest, Vec3Df _colour, RayType _type, Hit _previ
 	colour = _colour;
 	type = _type;
 	previous_hit = _previous_hit;
+	light = Vec3Df(0,0,0);
 }
 
 Ray Ray::reflectionRay(Hit h){
@@ -15,6 +16,10 @@ Ray Ray::reflectionRay(Hit h){
 	reflection_vector += h.hitPoint;
 
 	return Ray(h.hitPoint, reflection_vector, colour, SECONDARY_RAY, h);
+}
+
+void Ray::setLight(Vec3Df l){
+	light = l;
 }
 
 void Ray::pprint(){
@@ -46,6 +51,7 @@ Ray Ray::refractionRay(Hit h, float n1, float n2){
 
 	Vec3Df n = h.normal;
 	Vec3Df i = dest-origin;
+	i.normalize();
 	float rindex = n1/n2;
 	float cosoi = Vec3Df::dotProduct(i,n);
 	float sin2ot = rindex*rindex*(1-(cosoi*cosoi));	

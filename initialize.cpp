@@ -74,12 +74,14 @@ void init() { //seed the random generator
   testMat3.set_Ka(0, 0, 0);
   testMat3.set_Ks(1, 1, 1);
   testMat3.set_Ns(100);
+  testMat3.set_Tr(0);
 
   testMat4 = Material();
-  testMat4.set_Kd(0,0,0);
-  testMat4.set_Ka(0,0,0);
+  testMat4.set_Kd(1,1,1);
+  testMat4.set_Ka(0.1,0.1,0.1);
   testMat4.set_Ks(1,1,1);
   testMat4.set_Ns(100);
+  testMat4.set_Tr(4);
 
   //load the mesh file
   //feel free to replace cube by a path to another model
@@ -100,20 +102,20 @@ void init() { //seed the random generator
   //Create scene
   std::vector<Intersectable*> objs;
   LightsPositions.push_back(Vec3Df(0,2,1));
-  Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
-  Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
+  // Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
+  // Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
   //objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
   //objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
   //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
-  //objs.push_back(new Sphere(Vec3Df(4, 0, 1), 4, testMat3));
-  //objs.push_back(new Sphere(Vec3Df(0, 0, 1.5), 0.1, testMat3));
+  Lights.push_back( Light( Vec3Df(1,0,3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
+  objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
+  objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
  
   
-  Oven.loadMesh("everything.obj", true);
-  Oven.computeVertexNormals();
-  objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
-
+  // Oven.loadMesh("cube.obj", true);
+  // Oven.computeVertexNormals();
+  // objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
    scene = Scene(objs, Lights);
    
