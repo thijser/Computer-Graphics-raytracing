@@ -35,10 +35,10 @@ class Config {
     }
 
     inline std::string toString() {
-      int maxLength = 500;
+      const int maxLength = 500;
       char * format = "Config( '%s', %dx%d, rays per pixel: %d, max bounces: %d)";
       char config[maxLength];
-      snprintf(config, maxLength, format, description, renderSize_X, renderSize_Y, (raysPerPixelD*raysPerPixelD), maxBounces);
+      _snprintf(config, maxLength, format, description, renderSize_X, renderSize_Y, (raysPerPixelD*raysPerPixelD), maxBounces);
       return config;
     }
 };

@@ -13,7 +13,7 @@ PPM::PPM(string file_name){
 
 	string buffer = "";
 	int i;
-	for(i = 0; line[i] != ' '; i++){
+	for(i = 0; line[i] != ' ' || line.length() > 0; i++){
 		buffer += line[i];
 	}
 	i++;

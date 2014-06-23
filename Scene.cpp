@@ -29,7 +29,7 @@ Hit Scene::intersect(Vec3Df origin, Vec3Df dest){
 		}
 	}
 
-	for(int i; i < Lights.size(); i++){
+	for(int i = 0; i < Lights.size(); i++){
 		Hit l_h = Lights[i].intersect(origin,dest);
 		if(l_h.isHit){			
 			Vec3Df length_vector = l_h.hitPoint-origin;
