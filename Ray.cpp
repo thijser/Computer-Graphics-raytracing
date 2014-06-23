@@ -1,4 +1,5 @@
 #include "Ray.h"
+#include <math.h>
 
 Ray::Ray(Vec3Df _origin, Vec3Df _dest, Vec3Df _colour, RayType _type, Hit _previous_hit){
 	origin = _origin;
@@ -9,8 +10,8 @@ Ray::Ray(Vec3Df _origin, Vec3Df _dest, Vec3Df _colour, RayType _type, Hit _previ
 }
 
 Ray Ray::reflectionRay(Hit h){
-	Vec3Df relative_origin = origin-h.hitPoint;
-	Vec3Df reflection_vector = (2*(Vec3Df::dotProduct(relative_origin, h.normal))*h.normal) - relative_origin;
+	Vec3Df V = origin-h.hitPoint;
+	Vec3Df reflection_vector = (2*(Vec3Df::dotProduct(V, h.normal))*h.normal) - V;
 	reflection_vector += h.hitPoint;
 
 	return Ray(h.hitPoint, reflection_vector, colour, SECONDARY_RAY, h);
@@ -18,14 +19,22 @@ Ray Ray::reflectionRay(Hit h){
 
 //https://www.cs.unc.edu/~rademach/xroads-RT/RTarticle.html
 Ray Ray::refractionRay(Hit h, float medium1, float medium2){
-	Vec3Df relative_origin = h.hitPoint - origin;
-	float c1 = -Vec3Df::dotProduct(h.normal, relative_origin);
-	
 	float refrac_index = medium1/medium2;
+
+	Vec3Df V = h.hitPoint - origin;
+	V.normalize();
+	float c1 = -Vec3Df::dotProduct(h.normal, V);
+
+	if(c1 < 0){
+		h.normal *= -1;
+		c1 *= -1;
+		refrac_index = 1/refrac_index;
+	}
+	
 	// Snells law
 	float c2 = sqrt( 1 - pow(refrac_index, 2) * (1 - pow(c1,2)) );
 
-	Vec3Df refrac_ray = (refrac_index * relative_origin) + (refrac_index * c1 - c2) * h.normal;	
+	Vec3Df refrac_ray = (refrac_index * V) + (refrac_index * c1 - c2) * h.normal;	
 
-	return Ray(h.hitPoint, refrac_ray, colour, SECONDARY_RAY, h);
+	return Ray(h.hitPoint, h.hitPoint + refrac_ray, colour, SECONDARY_RAY, h);
 }
