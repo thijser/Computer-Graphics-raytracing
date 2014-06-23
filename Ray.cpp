@@ -18,7 +18,7 @@ Ray Ray::reflectionRay(Hit h){
 
 //https://www.cs.unc.edu/~rademach/xroads-RT/RTarticle.html
 Ray Ray::refractionRay(Hit h, float medium1, float medium2){
-	Vec3Df relative_origin = origin - h.hitPoint;
+	Vec3Df relative_origin = h.hitPoint - origin;
 	float c1 = -Vec3Df::dotProduct(h.normal, relative_origin);
 	
 	float refrac_index = medium1/medium2;
