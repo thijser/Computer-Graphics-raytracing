@@ -25,7 +25,7 @@ Ray Ray::refractionRay(Hit h, float medium1, float medium2){
 	float refrac_index = medium1/medium2;
 	float c2 = sqrt( 1 - pow(refrac_index, 2) * (1 - pow(c,2)) );
 
-	Vec3Df refrac_ray = (h.normal * (origin-h.hitPoint)) + h.normal*(refrac_index * c - c2);
+	Vec3Df refrac_ray = (refrac_index * (origin-h.hitPoint)) + h.normal*(refrac_index * c - c2);
 
 	return Ray(h.hitPoint, refrac_ray, colour, SECONDARY_RAY, h);
 }
