@@ -96,6 +96,7 @@ Vec3Df Texture3D(Vec3Df point){
 }
 
 Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
+	//Test
 
 	if(ray.type == PRIMARY_RAY || ray.type == SECONDARY_RAY){
 		Hit h = scene.intersect(ray.origin, ray.dest);
@@ -104,13 +105,22 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		if(h.isHit == 1){
             float invref = 1; //inverse reflection 
             Vec3Df colour =  h.material.Ka();
-			if(h.material.Tr() > 0.001){
+			if(h.material.Tr() > 0.001 && h.material.Tr() <= 3){
                 invref=1;//-h.material.Tr(); 
 			 	colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
-                if(h.material.Tr()==0){
-                    return colour;
-                }
 			}
+
+
+			if(h.material.Tr() > 3){
+				float air = 1;
+				float glass = 1.5;
+
+				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
+					return shoot_ray(ray.refractionRay(h, air, glass), scene, bounce_limit-1);
+				} else {					
+					return shoot_ray(ray.refractionRay(h, glass, air), scene, bounce_limit-1);
+				}
+			} 
 
 			//shoot shadow rays towards lights
 
