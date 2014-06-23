@@ -183,6 +183,8 @@ void dessiner( )
 	case MODEL:
 		{
 			MyMesh.draw();
+                        Oven.draw();
+                        
 			//glBegin(GL_TRIANGLES);
 
 			//for (unsigned int i=0;i<MyMesh.triangles.size();++i)

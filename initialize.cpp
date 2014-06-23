@@ -28,12 +28,12 @@ std::vector<Vec3Df> LightsColours;
 std::vector<Light> Lights;
 Scene scene;
 Config config;
-
-//use this function for any preprocessing of the mesh.
+Mesh Oven;
+//ple this function for any preprocessing of the mesh.
 
 void init() { //seed the random generator
   srand(time(0));
-
+  Config configUltra =          Config("Ultra", 1680 , 2460 ,1680 , 2460 ,16 ,16);
   Config configHigh =     Config("1080 HD", 1080, 1920, 1080, 1920, 4, 4);
   Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4);
   Config configMedium = Config("Medium", 800, 800, 800, 800, 2, 2);
@@ -58,7 +58,7 @@ void init() { //seed the random generator
 
   testMat1 = Material();
   testMat1.set_Kd(1, 0, 0);
-  testMat1.set_Ka(0.005, 0.005, 0.005);
+  testMat1.set_Ka(1, 0.005, 0.005);
   testMat1.set_Ks(1, 1, 1);
   testMat1.set_Ns(100);
 
@@ -109,7 +109,16 @@ void init() { //seed the random generator
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   //objs.push_back(new Sphere(Vec3Df(4, 0, 1), 4, testMat3));
   //objs.push_back(new Sphere(Vec3Df(0, 0, 1.5), 0.1, testMat3));
-  scene = Scene(objs, Lights);
+ 
+  
+  Oven.loadMesh("oven.obj", true);
+  Oven.computeVertexNormals();
+  objs.push_back(new ComplexObject(Oven, testMat1));//Oven.materials.back()));
+
+
+   scene = Scene(objs, Lights);
+   
+   
 }
 
 Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
