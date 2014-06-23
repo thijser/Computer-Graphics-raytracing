@@ -372,7 +372,9 @@ bool Mesh::loadMesh(const char * filename, bool randomizeTriangulation)
         }
         memset(&s, 0, LINE_LEN);
     }
-	fclose(in);
+	if (in != NULL) {
+		fclose(in);
+	}
     return true;
 }
 
