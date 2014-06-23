@@ -255,7 +255,7 @@ public:
 
     std::string toString() {
         char str[30];
-        _snprintf(str, 100, "[ %.4g, %.4g, %.4g ]", p[0], p[1], p[2]);
+        snprintf(str, 100, "[ %.4g, %.4g, %.4g ]", p[0], p[1], p[2]);
         return str;
     }
 
