@@ -113,7 +113,7 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
 			if(h.material.Tr() > 3){
 				float air = 1;
-				float glass = 1.5;
+				float glass = 1;
 
 				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
 					return shoot_ray(ray.refractionRay(h, air, glass), scene, bounce_limit-1);
