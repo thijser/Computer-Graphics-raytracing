@@ -25,7 +25,7 @@ Ray Ray::refractionRay(Hit h, float medium1, float medium2){
 	// Snells law
 	float c2 = sqrt( 1 - pow(refrac_index, 2) * (1 - pow(c,2)) );
 
-	Vec3Df refrac_ray = (refrac_index * relative_origin) + (refrac_index * c1 - c2) * h.normal;
+	Vec3Df refrac_ray = (refrac_index * relative_origin) + (refrac_index * c1 - c2) * h.normal;	
 
 	return Ray(h.hitPoint, refrac_ray, colour, SECONDARY_RAY, h);
 }
