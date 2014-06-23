@@ -78,7 +78,7 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
     Triangle T = mesh.triangles[i];
 
     //now return the actual material which is defined in the mesh
-    Material actualMat = mesh.materials[mesh.triangleMaterials[i]];
+    Material actualMat = mesh.materials.front();//mesh.materials[mesh.triangleMaterials[i]];
 
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
     Vertex v0 = mesh.vertices[T.v[0]];
