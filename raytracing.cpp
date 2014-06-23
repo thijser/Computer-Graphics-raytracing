@@ -89,7 +89,7 @@ void yourKeyboardFunc(char key, int x, int y) {
   // do what you want with the keyboard input key.
   // x, y are the screen position
 
-  switch (key)
+  switch (key) {
     case 'd': {
       // Debug ray:
 
@@ -99,12 +99,15 @@ void yourKeyboardFunc(char key, int x, int y) {
       Vec3Df testRay = performRayTracing(testRayOrigin, testRayDestination);
       Hit hit =          scene.intersect(testRayOrigin, testRayDestination);
       std::cout << "Colour: " << testRay.toString() << std::endl;
-      // if (hit.isHit) {
-      //   std::cout << "Hit: " << hit.toString() << std::endl;
-      // } else {
-      //   std::cout << "Void" << std::endl;
-      // }
+      if (hit.isHit) {
+        std::cout << "Hit: " << std::endl;//hit.toString() << std::endl;
+      } else {
+        std::cout << "Void" << std::endl;
+      }
     }
+    case 'D':
+      std::cout << "Capital D!" << std::endl;
+  }
   std::cout << key << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
 
