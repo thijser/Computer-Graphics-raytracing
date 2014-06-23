@@ -22,6 +22,7 @@ extern std::vector<Vec3Df> LightsColours;
 extern std::vector<Light> Lights;
 
 extern Mesh MyMesh; //Main mesh
+extern Mesh Oven;//the ovens
 extern std::vector<Vec3Df> MyLightPositions;
 extern Vec3Df MyCameraPosition; //currCamera
 extern unsigned int WindowSize_X;//window resolution width
