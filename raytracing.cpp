@@ -34,6 +34,7 @@ Vec3Df colourNorm(const Vec3Df & colour){
     for(int i=0;i<3;i++){
             ret[i]=1-pow(0.3,colour[i]);
         }
+	return ret;
 }
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {

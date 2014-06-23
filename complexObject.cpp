@@ -16,8 +16,12 @@ ComplexObject::ComplexObject(Mesh mesh) {
 
 void ComplexObject::initBoundingBox() {
   // Where we keep track of the following bounds
-  float xMin, yMin, zMin =  std::numeric_limits<float>::max();
-  float xMax, yMax, zMax = -std::numeric_limits<float>::max();
+	float xMin = std::numeric_limits<float>::max();
+	float yMin = std::numeric_limits<float>::max();
+	float zMin = std::numeric_limits<float>::max();
+	float xMax = -std::numeric_limits<float>::max();
+	float yMax = -std::numeric_limits<float>::max();
+	float zMax = -std::numeric_limits<float>::max();
 
   for (int triangle = 0; triangle < mesh.triangles.size(); triangle++) {
     Triangle T = mesh.triangles[triangle];
