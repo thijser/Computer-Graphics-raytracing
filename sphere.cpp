@@ -1,5 +1,7 @@
 #include "sphere.h"
 
+#define MIN_T 0.0001
+
 Sphere::Sphere(Vec3Df midPoint, float radius, Material mat){
 	sphereMidPoint = midPoint;
 	sphereRadius = radius;
@@ -7,6 +9,7 @@ Sphere::Sphere(Vec3Df midPoint, float radius, Material mat){
 }
 
 Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
+
 	Vec3Df o = origin - sphereMidPoint;
 	Vec3Df d = dest - sphereMidPoint;
 
@@ -25,6 +28,12 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		return Hit(0,Vec3Df(0,0,0), Vec3Df(0,0,0), material);
 	} if(discriminant == 0){
 		float t = (-1*B)/(2*A);
+
+		if(std::abs(t) < MIN_T){
+			return Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), material);
+		}
+
+
 		Vec3Df hitpoint = (o+(d*t));
 		Vec3Df normal = hitpoint;
 		normal.normalize();
@@ -33,8 +42,10 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		float t;
 		float t1 = ((-1*B)-sqrt(discriminant))/(2*A);
 		float t2 = ((-1*B)+sqrt(discriminant))/(2*A);
-
-		if(t1 < 0){
+		
+		if(t1 < 0 && t2 < 0){			
+			return Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), material);
+		} else if(t1 < 0){
 			t = t2;
 		} else if(t2 < 0){
 			t = t1;
@@ -43,9 +54,13 @@ Hit Sphere::intersect(Vec3Df origin, Vec3Df dest){
 		} else {
 			t = t2;
 		}
-		
+
+		if(std::abs(t) < MIN_T){
+			return Hit(0, Vec3Df(0,0,0), Vec3Df(0,0,0), material);
+		}
+
 		Vec3Df hitpoint = (o+(d*t));
-		//Klopt deze normal?
+
 		Vec3Df normal = hitpoint;
 		normal.normalize();
 

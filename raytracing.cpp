@@ -13,6 +13,7 @@
 #include "sphere.h"
 #include "complexObject.h"
 #include "shading.h"
+#include "backward_shading.h"
 #include "initialize.h"
 
 //Contain colours within the range of 0-1
@@ -28,15 +29,20 @@ Vec3Df colourclamp(const Vec3Df & colour){
     }
     return clamped;
 }
+Vec3Df colourNorm(const Vec3Df & colour){
+        Vec3Df ret = colour;
+    for(int i=0;i<3;i++){
+            ret[i]=1-pow(0.3,colour[i]);
+        }
+}
 
 Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest) {
-
-	int maxNumberOfBounces = 1;
-	Vec3Df colour = Vec3Df(0, 0, 0);
-
-	colour += performRayTracing(origin, dest, maxNumberOfBounces);
-
-	return colourclamp(colour);
+  // int colournorm=1;
+  Vec3Df colour= backward_shading_routine(scene, origin, dest);
+  //if(colournorm){
+     // return colourNorm(colour);
+  // }
+  return colour;
 }
 
 //return the color of your pixel.
@@ -47,21 +53,20 @@ Vec3Df performRayTracing(const Vec3Df & origin, const Vec3Df & dest,
         dir.normalize();
         Vec3Df rorigin = origin+dir*0.1;
 	if (maxNumberOfBounces < 0) {
-		return Vec3Df(0,0,0);
+		return Vec3Df(0, 0, 0);
 	}
 	Hit hit = scene.intersect(rorigin, dest);
 	if (hit.isHit != 0) {
 		Vec3Df colour = findColour2(hit, rorigin, maxNumberOfBounces ,numberOfRays);
 		return colour;
 	} else {
-		return Vec3Df(0,0,0);
+		return Vec3Df(0, 0, 0);
 	}
 }
 
 void yourDebugDraw() {
   //draw open gl debug stuff
   //this function is called every frame
-
   //as an example:
   glPushAttrib(GL_ALL_ATTRIB_BITS);
   glDisable(GL_LIGHTING);
@@ -75,17 +80,32 @@ void yourDebugDraw() {
   glVertex3fv(MyLightPositions[0].pointer());
   glEnd();
   glPopAttrib();
-
 }
 
-void yourKeyboardFunc(char t, int x, int y) {
-  // do what you want with the keyboard input t.
+void yourKeyboardFunc(char key, int x, int y) {
+  // do what you want with the keyboard input key.
   // x, y are the screen position
 
-  //here I use it to get the coordinates of a ray, which I then draw in the debug function.
-  produceRay(x, y, testRayOrigin, testRayDestination);
+  switch (key) {
+    case 'd': {
+      // Debug ray:
 
-  std::cout << t << " pressed! The mouse was in location " << x << "," << y << "!"
+      // here I use it to get the coordinates of a ray, which I then draw in
+      // the debug function.
+      produceRay(x, y,                   testRayOrigin, testRayDestination);
+      Vec3Df testRay = performRayTracing(testRayOrigin, testRayDestination);
+      Hit hit =          scene.intersect(testRayOrigin, testRayDestination);
+      std::cout << "Colour: " << testRay.toString() << std::endl;
+      if (hit.isHit) {
+        std::cout << "Hit: " << std::endl;//hit.toString() << std::endl;
+      } else {
+        std::cout << "Void" << std::endl;
+      }
+    }
+    case 'D':
+      std::cout << "Capital D!" << std::endl;
+  }
+  std::cout << key << " pressed! The mouse was in location " << x << "," << y << "!"
   		<< std::endl;
 
 }
