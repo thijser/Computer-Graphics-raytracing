@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "complexObject.h"
 #include "TexturedSphere.h"
+#include "mesh.h" 
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -37,7 +38,7 @@ void init() { //seed the random generator
   Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4);
   Config configMedium = Config("Medium", 800, 800, 800, 800, 2, 2);
   Config configLow =      Config("Low",      200,  200,  800,  800,  1, 1);
-  config = configMedium;
+  config = configLow;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));
@@ -86,7 +87,7 @@ void init() { //seed the random generator
   //Nonetheless, if they come from Blender, they should.
   MyMesh.loadMesh("cube.obj", true);
   MyMesh.computeVertexNormals();
-
+  MyMesh = translateMesh(MyMesh, Vec3Df(0,-3,-2));
 
 	
 
@@ -103,12 +104,21 @@ void init() { //seed the random generator
   Lights.push_back( Light( Vec3Df(0,1.5,1.3), 0.5, Vec3Df(0,-1,0),Vec3Df(1,1,1), 20 ) );
   Lights.push_back( Light( Vec3Df(1,0,1.3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
   //objs.push_back(new Sphere(Vec3Df(0, -0.5, 1), 0.5, testMat2));
-  objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
- //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
+  //objs.push_back(new TexturedSphere(Vec3Df(0, -0.5, 1), 0.5, testMat4, "map.ppm"));
+  //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   //objs.push_back(new Sphere(Vec3Df(4, 0, 1), 4, testMat3));
   //objs.push_back(new Sphere(Vec3Df(0, 0, 1.5), 0.1, testMat3));
   scene = Scene(objs, Lights);
+}
+
+Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
+	for (unsigned int i=0;i<mesh.vertices.size();++i){
+		mesh.vertices[i].p += translate;
+		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
+	}
+	return mesh;
+	//computeVertexNormals();
 }
 
 
