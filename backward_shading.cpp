@@ -114,21 +114,15 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 
 
 			if(h.material.Tr() > 3){
-				float prevRefIdx = 1.0f;
+				float prevRefIdx = (ray.previous_hit.material.has_Ni()) ? ray.previous_hit.material.has_Ni() : 1.0f;
+                float refIdx = (h.material.has_Ni()) ? h.material.Ni() : 1.0f;
                 Vec3Df color = Vec3Df(0, 0, 0);
-                
-                if(h.material.has_Ka()) {
-                    color = h.material.Ka();
-                }
-				if(ray.previous_hit.material.has_Ni()) {
-					prevRefIdx = ray.previous_hit.material.Ni();
-				}
-                
+
 				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-					return color + shoot_ray(ray.refractionRay(h, prevRefIdx, h.material.Ni()), scene, bounce_limit-1);
+					return    shoot_ray(ray.refractionRay(h, prevRefIdx, refIdx), scene, bounce_limit-1);
                 } else {	
                     Hit new_h = Hit(h.isHit, h.hitPoint, h.normal*-1, h.material);
-                    return color + shoot_ray(ray.refractionRay(new_h, h.material.Ni(), prevRefIdx), scene, bounce_limit-1);
+                    return  shoot_ray(ray.refractionRay(new_h, refIdx, prevRefIdx), scene, bounce_limit-1);
                 }
 			}
 
@@ -166,7 +160,9 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 		if(h.isHit == 1){
 			if(h.material.Tr() > 3){
 				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-					Ray refrac = ray.refractionRay(h, air, glass);
+                    float prevRefIdx = (ray.previous_hit.material.has_Ni()) ? ray.previous_hit.material.has_Ni() : 1.0f;
+                    float refIdx = (h.material.has_Ni()) ? h.material.Ni() : 1.0f;
+					Ray refrac = ray.refractionRay(h, prevRefIdx, refIdx);
                     refrac.setLight(ray.dest);
 					return shoot_ray(refrac, scene, bounce_limit-1);
 				} else {	
