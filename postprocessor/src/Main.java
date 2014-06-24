@@ -8,7 +8,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class Main {
-	static final String input = "/home/thijs/Desktop/flames.png";
+	static final String input = "/home/thijs/Desktop/robot.png";
 	static final String outputloc = "/home/thijs/Desktop/flames2.png";
 	static int size = 10;
 	static int range = 10;
@@ -21,12 +21,28 @@ public class Main {
 		for (int x = 0; x < bi.getWidth(); x++) {
 			for (int y = 0; y < bi.getHeight(); y++) {
 				output.setRGB(x, y,
-						getColourOil(bi, x, y, bi.getWidth(), bi.getHeight()));
+						getSketchRGB(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
 			}
 		}
 
 		File outputfile = new File(outputloc);
 		ImageIO.write(output, "png", outputfile);
+	}
+	
+	public static int getSketchRGB(BufferedImage bi, int x, int y, int width,
+			int height){
+		 if (x==0)
+			 return 0;
+		 if (y==0)
+			 return 0;
+		 int locdiff= Math.abs((getInsensity(bi.getRGB(x-1, y)))-getInsensity(bi.getRGB(x, y)))+Math.abs((getInsensity(bi.getRGB(x, y-1)))-getInsensity(bi.getRGB(x, y)));
+		 if(locdiff>255){
+			 locdiff=255;
+		 }
+		 return new Color(locdiff,locdiff,locdiff).getRGB();
+		 
+		 
+		
 	}
 
 	public static int getColourOil(BufferedImage bi, int x, int y, int width,
