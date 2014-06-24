@@ -14,7 +14,7 @@
 #include "Scene.h"
 #include "complexObject.h"
 #include "TexturedSphere.h"
-#include "mesh.h" 
+#include "mesh.h"
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -33,11 +33,11 @@ Mesh Oven;
 
 void init() { //seed the random generator
   srand(time(0));
-  Config configUltra =          Config("Ultra", 1680 , 2460 ,1680 , 2460 ,16 ,16);
-  Config configHigh =     Config("1080 HD", 1080, 1920, 1080, 1920, 4, 4);
-  Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4);
+  Config configUltra = Config("Ultra", 1680 , 2460 ,1680 , 2460 ,16 ,16);
+  Config configHigh = Config("1080 HD", 1080, 1920, 1080, 1920, 4, 4);
+  Config configStandard = Config("Standard", 800, 800, 800, 800, 3, 4);
   Config configMedium = Config("Medium", 800, 800, 800, 800, 2, 2);
-  Config configLow =      Config("Low",      200,  200,  800,  800,  1, 1);
+  Config configLow = Config("Low", 200, 200, 800, 800, 1, 1);
   config = configLow;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
@@ -91,7 +91,7 @@ void init() { //seed the random generator
   //MyMesh.loadMesh("dodgeColorTest.obj", true);
  // MyMesh.computeVertexNormals();
 
-	
+
 
 
   //one first move: initialize the first light source
@@ -109,26 +109,13 @@ void init() { //seed the random generator
   //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   Lights.push_back( Light( Vec3Df(1,0,3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
-<<<<<<< HEAD
-  objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
-  objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
+  //objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
+  //objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
  
   
-  // Oven.loadMesh("cube.obj", true);
-  // Oven.computeVertexNormals();
-  // objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
-=======
- // objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
- // objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
- 
-  Oven.loadMesh("everything.obj", true);
-  Oven.computeVertexNormals();
-  objs.push_back(new ComplexObject(Oven),Oven.materials.back());
-
-//  objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
- // objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
-
->>>>>>> 75c92716a676d26363fec3b7956017b16621e73f
+  Oven.loadMesh("cube.obj", true);
+   Oven.computeVertexNormals();
+   objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
    scene = Scene(objs, Lights);
    
@@ -141,16 +128,4 @@ Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
 		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
 	}
 	return mesh;
-	//computeVertexNormals();
 }
-
-Mesh rotateMesh(Mesh mesh, const Vec3Df & translate) {
-	for (unsigned int i=0;i<mesh.vertices.size();++i){
-		mesh.vertices[i].p += translate;
-		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
-	}
-	return mesh;
-	//computeVertexNormals();
-}
-
-

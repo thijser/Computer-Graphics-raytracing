@@ -7,7 +7,7 @@
 
 ComplexObject::ComplexObject(Mesh mesh) {
   this->mesh = mesh;
-  Material defaultMaterial = mesh.materials.front();
+  Material defaultMaterial = Material();
   nullVector = Vec3Df(0, 0, 0);
   noHit = Hit(0, nullVector, nullVector, defaultMaterial);
   initBoundingBox();
@@ -79,7 +79,7 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
   Hit hit = noHit;
 
    //Material that is displayed if no material is found in Mesh
-   Material errorMat;
+   Material errorMat = Material();
    errorMat.set_Kd(1,1,0);
    errorMat.set_Ka(1,1,0);
    errorMat.set_Ks(1,1,0);
@@ -92,9 +92,12 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
     Triangle T = mesh.triangles[i];
 
     //now return the actual material which is defined in the mesh
-    int materialIndex = mesh.triangleMaterials[i]; 
-    if(0 <= materialIndex && materialIndex <= mesh.materials.size()){
-      actualMat = mesh.materials[materialIndex];
+    int materialIndex = 999;
+    if(mesh.triangleMaterials.size()>0){
+  	materialIndex = mesh.triangleMaterials[i]; 
+    }
+    if(0 <= materialIndex && materialIndex < mesh.materials.size()){
+   	actualMat = mesh.materials[materialIndex];
     }
 
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
@@ -112,14 +115,14 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
     float b = Vec3Df::dotProduct(n, dest);
 
     // Use this as a threshold to avoid division overflow
-    if (fabs(b) < 0.00000001) {
+    if (fabs(b) < 0.0000001) {
       // ray is parallel to triangle plane (either precisely on or disjoint from plane)
       continue;
     }
     
     // Get intersection point of ray with triangle plane
     float r = a / b;
-    if (r < 0.00001)  // ray goes away from triangle
+    if (r < 0.01)  // ray goes away from triangle
     {
 	continue;
     }

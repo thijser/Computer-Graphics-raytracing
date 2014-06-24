@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class Main {
+
 	static final String input = "/home/thijs/Desktop/robot.png";
 	static final String outputloc = "/home/thijs/Desktop/flames2.png";
 	static int size = 10;
@@ -21,7 +22,8 @@ public class Main {
 		for (int x = 0; x < bi.getWidth(); x++) {
 			for (int y = 0; y < bi.getHeight(); y++) {
 				output.setRGB(x, y,
-						getSketchRGB(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
+						getColourOil(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
+		//				getSketchRGB(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
 			}
 		}
 
