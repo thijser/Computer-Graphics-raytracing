@@ -33,6 +33,7 @@ class Material {
           Tr_=m.Tr_;
           Tr_is_set_=m.Tr_is_set_; // transperency
           illum_ = m.illum_;
+          
           name_=m.name_;
           return (*this);
       };
