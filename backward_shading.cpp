@@ -9,90 +9,90 @@ float air = 1;
 float glass = 1.5;
 
 Vec3Df diffuse(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df normal, Material material){
-Vec3Df light_vector = lightPos-hitpoint;
-light_vector.normalize();
-float cosine_angle = Vec3Df::dotProduct(normal, light_vector);
+    Vec3Df light_vector = lightPos-hitpoint;
+    light_vector.normalize();
+    float cosine_angle = Vec3Df::dotProduct(normal, light_vector);
 
-if(cosine_angle < 0){
-return black;
-}
+    if(cosine_angle < 0){
+        return black;
+    }
 
-return material.Kd()*cosine_angle;
+    return material.Kd()*cosine_angle;
 //return Texture3D(hitpoint)*cosine_angle;
 }
 
 Vec3Df specular(Vec3Df hitpoint, Vec3Df lightPos, Vec3Df cameraPos, Vec3Df normal, Material material){
-Vec3Df light_vector = lightPos-hitpoint;
-Vec3Df camera_vector = cameraPos-hitpoint;
-light_vector.normalize();
-camera_vector.normalize();
-Vec3Df H = light_vector+camera_vector;
-H.normalize();
-float cosine_angle = std::pow(Vec3Df::dotProduct(normal, H),material.Ns());
+    Vec3Df light_vector = lightPos-hitpoint;
+    Vec3Df camera_vector = cameraPos-hitpoint;
+    light_vector.normalize();
+    camera_vector.normalize();
+    Vec3Df H = light_vector+camera_vector;
+    H.normalize();
+    float cosine_angle = std::pow(Vec3Df::dotProduct(normal, H),material.Ns());
 
-if(cosine_angle < 0){
-return black;
-}
+    if(cosine_angle < 0){
+        return black;
+    }
 
-return material.Ks()*cosine_angle;
+    return material.Ks()*cosine_angle;
 }
 
 Vec3Df Texture3D(Vec3Df point){
-float length = point.getLength();
-float fragments = 1.0/80;
-int step = 1;
+    float length = point.getLength();
+    float fragments = 1.0/80;
+    int step = 1;
 
-Vec3Df colour = Vec3Df(1,1,0);
-while(length > fragments){
-length -= fragments;
-switch(step){
-case 0:
-colour = Vec3Df(1,1,0);
-step += 1;
-break;
-case 1:
-colour = Vec3Df(0,1,0);
-step += 1;
-break;
-case 2:
-colour = Vec3Df(0,1,1);
-step += 1;
-break;
-case 3:
-colour = Vec3Df(0,0,1);
-step += 1;
-break;
-case 4:
-colour = Vec3Df(1,0,1);
-step += 1;
-break;
-case 5:
-colour = Vec3Df(1,0,0);
-step = 0;
-break;
-}
-}
+    Vec3Df colour = Vec3Df(1,1,0);
+    while(length > fragments){
+        length -= fragments;
+        switch(step){
+            case 0:
+                colour = Vec3Df(1,1,0);
+                step += 1;
+                break;
+            case 1:
+                colour = Vec3Df(0,1,0);
+                step += 1;
+                break;
+            case 2:
+                colour = Vec3Df(0,1,1);
+                step += 1;
+                break;
+            case 3:
+                colour = Vec3Df(0,0,1);
+                step += 1;
+                break;
+            case 4:
+                colour = Vec3Df(1,0,1);
+                step += 1;
+                break;
+            case 5:
+                colour = Vec3Df(1,0,0);
+                step = 0;
+                break;
+        }
+    }
 
-switch(step){
-case 0:	
-colour = Vec3Df(1,(1.0/fragments)*length,0);
-break;
-case 1:	
-colour = Vec3Df(1-(1.0/fragments)*length,1,0);
-break;
-case 2:
-colour = Vec3Df(0,1,(1.0/fragments)*length);
-break;
-case 3:
-colour = Vec3Df(0,1-(1.0/fragments)*length, 1);
-break;
-case 4:
-colour = Vec3Df((1.0/fragments)*length,0,1);
-break;
-case 5:	
-colour = Vec3Df(1,0,1-(1.0/fragments)*length);
-break;
-}
+    switch(step){
+        case 0:	
+            colour = Vec3Df(1,(1.0/fragments)*length,0);
+            break;
+        case 1:	
+            colour = Vec3Df(1-(1.0/fragments)*length,1,0);
+            break;
+        case 2:
+            colour = Vec3Df(0,1,(1.0/fragments)*length);
+            break;
+        case 3:
+            colour = Vec3Df(0,1-(1.0/fragments)*length, 1);
+            break;
+        case 4:
+            colour = Vec3Df((1.0/fragments)*length,0,1);
+            break;
+        case 5:	
+            colour = Vec3Df(1,0,1-(1.0/fragments)*length);
+            break;
+    }
 
 return colour;
 }
@@ -100,78 +100,75 @@ return colour;
 Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 //Test
 
-if(ray.type == PRIMARY_RAY || ray.type == SECONDARY_RAY){
-Hit h = scene.intersect(ray.origin, ray.dest);
-std::vector<Light> Lights = scene.getLights();
+    if(ray.type == PRIMARY_RAY || ray.type == SECONDARY_RAY){
+        Hit h = scene.intersect(ray.origin, ray.dest);
+        std::vector<Light> Lights = scene.getLights();
 
-if(h.isHit == 1){
+        if(h.isHit == 1){
             float invref = 1; //inverse reflection
             Vec3Df colour = h.material.Ka();
-if(h.material.Tr() > 0.001 && h.material.Tr() <= 3){
+            if(h.material.Tr() > 0.001 && h.material.Tr() <= 3){
                 invref=1;//-h.material.Tr();
-colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
-}
+                colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
+            }
 
 
-if(h.material.Tr() > 3){
-if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-return shoot_ray(ray.refractionRay(h, air, glass), scene, bounce_limit-1);
-} else {	
-Hit new_h = Hit(h.isHit, h.hitPoint, h.normal*-1, h.material);
-return shoot_ray(ray.refractionRay(new_h, glass, air), scene, bounce_limit-1);
-}
-}
+            if(h.material.Tr() > 3){
+                if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
+                    return shoot_ray(ray.refractionRay(h, air, glass), scene, bounce_limit-1);
+                } else {	
+                    Hit new_h = Hit(h.isHit, h.hitPoint, h.normal*-1, h.material);
+                    return shoot_ray(ray.refractionRay(new_h, glass, air), scene, bounce_limit-1);
+                }
+            }
 
-//shoot shadow rays towards lights
+            //shoot shadow rays towards lights
 
 
-int colour_additions = 0;
+            int colour_additions = 0;
 
-for(int i = 0; i < Lights.size(); i++){
-std::vector<Vec3Df> pointLights = Lights[i].getPointLights();
-for(int j = 0; j < pointLights.size(); j++){
-Vec3Df LightPosition = pointLights[j];
+            for(int i = 0; i < Lights.size(); i++){
+                std::vector<Vec3Df> pointLights = Lights[i].getPointLights();
+                for(int j = 0; j < pointLights.size(); j++){
+                Vec3Df LightPosition = pointLights[j];
+                //std::cout << LightPosition[0] << " " << LightPosition[1] << " " << LightPosition[2] << "\n";
+                Ray shadow_ray = Ray(h.hitPoint, LightPosition, ray.colour, SHADOW_RAY, h);
+                colour += invref*Lights[i].colour*shoot_ray(shadow_ray, scene, bounce_limit);
+                colour_additions += 1;
+                }
+            }
 
-//std::cout << LightPosition[0] << " " << LightPosition[1] << " " << LightPosition[2] << "\n";
+            return colour;
+        }
+        else if(h.isHit == 2){
+            //hits light source
+            return h.material.Ka();
+        }
+        else {
+            return black;
+        }
 
-Ray shadow_ray = Ray(h.hitPoint, LightPosition, ray.colour, SHADOW_RAY, h);
+    } else if(ray.type == SHADOW_RAY){
+        Hit h = scene.intersect(ray.origin, ray.dest);
+        if(h.isHit == 1){
+            if(h.material.Tr() > 3){
+                if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
+                    Ray refrac = ray.refractionRay(h, air, glass);
+                    refrac.setLight(ray.dest);
+                    return shoot_ray(refrac, scene, bounce_limit-1);
+                } else {	
+                    return shoot_ray(Ray(h.hitPoint, ray.light, ray.colour, SHADOW_RAY, h), scene, bounce_limit);
+                }
+            }
+            return ray.previous_hit.material.Ka();
+        } else {	
+            Vec3Df Colour = ray.previous_hit.material.Ka();	
+            Colour += diffuse(ray.previous_hit.hitPoint, ray.dest, ray.previous_hit.normal, ray.previous_hit.material);
+            Colour += specular(ray.previous_hit.hitPoint, ray.dest, MyCameraPosition, ray.previous_hit.normal, ray.previous_hit.material);
 
-colour += invref*Lights[i].colour*shoot_ray(shadow_ray, scene, bounce_limit);
-colour_additions += 1;
-}
-}
-
-return colour;
-}
-else if(h.isHit == 2){
-//hits light source
-return h.material.Ka();
-}
-else {
-return black;
-}
-
-} else if(ray.type == SHADOW_RAY){
-Hit h = scene.intersect(ray.origin, ray.dest);
-if(h.isHit == 1){
-if(h.material.Tr() > 3){
-if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-Ray refrac = ray.refractionRay(h, air, glass);
-refrac.setLight(ray.dest);
-return shoot_ray(refrac, scene, bounce_limit-1);
-} else {	
-return shoot_ray(Ray(h.hitPoint, ray.light, ray.colour, SHADOW_RAY, h), scene, bounce_limit);
-}
-}
-return ray.previous_hit.material.Ka();
-} else {	
-Vec3Df Colour = ray.previous_hit.material.Ka();	
-Colour += diffuse(ray.previous_hit.hitPoint, ray.dest, ray.previous_hit.normal, ray.previous_hit.material);
-Colour += specular(ray.previous_hit.hitPoint, ray.dest, MyCameraPosition, ray.previous_hit.normal, ray.previous_hit.material);
-
-return Colour/3;
-}
-}
+            return Colour/3;
+        }
+    }
 }
 
 Vec3Df backward_shading_routine(Scene scene, Vec3Df origin, Vec3Df dest){
