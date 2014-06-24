@@ -38,7 +38,7 @@ void init() { //seed the random generator
   Config configStandard = Config("Standard", 800, 800, 800, 800, 3, 4);
   Config configMedium = Config("Medium", 800, 800, 800, 800, 2, 2);
   Config configLow = Config("Low", 200, 200, 800, 800, 1, 1);
-  config = configLow;
+  config = configMedium;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));
@@ -113,9 +113,9 @@ void init() { //seed the random generator
   objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
  
   
-  // Oven.loadMesh("cube.obj", true);
-  // Oven.computeVertexNormals();
-  // objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
+  Oven.loadMesh("everything.obj", true);
+   Oven.computeVertexNormals();
+   objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
    scene = Scene(objs, Lights);
    
