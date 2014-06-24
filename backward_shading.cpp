@@ -109,20 +109,21 @@ Vec3Df shoot_ray(Ray ray, Scene scene, int bounce_limit){
 			Vec3Df colour = h.material.Ka();
 			if(h.material.Tr() > 0.001 && h.material.Tr() <= 3){
 				invref=1;//-h.material.Tr();
-				colour =colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
+				colour = colour+shoot_ray(ray.reflectionRay(h), scene, bounce_limit-1);
 			}
 
 
 			if(h.material.Tr() > 3){
 				float prevRefIdx = (ray.previous_hit.material.has_Ni()) ? ray.previous_hit.material.has_Ni() : 1.0f;
                 float refIdx = (h.material.has_Ni()) ? h.material.Ni() : 1.0f;
-                Vec3Df color = Vec3Df(0, 0, 0);
+                Vec3Df color = (h.material.has_Ka()) ? h.material.Ka() : Vec3Df(0, 0, 0);
+                
 
 				if(Vec3Df::dotProduct(ray.dest-ray.origin, h.normal) < 0){
-					return    shoot_ray(ray.refractionRay(h, prevRefIdx, refIdx), scene, bounce_limit-1);
+					return color + shoot_ray(ray.refractionRay(h, prevRefIdx, refIdx), scene, bounce_limit-1);
                 } else {	
                     Hit new_h = Hit(h.isHit, h.hitPoint, h.normal*-1, h.material);
-                    return  shoot_ray(ray.refractionRay(new_h, refIdx, prevRefIdx), scene, bounce_limit-1);
+                    return color + shoot_ray(ray.refractionRay(new_h, refIdx, prevRefIdx), scene, bounce_limit-1);
                 }
 			}
 
