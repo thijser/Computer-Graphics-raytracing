@@ -38,7 +38,7 @@ void init() { //seed the random generator
   Config configStandard = Config("Standard", 800, 800, 800, 800, 3, 4);
   Config configMedium = Config("Medium", 800, 800, 800, 800, 2, 2);
   Config configLow = Config("Low", 200, 200, 800, 800, 1, 1);
-  config = configMedium;
+  config = configLow;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));
@@ -113,7 +113,7 @@ void init() { //seed the random generator
   objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
  
   
-  Oven.loadMesh("everything.obj", true);
+  Oven.loadMesh("cube.obj", true);
    Oven.computeVertexNormals();
    objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
@@ -123,19 +123,9 @@ void init() { //seed the random generator
 }
 
 Mesh translateMesh(Mesh mesh, const Vec3Df & translate) {
-for (unsigned int i=0;i<mesh.vertices.size();++i){
-mesh.vertices[i].p += translate;
-std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
-}
-return mesh;
-//computeVertexNormals();
-}
-
-Mesh rotateMesh(Mesh mesh, const Vec3Df & translate) {
-for (unsigned int i=0;i<mesh.vertices.size();++i){
-mesh.vertices[i].p += translate;
-std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
-}
-return mesh;
-//computeVertexNormals();
+	for (unsigned int i=0;i<mesh.vertices.size();++i){
+		mesh.vertices[i].p += translate;
+		std:: cout << "new vertex pos = " <<mesh.vertices[i].p<< std::endl;
+	}
+	return mesh;
 }
