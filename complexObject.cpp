@@ -78,11 +78,24 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
   // For the moment we use noHit as a symbol
   Hit hit = noHit;
 
+   //Material that is displayed if no material is found in Mesh
+   Material errorMat;
+   errorMat.set_Kd(1,1,0);
+   errorMat.set_Ka(1,1,0);
+   errorMat.set_Ks(1,1,0);
+   errorMat.set_Ns(96.7f);
+   errorMat.set_illum(2);
+   Material actualMat = errorMat;
+    
+
   for (int i = 0; i < mesh.triangles.size(); i++) {
     Triangle T = mesh.triangles[i];
 
     //now return the actual material which is defined in the mesh
-    Material actualMat = mesh.materials.front();//mesh.materials[mesh.triangleMaterials[i]];
+    int materialIndex = mesh.triangleMaterials[i]; 
+    if(0 <= materialIndex && materialIndex <= mesh.materials.size()){
+      actualMat = mesh.materials[materialIndex];
+    }
 
     // Our implementation is based on the proposed algorithm of Dan Sunday at: http://geomalgorithms.com/a06-_intersect-2.html
     Vertex v0 = mesh.vertices[T.v[0]];
@@ -153,7 +166,7 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
       // Now check if it's closer
       if (currentDistance < previousDistance) {
         // If it is then we save the current hit
-        hit = Hit(1, I, n, actualMat);
+         hit = Hit(1, I, n, actualMat);
       } else {
         // If not we discard this hit and continue looking for one which is
         continue;
