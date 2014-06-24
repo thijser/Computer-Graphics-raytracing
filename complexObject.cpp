@@ -112,22 +112,17 @@ Hit ComplexObject::intersectMesh(Vec3Df origin, Vec3Df dest) {
     float b = Vec3Df::dotProduct(n, dest);
 
     // Use this as a threshold to avoid division overflow
-    float small = 0.00000001;
-    if (fabs(b) < small) {
-      // ray is parallel to triangle plane
-      if (a == 0)
-        // ray lies in triangle plane
-        continue;
-      else
-        // ray is parallel and disjoint from plane
-        continue;
+    if (fabs(b) < 0.00000001) {
+      // ray is parallel to triangle plane (either precisely on or disjoint from plane)
+      continue;
     }
-
+    
     // Get intersection point of ray with triangle plane
     float r = a / b;
-    if (r < small)  // ray goes away from triangle
-      // Then there is no intersect
-      continue;
+    if (r < 0.00001)  // ray goes away from triangle
+    {
+	continue;
+    }
 
     // intersect point of ray and plane
     Vec3Df I = origin + (r * dest);
