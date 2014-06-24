@@ -13,6 +13,7 @@ class Config {
     int viewportSize_Y;
     int raysPerPixelD;
     int maxBounces;
+    int threads;
 
     inline Config(void) {
       description =         "Standard";
@@ -22,9 +23,10 @@ class Config {
       viewportSize_Y =      800;
       raysPerPixelD =       3;
       maxBounces =          4;
+      threads =             1;
     }
 
-    Config(char * fDescription, int outputX, int outputY, int viewportX, int viewportY, int fRaysPerPixelD, int fMaxBounces){
+    Config(char * fDescription, int outputX, int outputY, int viewportX, int viewportY, int fRaysPerPixelD, int fMaxBounces, int fThreads){
       description = fDescription;
       renderSize_X = outputX;
       renderSize_Y = outputY;
@@ -32,13 +34,14 @@ class Config {
       viewportSize_Y = viewportY;
       raysPerPixelD = fRaysPerPixelD;
       maxBounces = fMaxBounces;
+      threads = fThreads;
     }
 
     inline std::string toString() {
       int maxLength = 500;
-      char * format = "Config( '%s', %dx%d, rays per pixel: %d, max bounces: %d)";
+      char * format = "Config( '%s', %dx%d, rays per pixel: %d, max bounces: %d, threads: %d)";
       char config[maxLength];
-      snprintf(config, maxLength, format, description, renderSize_X, renderSize_Y, (raysPerPixelD*raysPerPixelD), maxBounces);
+      snprintf(config, maxLength, format, description, renderSize_X, renderSize_Y, (raysPerPixelD*raysPerPixelD), maxBounces, threads);
       return config;
     }
 };

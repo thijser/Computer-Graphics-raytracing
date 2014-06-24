@@ -33,10 +33,10 @@ Config config;
 void init() { //seed the random generator
   srand(time(0));
 
-  Config configHigh =     Config("1080 HD", 1080, 1920, 1080, 1920, 4, 4);
-  Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4);
-  Config configLow =      Config("Low",      200,  200,  800,  800,  1, 1);
-  config = configLow;
+  Config configHigh =     Config("1080 HD", 1080, 1920, 1080, 1920,  4, 4, 8);
+  Config configStandard = Config("Standard", 800,  800,  800,  800,  3, 4, 1);
+  Config configLow =      Config("Low",      200,  200,  800,  800,  1, 1, 8);
+  config = configStandard;
   // LightsPositions.assign(1,Vec3Df(0,-1,-1));
   // LightsColours.assign(1,Vec3Df(1,1,1));
   // LightsPositions.assign(2,Vec3Df(-12,0,-1));
