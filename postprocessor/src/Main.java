@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-	static final String input = "/home/thijs/Desktop/robot.png";
+	static final String input = "/home/thijs/Desktop/result.png";
 	static final String outputloc = "/home/thijs/Desktop/flames2.png";
 	static int size = 10;
 	static int range = 10;
@@ -22,8 +22,8 @@ public class Main {
 		for (int x = 0; x < bi.getWidth(); x++) {
 			for (int y = 0; y < bi.getHeight(); y++) {
 				output.setRGB(x, y,
-						getColourOil(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
-		//				getSketchRGB(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
+		//				getColourOil(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
+						getSketchRGB(bi, x, y, bi.getWidth(), bi.getHeight()));//change to getColourOil to get the oil colour version 
 			}
 		}
 
@@ -37,7 +37,7 @@ public class Main {
 			 return 0;
 		 if (y==0)
 			 return 0;
-		 int locdiff= Math.abs((getInsensity(bi.getRGB(x-1, y)))-getInsensity(bi.getRGB(x, y)))+Math.abs((getInsensity(bi.getRGB(x, y-1)))-getInsensity(bi.getRGB(x, y)));
+		 int locdiff= 2*(Math.abs((getInsensity(bi.getRGB(x-1, y)))-getInsensity(bi.getRGB(x, y)))+Math.abs((getInsensity(bi.getRGB(x, y-1)))-getInsensity(bi.getRGB(x, y))));
 		 if(locdiff>255){
 			 locdiff=255;
 		 }

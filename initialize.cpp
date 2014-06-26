@@ -15,6 +15,7 @@
 #include "complexObject.h"
 #include "TexturedSphere.h"
 #include "mesh.h"
+#include "spheroid.h"
 
 //temporary variables
 Vec3Df testRayOrigin;
@@ -109,13 +110,13 @@ void init() { //seed the random generator
   //objs.push_back(new Sphere(Vec3Df(0, 0.2, 1.3), 0.1, testMat1));
   //objs.push_back(new Sphere(Vec3Df(-4, 0, 0), 4.5, testMat3));
   Lights.push_back( Light( Vec3Df(1,0,3), 0.5, Vec3Df(-1,0,0),Vec3Df(1,1,1),20 ));
-  //objs.push_back(new TexturedSphere(Vec3Df(0, 0, 1), 1, testMat3, "map.ppm"));
+  objs.push_back(new Spheroid(Vec3Df(0, 0, 1), Vec3Df(1,1,1), testMat3));
   //objs.push_back(new Sphere(Vec3Df(-0.2, 0, 2.5), 0.2, testMat4));
  
   
-  Oven.loadMesh("everything.obj", true);
-   Oven.computeVertexNormals();
-   objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
+  //Oven.loadMesh("everything.obj", true);
+   //Oven.computeVertexNormals();
+   //objs.push_back(new ComplexObject(Oven));//Oven.materials.back()));
 
    scene = Scene(objs, Lights);
    
